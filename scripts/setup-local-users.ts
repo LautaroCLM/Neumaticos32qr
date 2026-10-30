@@ -41,16 +41,24 @@ async function main() {
 
   const shopId = '00000000-0000-0000-0000-000000000001';
 
+  const adminPassword = process.env.LOCAL_ADMIN_PASSWORD || env.LOCAL_ADMIN_PASSWORD;
+  const operarioPassword = process.env.LOCAL_OPERARIO_PASSWORD || env.LOCAL_OPERARIO_PASSWORD;
+
+  if (!adminPassword || !operarioPassword) {
+    console.error('❌ ERROR: LOCAL_ADMIN_PASSWORD y LOCAL_OPERARIO_PASSWORD deben estar definidas en las variables de entorno o en .env.local.');
+    process.exit(1);
+  }
+
   const usersToProvision = [
     {
       email: 'admin@taller32.local',
-      password: 'Taller32Admin!',
+      password: adminPassword,
       nombre: 'Administrador Demo',
       rol: 'admin',
     },
     {
       email: 'operario@taller32.local',
-      password: 'Taller32Operario!',
+      password: operarioPassword,
       nombre: 'Operario Demo',
       rol: 'operario',
     },

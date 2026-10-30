@@ -36,6 +36,7 @@ export async function updateShopSettingsAction(data: z.infer<typeof shopSettings
     .from('staff_users')
     .select('shop_id, rol')
     .eq('id', user.id)
+    .eq('is_active', true)
     .single();
 
   if (!staff || staff.rol !== 'admin') {
@@ -92,6 +93,7 @@ export async function saveServiceTemplateAction(data: z.infer<typeof templateSch
     .from('staff_users')
     .select('shop_id, rol')
     .eq('id', user.id)
+    .eq('is_active', true)
     .single();
 
   if (!staff || staff.rol !== 'admin') {

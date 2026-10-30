@@ -52,6 +52,21 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Si un usuario autenticado intenta acceder a /admin/settings, verificar rol admin en servidor
+  if (user && request.nextUrl.pathname.startsWith('/admin/settings')) {
+    const { data: staff } = await supabase
+      .from('staff_users')
+      .select('rol, is_active')
+      .eq('id', user.id)
+      .single();
+
+    if (!staff || !staff.is_active || staff.rol !== 'admin') {
+      const url = request.nextUrl.clone();
+      url.pathname = '/admin/dashboard';
+      return NextResponse.redirect(url);
+    }
+  }
+
   return supabaseResponse;
 }
 

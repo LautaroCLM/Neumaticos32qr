@@ -25,6 +25,7 @@ async function runAdminPanelIntegrationTests() {
   console.log('================================================================\n');
 
   const env = loadEnvLocal();
+  Object.assign(process.env, env);
   const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:55321';
   const anonKey = env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
   const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -49,18 +50,24 @@ async function runAdminPanelIntegrationTests() {
     shopId = shops![0].id;
 
     // Crear usuarios en Auth
-    const { data: adminAuth } = await adminClient.auth.admin.createUser({
+    const { data: adminAuth, error: adminAuthErr } = await adminClient.auth.admin.createUser({
       email: adminEmail,
       password: tempPassword,
       email_confirm: true,
     });
+    if (adminAuthErr || !adminAuth?.user) {
+      throw new Error(`Error creando admin en Auth: ${adminAuthErr?.message}`);
+    }
     adminUserId = adminAuth.user.id;
 
-    const { data: opAuth } = await adminClient.auth.admin.createUser({
+    const { data: opAuth, error: opAuthErr } = await adminClient.auth.admin.createUser({
       email: operarioEmail,
       password: tempPassword,
       email_confirm: true,
     });
+    if (opAuthErr || !opAuth?.user) {
+      throw new Error(`Error creando operario en Auth: ${opAuthErr?.message}`);
+    }
     operarioUserId = opAuth.user.id;
 
     // Insertar en staff_users
@@ -102,7 +109,23 @@ async function runAdminPanelIntegrationTests() {
     if (!vehData.public_token || vehData.public_token.length < 20) {
       throw new Error('Fallo: El token del vehículo no fue generado automáticamente en el servidor.');
     }
-    console.log(`✔ PASÓ: Vehículo creado con token generado en servidor (${vehData.public_token.slice(0, 10)}...).`);
+
+    const hexRegex = /^[0-9a-f]{48}$/;
+    if (!hexRegex.test(vehData.public_token)) {
+      throw new Error(`FALLO: El token '${vehData.public_token}' no cumple con el formato hexadecimal de 48 caracteres /^[0-9a-f]{48}$/.`);
+    }
+    console.log(`✔ PASÓ: Token generado cumple /^[0-9a-f]{48}$/ (${vehData.public_token}).`);
+
+    // (b) Verificar que get_vehicle_by_token resuelve el vehículo por token hexadecimal
+    const testAnonClient = createClient(supabaseUrl, anonKey);
+    const { data: ticketData, error: ticketErr } = await testAnonClient.rpc('get_vehicle_by_token', {
+      p_token: vehData.public_token,
+    });
+
+    if (ticketErr || !ticketData?.success || ticketData.vehicle?.patente !== testPatente) {
+      throw new Error(`FALLO: get_vehicle_by_token no resolvió el token: ${ticketErr?.message}`);
+    }
+    console.log(`✔ PASÓ: get_vehicle_by_token resolvió exitosamente la patente ${ticketData.vehicle.patente}.`);
 
     // --------------------------------------------------------------------------
     // TEST 1.B: Operario intenta forzar public_token='aaaaaaaaaaaaaaaaaaaa' (Trigger BEFORE INSERT lo ignora)

@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS public.shops (
 CREATE TABLE IF NOT EXISTS public.vehicles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     shop_id UUID NOT NULL REFERENCES public.shops(id) ON DELETE RESTRICT,
-    public_token VARCHAR(64) UNIQUE NOT NULL DEFAULT encode(extensions.gen_random_bytes(24), 'base64'),
+    public_token VARCHAR(64) UNIQUE NOT NULL DEFAULT encode(extensions.gen_random_bytes(24), 'hex'),
     token_created_at TIMESTAMPTZ NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
     token_revoked_at TIMESTAMPTZ,
     patente VARCHAR(15) NOT NULL,
@@ -449,7 +449,7 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
 BEGIN
-    NEW.public_token := encode(extensions.gen_random_bytes(24), 'base64');
+    NEW.public_token := encode(extensions.gen_random_bytes(24), 'hex');
     NEW.token_created_at := (NOW() AT TIME ZONE 'utc');
     NEW.token_revoked_at := NULL;
     RETURN NEW;

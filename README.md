@@ -26,11 +26,12 @@ Permite a los clientes consultar su historial de servicios escaneando un código
 
 ---
 
-## ⚠️ Advertencia Crítica sobre `seed.sql`
+## ⚠️ Advertencia Crítica sobre `seed.sql` y Tokens de Demostración
 
 > [!CAUTION]
-> **El archivo `supabase/seed.sql` es EXCLUSIVAMENTE para entornos de desarrollo y demostración local.**
-> **BAJO NINGUNA CIRCUNSTANCIA DEBE EJECUTARSE EN PRODUCCIÓN.** Todos los datos (patentes, teléfonos, dirección y sucursales) son ficticios y de ejemplo. La dirección, horarios y sucursales definitivas se configuran desde el Panel de Administración.
+> **El archivo `supabase/seed.sql` y los tokens fijados en él son EXCLUSIVAMENTE para entornos de desarrollo y demostración local.**
+> **BAJO NINGUNA CIRCUNSTANCIA DEBE EJECUTARSE EN PRODUCCIÓN.** Todos los datos (patentes, teléfonos, dirección y sucursales) son ficticios y de ejemplo.
+> Los tokens demo (`demo-token-amarok-ae123cd-el32` y `demo-token-hilux-ac456xy-el32`) fijados mediante `set_config('app.allow_token_mutation', 'on', true)` existen únicamente para facilitar las pruebas manuales locales de los enlaces `/v/{token}`. En producción, cada vehículo recibe un token criptográfico impredecible de 48 caracteres hexadecimales generado automáticamente por el trigger `BEFORE INSERT` con `encode(extensions.gen_random_bytes(24), 'hex')`.
 
 ---
 

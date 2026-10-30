@@ -150,11 +150,12 @@ async function runSearchPlateApiTests() {
     console.log('🎉 TODOS LOS TESTS DE /api/search-plate PASARON EXITOSAMENTE');
     console.log('================================================================\n');
   } finally {
-    // Limpieza de registros temporales de rate_limit_attempts usados en este test
+    // Limpieza completa de registros en rate_limit_attempts al finalizar la suite
     await adminClient
       .from('rate_limit_attempts')
       .delete()
-      .or(`ip_address.eq.${testIp},ip_address.like.10.0.0.%,ip_address.like.198.51.100.%`);
+      .neq('id', '00000000-0000-0000-0000-000000000000');
+    console.log('🧹 Limpieza de rate_limit_attempts completada.');
   }
 }
 

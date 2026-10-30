@@ -25,10 +25,11 @@ export async function createVehicleAction(values: VehicleCreateValues) {
     .from('staff_users')
     .select('shop_id')
     .eq('id', user.id)
+    .eq('is_active', true)
     .single();
 
   if (staffErr || !staff) {
-    return { success: false, error: 'No se encontró la membresía del taller.' };
+    return { success: false, error: 'No se encontró la membresía del taller o el usuario no está activo.' };
   }
 
   const normalized = normalizePatente(validation.data.patente);
@@ -90,6 +91,17 @@ export async function regenerateVehicleTokenAction(vehicleId: string) {
     return { success: false, error: 'No autorizado. Iniciá sesión.' };
   }
 
+  const { data: staff } = await supabase
+    .from('staff_users')
+    .select('id, shop_id')
+    .eq('id', user.id)
+    .eq('is_active', true)
+    .single();
+
+  if (!staff) {
+    return { success: false, error: 'Usuario no activo en el personal del taller.' };
+  }
+
   const { data, error } = await supabase.rpc('regenerate_vehicle_token', {
     p_vehicle_id: vehicleId,
   });
@@ -113,6 +125,17 @@ export async function revokeVehicleTokenAction(vehicleId: string) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     return { success: false, error: 'No autorizado. Iniciá sesión.' };
+  }
+
+  const { data: staff } = await supabase
+    .from('staff_users')
+    .select('id, shop_id')
+    .eq('id', user.id)
+    .eq('is_active', true)
+    .single();
+
+  if (!staff) {
+    return { success: false, error: 'Usuario no activo en el personal del taller.' };
   }
 
   const { data, error } = await supabase.rpc('revoke_vehicle_token', {

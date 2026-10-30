@@ -87,6 +87,20 @@ INSERT INTO public.vehicles (
     NULL
 ) ON CONFLICT (id) DO NOTHING;
 
+-- Fijar tokens determinísticos para URLs de prueba en entorno local
+-- (El trigger BEFORE INSERT genera tokens aleatorios, aquí se restauran los fijos usando app.allow_token_mutation)
+SELECT set_config('app.allow_token_mutation', 'on', true);
+
+UPDATE public.vehicles
+SET public_token = 'demo-token-amarok-ae123cd-el32'
+WHERE id = '11111111-1111-4111-a111-111111111111';
+
+UPDATE public.vehicles
+SET public_token = 'demo-token-hilux-ac456xy-el32'
+WHERE id = '22222222-2222-4222-a222-222222222222';
+
+SELECT set_config('app.allow_token_mutation', 'off', true);
+
 -- 3. Historial de Servicios de Demostración para Vehículo 1 (Amarok AE123CD)
 INSERT INTO public.services (
     id,

@@ -23,6 +23,7 @@ export async function createServiceAction(values: ServiceFormValues) {
     .from('staff_users')
     .select('shop_id')
     .eq('id', user.id)
+    .eq('is_active', true)
     .single();
 
   if (staffErr || !staff) {
@@ -87,6 +88,7 @@ export async function updateServiceAction(
     .from('staff_users')
     .select('id, shop_id, rol')
     .eq('id', user.id)
+    .eq('is_active', true)
     .single();
 
   if (!staff) {
@@ -135,6 +137,7 @@ export async function anularServiceAction(serviceId: string, motivo: string) {
     .from('staff_users')
     .select('id, shop_id, rol')
     .eq('id', user.id)
+    .eq('is_active', true)
     .single();
 
   if (!staff || staff.rol !== 'admin') {

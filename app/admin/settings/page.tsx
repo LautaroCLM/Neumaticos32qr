@@ -7,16 +7,9 @@ export default async function AdminSettingsPage() {
   const staffData = await getCurrentStaff();
   if (!staffData) redirect('/admin/login');
 
-  // Solo administradores pueden ingresar a la configuración
+  // Solo administradores pueden ingresar a la configuración (operarios son redirigidos al dashboard)
   if (staffData.staff.rol !== 'admin') {
-    return (
-      <div className="p-12 rounded-3xl bg-zinc-900 border border-zinc-800 text-center space-y-3">
-        <h2 className="text-base font-black text-red-400 uppercase tracking-tight">Acceso Restringido</h2>
-        <p className="text-xs text-zinc-400 max-w-sm mx-auto">
-          Esta sección está reservada exclusivamente para administradores del taller.
-        </p>
-      </div>
-    );
+    redirect('/admin/dashboard');
   }
 
   const supabase = await createClient();
