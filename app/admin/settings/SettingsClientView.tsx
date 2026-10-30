@@ -63,6 +63,16 @@ export function SettingsClientView({ shop, templates }: SettingsClientViewProps)
     setSuccessMsg(null);
     setErrorMsg(null);
 
+    // Validar formato de WhatsApp si fue ingresado
+    if (whatsapp && whatsapp.trim().length > 0) {
+      const cleanWa = whatsapp.trim().replace(/\D/g, '');
+      if (whatsapp.toUpperCase().includes('COMPLETAR') || cleanWa.length < 8 || cleanWa.length > 15) {
+        setErrorMsg('El número de WhatsApp debe contener entre 8 y 15 dígitos numéricos (ej. +5491132003200 o 1132003200).');
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
       const res = await updateShopSettingsAction({
         nombre: nombre.trim(),

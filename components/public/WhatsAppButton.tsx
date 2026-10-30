@@ -1,14 +1,27 @@
 import { MessageCircle } from 'lucide-react';
 
 interface WhatsAppButtonProps {
-  whatsappNumber: string;
+  whatsappNumber?: string | null;
   patente: string;
   vehiculoInfo: string;
 }
 
 export function WhatsAppButton({ whatsappNumber, patente, vehiculoInfo }: WhatsAppButtonProps) {
-  // Limpiar número (remover espacios, guiones, signos)
-  const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
+  if (!whatsappNumber) return null;
+
+  const trimmed = whatsappNumber.trim();
+  if (!trimmed || trimmed.toUpperCase().includes('COMPLETAR')) {
+    return null;
+  }
+
+  // Limpiar número (remover espacios, guiones, signos, letras)
+  const cleanNumber = trimmed.replace(/\D/g, '');
+
+  // Validar longitud mínima y máxima para número telefónico válido (mínimo 8 dígitos, máximo 15 según estándar E.164)
+  if (cleanNumber.length < 8 || cleanNumber.length > 15) {
+    return null;
+  }
+
   const message = encodeURIComponent(
     `Hola Neumáticos el 32! Tengo una consulta sobre el vehículo ${vehiculoInfo} (Patente ${patente}).`
   );

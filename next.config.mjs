@@ -23,12 +23,17 @@ const connectSources = [
   .filter(Boolean)
   .join(' ');
 
+const isProd = process.env.NODE_ENV === 'production';
+const scriptSrc = isProd
+  ? "script-src 'self' 'unsafe-inline'"
+  : "script-src 'self' 'unsafe-eval' 'unsafe-inline'";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   compress: true,
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
+    removeConsole: isProd ? { exclude: ['error'] } : false,
   },
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -48,7 +53,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              scriptSrc,
               "style-src 'self' 'unsafe-inline'",
               `img-src 'self' data: blob: ${supabaseOrigin} https:`.trim(),
               "font-src 'self' data:",

@@ -2,15 +2,10 @@ import { z } from 'zod';
 
 const isServer = typeof window === 'undefined';
 
-// Determina si estamos en un entorno productivo real (despliegue en Vercel o conexión a Supabase remoto en producción)
-const isVercel = process.env.VERCEL === '1' || Boolean(process.env.VERCEL_ENV);
-const isRemoteSupabase =
-  Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL) &&
-  !process.env.NEXT_PUBLIC_SUPABASE_URL?.includes('127.0.0.1') &&
-  !process.env.NEXT_PUBLIC_SUPABASE_URL?.includes('localhost');
-
-const isProductionEnvironment =
-  isVercel || (process.env.NODE_ENV === 'production' && isRemoteSupabase);
+// El rechazo estricto de NEXT_PUBLIC_SITE_URL (requiriendo HTTPS y prohibiendo localhost o 127.0.0.1)
+// se aplica exclusivamente en el entorno de producción de Vercel (VERCEL_ENV=production).
+// En desarrollo local, tests y entornos de vista previa (preview), se permite localhost y HTTP.
+const isVercelProduction = process.env.VERCEL_ENV === 'production';
 
 export const clientEnvSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z
@@ -19,13 +14,14 @@ export const clientEnvSchema = z.object({
     .url('NEXT_PUBLIC_SUPABASE_URL debe ser una URL válida (ej. https://xyz.supabase.co)')
     .refine(
       (url) => {
-        if (isProductionEnvironment) {
+        if (isVercelProduction) {
           return url.startsWith('https://');
         }
         return true;
       },
       {
-        message: 'En producción, NEXT_PUBLIC_SUPABASE_URL debe ser HTTPS.',
+        message:
+          'En el entorno de producción de Vercel (VERCEL_ENV=production), NEXT_PUBLIC_SUPABASE_URL debe usar HTTPS (https://).',
       }
     ),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z
@@ -37,7 +33,7 @@ export const clientEnvSchema = z.object({
     .url('NEXT_PUBLIC_SITE_URL debe ser una URL válida')
     .refine(
       (url) => {
-        if (isProductionEnvironment) {
+        if (isVercelProduction) {
           return (
             url.startsWith('https://') &&
             !url.includes('localhost') &&
@@ -48,7 +44,7 @@ export const clientEnvSchema = z.object({
       },
       {
         message:
-          'En producción, NEXT_PUBLIC_SITE_URL debe usar HTTPS (https://) y no puede ser localhost ni 127.0.0.1.',
+          'En el entorno de producción de Vercel (VERCEL_ENV=production), NEXT_PUBLIC_SITE_URL debe ser una URL válida con HTTPS (https://) y no puede ser localhost ni 127.0.0.1.',
       }
     ),
 });

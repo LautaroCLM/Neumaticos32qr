@@ -7,7 +7,23 @@ import { revalidatePath } from 'next/cache';
 const shopSettingsSchema = z.object({
   nombre: z.string().trim().min(2, 'Nombre de taller requerido').max(100),
   telefono: z.string().trim().max(30).optional().nullable(),
-  whatsapp: z.string().trim().max(30).optional().nullable(),
+  whatsapp: z
+    .string()
+    .trim()
+    .max(30)
+    .optional()
+    .nullable()
+    .refine(
+      (val) => {
+        if (!val || val.length === 0) return true;
+        if (val.toUpperCase().includes('COMPLETAR')) return false;
+        const digits = val.replace(/\D/g, '');
+        return digits.length >= 8 && digits.length <= 15;
+      },
+      {
+        message: 'El número de WhatsApp debe ser válido y contener entre 8 y 15 dígitos numéricos (ej. +5491132003200 o 1132003200).',
+      }
+    ),
   direccion: z.string().trim().max(200).optional().nullable(),
   horarios: z.string().trim().max(200).optional().nullable(),
   ocultar_precios: z.boolean().default(false),

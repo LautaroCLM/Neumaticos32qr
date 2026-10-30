@@ -153,7 +153,7 @@ export default async function VehicleTicketPage({ params }: PageProps) {
           patente={vehicle.patente}
         />
         <WhatsAppButton
-          whatsappNumber={shop?.whatsapp || '+5491132003200'}
+          whatsappNumber={shop?.whatsapp}
           patente={vehicle.patente}
           vehiculoInfo={`${vehicle.marca} ${vehicle.modelo}`}
         />
@@ -174,23 +174,42 @@ export default async function VehicleTicketPage({ params }: PageProps) {
       )}
 
       {/* Ficha Informativa del Taller */}
-      <div className="p-5 rounded-2xl bg-[#14161b]/80 border border-[#262a33] space-y-3 text-xs text-[#c8cdd5]">
-        <div className="flex items-center gap-2 text-white font-bold text-sm">
-          <ShieldCheck className="w-4 h-4 text-[#d31a24]" />
-          <span>Atendido en {shop?.nombre || 'Neumáticos el 32'}</span>
-        </div>
+      {(() => {
+        const isPlaceholder = (val?: string | null) =>
+          !val || !val.trim() || val.toUpperCase().includes('COMPLETAR');
 
-        <div className="space-y-1.5 pt-1">
-          <div className="flex items-start gap-2">
-            <MapPin className="w-4 h-4 text-[#8b929e] shrink-0 mt-0.5" />
-            <span>{shop?.direccion || 'Av. Mitre 3200, Quilmes, Prov. de Buenos Aires'}</span>
+        const hasDireccion = !isPlaceholder(shop?.direccion);
+        const hasHorarios = !isPlaceholder(shop?.horarios);
+        const shopNombre = !isPlaceholder(shop?.nombre)
+          ? shop!.nombre
+          : 'Neumáticos el 32';
+
+        return (
+          <div className="p-5 rounded-2xl bg-[#14161b]/80 border border-[#262a33] space-y-3 text-xs text-[#c8cdd5]">
+            <div className="flex items-center gap-2 text-white font-bold text-sm">
+              <ShieldCheck className="w-4 h-4 text-[#d31a24]" />
+              <span>Atendido en {shopNombre}</span>
+            </div>
+
+            {(hasDireccion || hasHorarios) && (
+              <div className="space-y-1.5 pt-1">
+                {hasDireccion && (
+                  <div className="flex items-start gap-2">
+                    <MapPin className="w-4 h-4 text-[#8b929e] shrink-0 mt-0.5" />
+                    <span>{shop?.direccion}</span>
+                  </div>
+                )}
+                {hasHorarios && (
+                  <div className="flex items-start gap-2">
+                    <Clock className="w-4 h-4 text-[#8b929e] shrink-0 mt-0.5" />
+                    <span>{shop?.horarios}</span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-          <div className="flex items-start gap-2">
-            <Clock className="w-4 h-4 text-[#8b929e] shrink-0 mt-0.5" />
-            <span>{shop?.horarios || 'Lunes a Viernes de 8:00 a 18:30 | Sábados de 8:00 a 13:00'}</span>
-          </div>
-        </div>
-      </div>
+        );
+      })()}
     </div>
   );
 }
