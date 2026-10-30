@@ -41,7 +41,7 @@ export function ShareButton({ title, patente }: ShareButtonProps) {
     <button
       type="button"
       onClick={handleShare}
-      className="flex-1 py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 active:scale-[0.98] border border-zinc-800 text-zinc-200 text-xs font-semibold flex items-center justify-center gap-2 transition-all"
+      className="flex-1 py-3 px-4 rounded-xl bg-[#14161b] hover:bg-[#1c1f26] active:scale-[0.98] border border-[#262a33] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all min-h-[48px]"
     >
       {copied ? (
         <>
@@ -50,7 +50,7 @@ export function ShareButton({ title, patente }: ShareButtonProps) {
         </>
       ) : (
         <>
-          <Share2 className="w-4 h-4 text-amber-400" />
+          <Share2 className="w-4 h-4 text-red-500" />
           <span>Compartir ticket</span>
         </>
       )}

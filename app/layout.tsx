@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#09090b',
+  themeColor: '#0a0b0d',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="dark">
-      <body className="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-zinc-950">
+      <body className="bg-[#0a0b0d] text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-[#d31a24] selection:text-white font-sans">
         {children}
       </body>
     </html>

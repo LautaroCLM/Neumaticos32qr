@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { logoutAction } from '@/lib/actions/auth';
-import { Wrench, LayoutDashboard, Car, PlusCircle, Settings, LogOut, ShieldCheck, User } from 'lucide-react';
+import { LayoutDashboard, Car, PlusCircle, Settings, LogOut, ShieldCheck, User } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 
 interface AdminHeaderProps {
@@ -27,26 +28,33 @@ export function AdminHeader({ staffUser, shopName }: AdminHeaderProps) {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800">
+    <header className="sticky top-0 z-40 bg-[#0a0b0d]/90 backdrop-blur-md border-b border-[#262a33]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo y Nombre del Taller */}
-          <Link href="/admin/dashboard" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 group-hover:scale-105 transition-transform">
-              <Wrench className="w-5 h-5" />
+          <Link href="/admin/dashboard" className="flex items-center gap-3 group">
+            <div className="relative w-10 h-10 shrink-0 group-hover:scale-105 transition-transform">
+              <Image
+                src="/logo.webp"
+                alt="Logo Neumáticos el 32"
+                width={40}
+                height={40}
+                className="object-contain"
+                priority
+              />
             </div>
             <div>
-              <span className="font-black text-sm tracking-tight text-zinc-100 uppercase block">
+              <span className="font-black text-sm tracking-tight text-white uppercase block">
                 {shopName || 'Neumáticos el 32'}
               </span>
-              <span className="text-[10px] text-amber-500/90 font-bold uppercase tracking-widest block -mt-0.5">
+              <span className="text-[10px] text-[#d31a24] font-bold uppercase tracking-widest block -mt-0.5">
                 Panel de Taller
               </span>
             </div>
           </Link>
 
           {/* Navegación Desktop */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href || (item.href !== '/admin/dashboard' && pathname.startsWith(item.href));
@@ -55,10 +63,10 @@ export function AdminHeader({ staffUser, shopName }: AdminHeaderProps) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all',
+                    'flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all min-h-[44px]',
                     isActive
-                      ? 'bg-amber-500 text-zinc-950 shadow-md font-bold'
-                      : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900'
+                      ? 'bg-[#d31a24] text-white shadow-md font-bold'
+                      : 'text-[#c8cdd5] hover:text-white hover:bg-[#14161b]'
                   )}
                 >
                   <Icon className="w-4 h-4" />
@@ -70,19 +78,19 @@ export function AdminHeader({ staffUser, shopName }: AdminHeaderProps) {
 
           {/* Usuario y Cierre de Sesión */}
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800">
-              <div className="w-6 h-6 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-400">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#14161b] border border-[#262a33]">
+              <div className="w-6 h-6 rounded-lg bg-[#0a0b0d] flex items-center justify-center text-zinc-400">
                 {staffUser.rol === 'admin' ? (
-                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#d31a24]" />
                 ) : (
                   <User className="w-3.5 h-3.5 text-zinc-300" />
                 )}
               </div>
               <div className="text-left">
-                <p className="text-xs font-bold text-zinc-200 leading-none">{staffUser.nombre}</p>
+                <p className="text-xs font-bold text-white leading-none">{staffUser.nombre}</p>
                 <span className={cn(
                   'text-[9px] font-black uppercase tracking-wider',
-                  staffUser.rol === 'admin' ? 'text-amber-400' : 'text-zinc-400'
+                  staffUser.rol === 'admin' ? 'text-[#d31a24]' : 'text-zinc-400'
                 )}>
                   {staffUser.rol === 'admin' ? 'Administrador' : 'Operario'}
                 </span>
@@ -93,7 +101,7 @@ export function AdminHeader({ staffUser, shopName }: AdminHeaderProps) {
               <button
                 type="submit"
                 title="Cerrar sesión"
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-zinc-900 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 border border-zinc-800 hover:border-red-500/30 transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-[#14161b] hover:bg-red-950/40 text-zinc-400 hover:text-red-400 border border-[#262a33] hover:border-red-500/40 transition-all cursor-pointer min-h-[44px]"
               >
                 <LogOut className="w-4 h-4" />
                 <span className="hidden sm:inline">Salir</span>
@@ -103,8 +111,8 @@ export function AdminHeader({ staffUser, shopName }: AdminHeaderProps) {
         </div>
       </div>
 
-      {/* Barra de navegación inferior móvil */}
-      <div className="md:hidden border-t border-zinc-900 bg-zinc-950/95 px-2 py-1.5 flex items-center justify-around">
+      {/* Barra de navegación inferior móvil con touch target >= 44px */}
+      <div className="md:hidden border-t border-[#262a33] bg-[#0a0b0d]/95 px-2 py-1 flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href || (item.href !== '/admin/dashboard' && pathname.startsWith(item.href));
@@ -113,8 +121,8 @@ export function AdminHeader({ staffUser, shopName }: AdminHeaderProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex flex-col items-center gap-1 py-1 px-3 rounded-lg text-[10px] font-bold transition-colors',
-                isActive ? 'text-amber-400' : 'text-zinc-500 hover:text-zinc-300'
+                'flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-lg text-[10px] font-bold transition-colors min-h-[48px] min-w-[48px]',
+                isActive ? 'text-[#d31a24]' : 'text-zinc-400 hover:text-white'
               )}
             >
               <Icon className="w-4 h-4" />

@@ -1,26 +1,31 @@
 import Link from 'next/link';
-import { Wrench, ShieldCheck, User } from 'lucide-react';
+import Image from 'next/image';
+import { User, ShieldCheck } from 'lucide-react';
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-[#262a33] bg-[#0a0b0d]/90 backdrop-blur-md">
       <div className="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 group-hover:scale-105 transition-transform">
-            <Wrench className="w-5 h-5" />
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative w-11 h-11 shrink-0 group-hover:scale-105 transition-transform">
+            <Image
+              src="/logo.webp"
+              alt="Logo Neumáticos el 32"
+              width={44}
+              height={44}
+              className="object-contain"
+              priority
+            />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-base text-zinc-100 tracking-tight">
+              <span className="font-bold text-base text-zinc-100 tracking-tight font-sans">
                 Neumáticos el 32
               </span>
-              <span className="px-1.5 py-0.5 text-[10px] font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/30 rounded">
-                Oficial
-              </span>
             </div>
-            <p className="text-xs text-zinc-400 flex items-center gap-1">
-              <ShieldCheck className="w-3 h-3 text-emerald-400 inline" />
-              Historial Digital de Servicios
+            <p className="text-[11px] text-[#c8cdd5] flex items-center gap-1">
+              <ShieldCheck className="w-3 h-3 text-[#d31a24] inline" />
+              Historial y Tickets Digitales
             </p>
           </div>
         </Link>
@@ -28,11 +33,11 @@ export function Header() {
         <div className="flex items-center gap-2">
           <Link
             href="/admin/login"
-            className="p-2 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors text-xs flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:text-white bg-[#14161b] hover:bg-[#1c1f26] border border-[#262a33] transition-colors flex items-center gap-1.5 min-h-[44px]"
             title="Acceso Taller"
           >
-            <User className="w-4 h-4" />
-            <span className="hidden sm:inline">Taller</span>
+            <User className="w-4 h-4 text-[#d31a24]" />
+            <span>Acceso Taller</span>
           </Link>
         </div>
       </div>

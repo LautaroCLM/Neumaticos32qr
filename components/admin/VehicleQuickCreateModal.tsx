@@ -86,7 +86,7 @@ export function VehicleQuickCreateModal({
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500">
+            <div className="w-8 h-8 rounded-xl bg-[#880e14]/20 border border-[#d31a24]/30 flex items-center justify-center text-[#d31a24]">
               <Car className="w-4 h-4" />
             </div>
             <div>
@@ -125,10 +125,10 @@ export function VehicleQuickCreateModal({
                 placeholder="AA 123 BB o ABC 123"
                 maxLength={8}
                 required
-                className="flex-1 px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 font-mono text-base font-bold uppercase tracking-wider focus:outline-none focus:border-amber-500"
+                className="flex-1 px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 font-mono text-base font-bold uppercase tracking-wider focus:outline-none focus:border-[#d31a24]"
               />
               {cleanPat && (
-                <div className="px-3 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-xs font-mono font-bold text-amber-400">
+                <div className="px-3 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-xs font-mono font-bold text-[#d31a24]">
                   {formatPatenteDisplay(cleanPat)}
                 </div>
               )}
@@ -147,7 +147,7 @@ export function VehicleQuickCreateModal({
                 onChange={(e) => setMarca(e.target.value)}
                 placeholder="Ej. Volkswagen"
                 required
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-[#d31a24]"
               />
             </div>
             <div>
@@ -160,7 +160,7 @@ export function VehicleQuickCreateModal({
                 onChange={(e) => setModelo(e.target.value)}
                 placeholder="Ej. Amarok 2.0"
                 required
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-[#d31a24]"
               />
             </div>
           </div>
@@ -178,7 +178,7 @@ export function VehicleQuickCreateModal({
                 placeholder="2023"
                 min="1950"
                 max={new Date().getFullYear() + 2}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-amber-500 font-mono"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-[#d31a24] font-mono"
               />
             </div>
             <div className="sm:col-span-2">
@@ -190,7 +190,7 @@ export function VehicleQuickCreateModal({
                 value={clienteNombre}
                 onChange={(e) => setClienteNombre(e.target.value)}
                 placeholder="Ej. Carlos Rossi"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-[#d31a24]"
               />
             </div>
           </div>
@@ -206,7 +206,7 @@ export function VehicleQuickCreateModal({
                 value={clienteTelefono}
                 onChange={(e) => setClienteTelefono(e.target.value)}
                 placeholder="Ej. 11 3456-7890"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-[#d31a24]"
               />
             </div>
 
@@ -215,7 +215,7 @@ export function VehicleQuickCreateModal({
                 type="checkbox"
                 checked={ocultarPrecios}
                 onChange={(e) => setOcultarPrecios(e.target.checked)}
-                className="w-4 h-4 rounded text-amber-500 bg-zinc-900 border-zinc-700 focus:ring-amber-500"
+                className="w-4 h-4 rounded text-[#d31a24] bg-zinc-900 border-zinc-700 focus:ring-[#d31a24]"
               />
               <span className="text-xs text-zinc-300">
                 Ocultar precios por defecto en el ticket público de este vehículo
@@ -236,7 +236,7 @@ export function VehicleQuickCreateModal({
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-lg shadow-amber-500/20 transition-all cursor-pointer disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-[#d31a24] hover:bg-[#e52530] text-white shadow-lg shadow-[#d31a24]/20 transition-all cursor-pointer disabled:opacity-50"
             >
               {loading ? (
                 <>

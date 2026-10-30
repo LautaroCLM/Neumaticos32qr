@@ -1,22 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
-  --foreground: #f4f4f5;
-  --card: #121215;
-  --card-border: #27272a;
-  --primary: #f59e0b;
-  --primary-foreground: #09090b;
-  --muted: #71717a;
+  --background: #0a0b0d;
+  --foreground: #f8fafc;
+  --card: #14161b;
+  --card-border: #262a33;
+  --primary: #d31a24;
+  --primary-hover: #e52530;
+  --primary-dark: #880e14;
+  --alloy: #c8cdd5;
+  --muted: #8b929e;
 }
 
 @theme {
-  --color-brand-bg: #09090b;
-  --color-brand-card: #121215;
-  --color-brand-card-hover: #18181b;
-  --color-brand-border: #27272a;
-  --color-brand-primary: #f59e0b;
-  --color-brand-primary-light: #fbbf24;
+  --color-brand-bg: #0a0b0d;
+  --color-brand-card: #14161b;
+  --color-brand-card-hover: #1c1f26;
+  --color-brand-border: #262a33;
+  --color-brand-primary: #d31a24;
+  --color-brand-primary-hover: #e52530;
+  --color-brand-primary-dark: #880e14;
+  --color-brand-silver: #c8cdd5;
+  --color-brand-muted: #8b929e;
 }
 
 body {
@@ -28,20 +33,30 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbars for clean look */
+/* Custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #0a0b0d;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #262a33;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #3c424f;
+}
+
+/* Accessibility: Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Print layout for QR stickers */

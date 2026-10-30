@@ -19,9 +19,9 @@ export const SERVICE_TYPE_LABELS: Record<ServiceType, string> = {
 
 export const SERVICE_TYPE_COLORS: Record<ServiceType, { badge: string; border: string; bg: string }> = {
   neumaticos: {
-    badge: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    border: 'border-l-amber-500',
-    bg: 'bg-amber-500/10',
+    badge: 'bg-[#880e14]/30 text-white border-[#d31a24]/50',
+    border: 'border-l-[#d31a24]',
+    bg: 'bg-[#880e14]/15',
   },
   alineacion_balanceo: {
     badge: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30',

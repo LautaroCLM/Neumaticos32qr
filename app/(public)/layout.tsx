@@ -25,7 +25,7 @@ export default function PublicLayout({
                 href="https://wa.me/5491132003200"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-amber-400 hover:text-amber-300 flex items-center gap-1 font-semibold"
+                className="text-red-500 hover:text-red-400 flex items-center gap-1 font-semibold"
               >
                 <MessageCircle className="w-3.5 h-3.5" />
                 WhatsApp Oficial

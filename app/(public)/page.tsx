@@ -1,81 +1,59 @@
+import Image from 'next/image';
 import { PlateSearchForm } from '@/components/public/PlateSearchForm';
-import { QrCode, Search, FileText, Sparkles, ShieldCheck } from 'lucide-react';
+import { QrCode, ShieldCheck } from 'lucide-react';
 
 export default function HomePage() {
   return (
-    <div className="space-y-8 animate-in fade-in duration-300">
-      {/* Hero Section */}
-      <div className="text-center space-y-3 pt-2">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Tu vehículo siempre al día</span>
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-100 tracking-tight">
-          Historial de Servicios
-        </h1>
-        <p className="text-sm sm:text-base text-zinc-400 max-w-md mx-auto leading-relaxed">
-          Ingresá la patente de tu auto o camioneta para verificar el estado de sus últimos mantenimientos en <strong>Neumáticos el 32</strong>.
-        </p>
-      </div>
-
-      {/* 3 Pasos estilo Rioplatense */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 py-1">
-        <div className="p-3 sm:p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 text-center space-y-2">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-            <QrCode className="w-4 h-4 sm:w-5 sm:h-5" />
-          </div>
-          <div>
-            <p className="text-[10px] sm:text-xs font-bold text-amber-400 uppercase">Paso 1</p>
-            <p className="text-xs sm:text-sm font-bold text-zinc-100">Escaneá el QR</p>
+    <div className="space-y-6 animate-in fade-in duration-300">
+      {/* Hero Section con Emblema Oficial */}
+      <div className="text-center space-y-3 pt-4 pb-2">
+        <div className="flex justify-center">
+          <div className="relative w-48 sm:w-56 h-28 sm:h-32 drop-shadow-[0_10px_20px_rgba(211,26,36,0.15)]">
+            <Image
+              src="/logo.webp"
+              alt="Neumáticos el 32"
+              fill
+              className="object-contain"
+              priority
+            />
           </div>
         </div>
 
-        <div className="p-3 sm:p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 text-center space-y-2">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-            <Search className="w-4 h-4 sm:w-5 sm:h-5" />
-          </div>
-          <div>
-            <p className="text-[10px] sm:text-xs font-bold text-cyan-400 uppercase">Paso 2</p>
-            <p className="text-xs sm:text-sm font-bold text-zinc-100">Buscá tu patente</p>
-          </div>
-        </div>
-
-        <div className="p-3 sm:p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 text-center space-y-2">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-            <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
-          </div>
-          <div>
-            <p className="text-[10px] sm:text-xs font-bold text-emerald-400 uppercase">Paso 3</p>
-            <p className="text-xs sm:text-sm font-bold text-zinc-100">Mirá tu historial</p>
-          </div>
+        <div className="space-y-1">
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase font-sans">
+            Historial de Servicios
+          </h1>
+          <p className="text-xs sm:text-sm text-[#c8cdd5] max-w-sm mx-auto leading-relaxed">
+            Ingresá tu patente para ver el último service y la fecha del próximo control en el taller.
+          </p>
         </div>
       </div>
 
       {/* Buscador Interactivo de Patente */}
-      <div className="p-6 rounded-2xl bg-zinc-900/90 border border-zinc-800 shadow-2xl space-y-4">
-        <div className="space-y-1">
-          <h2 className="text-base font-bold text-zinc-200">
-            Consulta rápida por patente
+      <div className="p-5 sm:p-6 rounded-2xl bg-[#14161b] border border-[#262a33] shadow-2xl space-y-3">
+        <div className="space-y-0.5">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#d31a24]">
+            Búsqueda Rápida
+          </span>
+          <h2 className="text-base sm:text-lg font-bold text-white">
+            Consultá tu auto o camioneta
           </h2>
-          <p className="text-xs text-zinc-400">
-            Ingresá los números y letras de tu chapa patente para consultar la ficha técnica:
-          </p>
         </div>
 
         <PlateSearchForm />
       </div>
 
-      {/* Información sobre el QR Sticker */}
-      <div className="p-4 rounded-xl bg-zinc-900/40 border border-zinc-800/80 flex items-start gap-3.5">
-        <div className="w-9 h-9 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
-          <ShieldCheck className="w-5 h-5" />
+      {/* Acceso al Historial Completo vía Sticker QR */}
+      <div className="p-4 rounded-xl bg-[#14161b]/80 border border-[#262a33] flex items-start gap-3.5">
+        <div className="w-10 h-10 rounded-lg bg-[#880e14]/20 border border-[#d31a24]/30 flex items-center justify-center text-[#d31a24] shrink-0 mt-0.5">
+          <QrCode className="w-5 h-5" />
         </div>
-        <div className="text-xs text-zinc-400 space-y-1">
-          <p className="font-semibold text-zinc-200">
-            ¿Tenés el sticker en el parabrisas o en tu orden de servicio?
+        <div className="text-xs text-[#c8cdd5] space-y-1">
+          <p className="font-bold text-white text-sm">
+            ¿Tenés el sticker en el parabrisas?
           </p>
           <p className="leading-relaxed">
-            Escanear el código QR con la cámara de tu celular te lleva directo al ticket completo con comprobante de repuestos, alineación y precios abonados, sin contraseñas ni registros.
+            Escaneá el código QR con la cámara de tu celular para ver el <strong>ticket completo</strong> con detalle de repuestos colocados, comprobante de alineación y precios abonados.
           </p>
         </div>
       </div>

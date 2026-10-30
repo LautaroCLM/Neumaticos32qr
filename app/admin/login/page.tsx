@@ -2,54 +2,63 @@
 
 import { useActionState, useState } from 'react';
 import { loginAction } from '@/lib/actions/auth';
-import { Wrench, Lock, Mail, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function AdminLoginPage() {
   const [state, formAction, isPending] = useActionState(loginAction, null);
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center p-4">
+    <div className="min-h-[85vh] flex flex-col items-center justify-center p-4">
       {/* Botón para volver al portal público */}
       <div className="w-full max-w-md mb-4">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-amber-400 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-[#c8cdd5] hover:text-white transition-colors min-h-[44px]"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-3.5 h-3.5 text-[#d31a24]" />
           <span>Volver al portal público</span>
         </Link>
       </div>
 
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-3xl p-7 sm:p-8 shadow-2xl relative overflow-hidden">
-        {/* Glow de acento superior */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-1 bg-amber-500 rounded-full" />
+      <div className="w-full max-w-md bg-[#14161b] border border-[#262a33] rounded-3xl p-7 sm:p-8 shadow-2xl relative overflow-hidden">
+        {/* Acento superior en Rojo Furia */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-[#d31a24]" />
 
         {/* Branding Taller */}
         <div className="text-center mb-8">
-          <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 shadow-inner">
-            <Wrench className="w-7 h-7" />
+          <div className="flex justify-center mb-3">
+            <div className="relative w-40 h-24">
+              <Image
+                src="/logo.webp"
+                alt="Neumáticos el 32"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           </div>
-          <h1 className="text-xl font-black uppercase tracking-tight text-zinc-100">
-            Neumáticos el 32
-          </h1>
-          <p className="text-xs text-amber-500/90 font-bold uppercase tracking-widest mt-0.5">
+          <h1 className="text-xl font-black uppercase tracking-tight text-white font-sans">
             Acceso Personal del Taller
+          </h1>
+          <p className="text-xs text-[#d31a24] font-bold uppercase tracking-widest mt-1">
+            Sistema de Gestión y Órdenes
           </p>
         </div>
 
         {/* Mensaje de Error */}
         {state?.error && (
-          <div className="mb-6 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2.5 animate-shake">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="mb-6 p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 text-red-200 text-xs flex items-center gap-2.5">
+            <AlertCircle className="w-4 h-4 shrink-0 text-[#d31a24]" />
             <span>{state.error}</span>
           </div>
         )}
 
         <form action={formAction} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#c8cdd5] uppercase tracking-wider mb-1.5">
               Correo Electrónico
             </label>
             <div className="relative">
@@ -58,14 +67,14 @@ export default function AdminLoginPage() {
                 type="email"
                 name="email"
                 required
-                placeholder="operario@neumaticosel32.com"
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                placeholder="operario@taller32.local"
+                className="w-full pl-10 pr-4 py-3.5 rounded-xl bg-[#0a0b0d] border border-[#262a33] text-white text-sm focus:outline-none focus:border-[#d31a24] transition-colors min-h-[48px]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#c8cdd5] uppercase tracking-wider mb-1.5">
               Contraseña
             </label>
             <div className="relative">
@@ -75,12 +84,12 @@ export default function AdminLoginPage() {
                 name="password"
                 required
                 placeholder="••••••••"
-                className="w-full pl-10 pr-11 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                className="w-full pl-10 pr-11 py-3.5 rounded-xl bg-[#0a0b0d] border border-[#262a33] text-white text-sm focus:outline-none focus:border-[#d31a24] transition-colors min-h-[48px]"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors p-2"
                 title={showPassword ? 'Ocultar contraseña' : 'Ver contraseña'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -92,7 +101,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full py-3.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="w-full py-4 px-4 rounded-xl bg-[#d31a24] hover:bg-[#e52530] text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-[#d31a24]/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 min-h-[50px]"
             >
               {isPending ? (
                 <>
@@ -106,7 +115,7 @@ export default function AdminLoginPage() {
           </div>
         </form>
 
-        <p className="mt-6 text-center text-[11px] text-zinc-500">
+        <p className="mt-6 text-center text-[11px] text-[#8b929e]">
           Uso restringido al personal autorizado de Neumáticos el 32.
         </p>
       </div>

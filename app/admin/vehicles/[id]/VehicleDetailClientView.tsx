@@ -162,7 +162,7 @@ export function VehicleDetailClientView({
       <div>
         <Link
           href="/admin/vehicles"
-          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-amber-400 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-[#D31A24] transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Volver a Vehículos</span>
@@ -177,11 +177,11 @@ export function VehicleDetailClientView({
       )}
 
       {/* Header del Vehículo */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-7 shadow-xl">
+      <div className="bg-[#14161b] border border-[#262a33] rounded-3xl p-6 sm:p-7 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="px-3.5 py-1.5 rounded-xl bg-zinc-950 border border-zinc-800 font-mono font-bold text-base text-amber-400 tracking-wider">
+              <span className="px-3.5 py-1.5 rounded-xl bg-[#0A0B0D] border border-[#262a33] font-mono font-bold text-base text-white tracking-wider">
                 {formatPatenteDisplay(vehicle.patente)}
               </span>
 
@@ -236,7 +236,7 @@ export function VehicleDetailClientView({
           <div className="shrink-0">
             <Link
               href={`/admin/services/new?vehicle_id=${vehicle.id}`}
-              className="flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-black uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all"
+              className="flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-red-900/30 transition-all min-h-[44px]"
             >
               <Plus className="w-4 h-4" />
               <span>+ Nuevo Servicio</span>
@@ -246,10 +246,10 @@ export function VehicleDetailClientView({
       </div>
 
       {/* Tarjeta de Gestión del Código QR y Acceso Digital */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-xl space-y-6">
-        <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+      <div className="bg-[#14161b] border border-[#262a33] rounded-3xl p-6 shadow-xl space-y-6">
+        <div className="flex items-center justify-between border-b border-[#262a33] pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500">
+            <div className="w-8 h-8 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-[#D31A24]">
               <QrCode className="w-4 h-4" />
             </div>
             <div>
@@ -265,9 +265,9 @@ export function VehicleDetailClientView({
           <button
             onClick={() => setIsPrintModalOpen(true)}
             disabled={isTokenRevoked}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors disabled:opacity-40 cursor-pointer min-h-[40px]"
           >
-            <Printer className="w-3.5 h-3.5 text-amber-400" />
+            <Printer className="w-3.5 h-3.5 text-[#D31A24]" />
             <span>Imprimir Sticker</span>
           </button>
         </div>
@@ -281,7 +281,7 @@ export function VehicleDetailClientView({
             </p>
             <button
               onClick={() => setShowRegenerateModal(true)}
-              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black text-xs uppercase tracking-wider transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white font-black text-xs uppercase tracking-wider transition-colors cursor-pointer min-h-[44px]"
             >
               Generar Nuevo Código QR
             </button>
@@ -342,18 +342,18 @@ export function VehicleDetailClientView({
               </div>
 
               {/* Acciones de Seguridad del Token */}
-              <div className="pt-3 border-t border-zinc-800/80 flex flex-wrap items-center gap-3">
+              <div className="pt-3 border-t border-[#262a33] flex flex-wrap items-center gap-3">
                 <button
                   onClick={() => setShowRegenerateModal(true)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-amber-500/20 text-zinc-300 hover:text-amber-400 border border-zinc-700 hover:border-amber-500/40 text-xs font-bold transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-300 hover:text-red-400 border border-zinc-700 hover:border-red-500/40 text-xs font-bold transition-colors cursor-pointer min-h-[40px]"
                 >
-                  <RefreshCw className="w-3.5 h-3.5 text-amber-500" />
+                  <RefreshCw className="w-3.5 h-3.5 text-[#D31A24]" />
                   <span>Regenerar QR</span>
                 </button>
 
                 <button
                   onClick={() => setShowRevokeModal(true)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 border border-zinc-700 hover:border-red-500/40 text-xs font-bold transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 border border-zinc-700 hover:border-red-500/40 text-xs font-bold transition-colors cursor-pointer min-h-[40px]"
                 >
                   <Ban className="w-3.5 h-3.5" />
                   <span>Revocar Acceso</span>
@@ -369,14 +369,14 @@ export function VehicleDetailClientView({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-black uppercase tracking-tight text-zinc-200 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-amber-500" />
+              <Clock className="w-4 h-4 text-[#D31A24]" />
               Historial de Servicios ({services.length})
             </h2>
           </div>
 
           <Link
             href={`/admin/services/new?vehicle_id=${vehicle.id}`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-bold shadow-md shadow-amber-500/20 transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-bold shadow-md shadow-red-900/30 transition-all min-h-[36px]"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Cargar Servicio</span>
@@ -384,7 +384,7 @@ export function VehicleDetailClientView({
         </div>
 
         {services.length === 0 ? (
-          <div className="p-12 rounded-3xl bg-zinc-900/60 border border-zinc-800 text-center space-y-3">
+          <div className="p-12 rounded-3xl bg-[#14161b] border border-[#262a33] text-center space-y-3">
             <Calendar className="w-8 h-8 text-zinc-600 mx-auto" />
             <h3 className="text-sm font-bold text-zinc-300">Sin servicios registrados</h3>
             <p className="text-xs text-zinc-500 max-w-sm mx-auto">
@@ -392,7 +392,7 @@ export function VehicleDetailClientView({
             </p>
             <Link
               href={`/admin/services/new?vehicle_id=${vehicle.id}`}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500 text-zinc-950 text-xs font-black uppercase tracking-wider"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#D31A24] text-white text-xs font-black uppercase tracking-wider min-h-[44px]"
             >
               <Plus className="w-4 h-4" />
               <span>Cargar Primer Servicio</span>
@@ -413,7 +413,7 @@ export function VehicleDetailClientView({
                     'p-5 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4',
                     srv.anulado
                       ? 'bg-zinc-950/60 border-red-500/20 opacity-70'
-                      : 'bg-zinc-900 border-zinc-800'
+                      : 'bg-[#14161b] border-[#262a33]'
                   )}
                 >
                   <div className="space-y-2 flex-1">
@@ -426,7 +426,7 @@ export function VehicleDetailClientView({
                         {formatDateBA(srv.fecha_hora, { includeTime: true })}
                       </span>
                       {srv.editado && (
-                        <span className="px-1.5 py-0.5 rounded bg-zinc-800 text-amber-400 text-[9px] font-bold">
+                        <span className="px-1.5 py-0.5 rounded bg-zinc-800 text-red-400 text-[9px] font-bold">
                           Editado
                         </span>
                       )}
@@ -438,13 +438,13 @@ export function VehicleDetailClientView({
                     </div>
                     <p className="text-xs text-zinc-300">{srv.descripcion}</p>
                     {srv.notas_internas && (
-                      <p className="text-[11px] text-amber-400/90 font-mono italic">
+                      <p className="text-[11px] text-red-400/90 font-mono italic">
                         🔒 Interno: {srv.notas_internas}
                       </p>
                     )}
                   </div>
 
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-zinc-800 shrink-0">
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-[#262a33] shrink-0">
                     <span className="text-sm font-mono font-bold text-zinc-100">
                       {formatCurrencyARS(effectivePrice)}
                     </span>
@@ -491,10 +491,10 @@ export function VehicleDetailClientView({
       {/* Modal Confirmación Regenerar Token */}
       {showRegenerateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-md bg-zinc-900 border border-amber-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center gap-2 text-amber-400">
+          <div className="w-full max-w-md bg-[#14161b] border border-[#262a33] rounded-2xl p-6 shadow-2xl space-y-4">
+            <div className="flex items-center gap-2 text-[#D31A24]">
               <RefreshCw className="w-5 h-5" />
-              <h3 className="text-base font-black uppercase tracking-tight">¿Regenerar Código QR?</h3>
+              <h3 className="text-base font-black uppercase tracking-tight text-white">¿Regenerar Código QR?</h3>
             </div>
             <p className="text-xs text-zinc-300">
               Al regenerar el token, <strong className="text-zinc-100">todos los stickers o códigos QR impresos anteriormente dejarán de funcionar</strong>.
@@ -505,7 +505,7 @@ export function VehicleDetailClientView({
                 type="button"
                 onClick={() => setShowRegenerateModal(false)}
                 disabled={actionLoading}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-zinc-100 cursor-pointer"
+                className="px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-zinc-100 cursor-pointer min-h-[44px]"
               >
                 Cancelar
               </button>
@@ -513,7 +513,7 @@ export function VehicleDetailClientView({
                 type="button"
                 onClick={handleRegenerateToken}
                 disabled={actionLoading}
-                className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-black uppercase tracking-wider cursor-pointer disabled:opacity-50"
+                className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-black uppercase tracking-wider cursor-pointer disabled:opacity-50 min-h-[44px]"
               >
                 {actionLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 <span>Confirmar y Regenerar</span>

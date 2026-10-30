@@ -35,7 +35,7 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-lg sm:text-xl font-black uppercase tracking-tight text-zinc-100 flex items-center gap-2">
-            <Car className="w-5 h-5 text-amber-500" />
+            <Car className="w-5 h-5 text-[#D31A24]" />
             Parque de Vehículos ({vehicles.length})
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -45,7 +45,7 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
 
         <button
           onClick={() => setIsQuickCreateOpen(true)}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-black uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-red-900/30 transition-all cursor-pointer min-h-[44px]"
         >
           <Plus className="w-4 h-4" />
           <span>+ Registrar Vehículo</span>
@@ -60,13 +60,13 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Buscar por patente, marca, modelo o cliente..."
-          className="w-full pl-11 pr-4 py-3 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-amber-500"
+          className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#0A0B0D] border border-[#262a33] text-zinc-100 text-sm focus:outline-none focus:border-[#D31A24] min-h-[48px]"
         />
       </div>
 
       {/* Grid de Vehículos */}
       {filtered.length === 0 ? (
-        <div className="p-12 rounded-3xl bg-zinc-900/60 border border-zinc-800 text-center space-y-3">
+        <div className="p-12 rounded-3xl bg-[#14161b] border border-[#262a33] text-center space-y-3">
           <Car className="w-8 h-8 text-zinc-600 mx-auto" />
           <h3 className="text-sm font-bold text-zinc-300">No encontramos ningún vehículo</h3>
           <p className="text-xs text-zinc-500 max-w-sm mx-auto">
@@ -81,17 +81,17 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
             return (
               <div
                 key={veh.id}
-                className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all flex flex-col justify-between space-y-4"
+                className="p-5 rounded-2xl bg-[#14161b] border border-[#262a33] hover:border-zinc-700 transition-all flex flex-col justify-between space-y-4"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2">
-                    <span className="px-3 py-1 rounded-lg bg-zinc-950 border border-zinc-800 font-mono font-bold text-sm text-amber-400">
+                    <span className="px-3 py-1 rounded-lg bg-[#0A0B0D] border border-[#262a33] font-mono font-bold text-sm text-white">
                       {formatPatenteDisplay(veh.patente)}
                     </span>
                     <button
                       onClick={() => setSelectedQRVehicle(veh)}
                       title="Generar o Imprimir QR"
-                      className="p-2 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-zinc-400 hover:text-amber-400 border border-zinc-800 transition-colors cursor-pointer"
+                      className="p-2 rounded-xl bg-[#0A0B0D] hover:bg-zinc-800 text-zinc-400 hover:text-[#D31A24] border border-[#262a33] transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
                     >
                       <QrCode className="w-4 h-4" />
                     </button>
@@ -106,7 +106,7 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
 
                   {/* Datos del Cliente */}
                   {(veh.cliente_nombre || veh.cliente_telefono) && (
-                    <div className="mt-3 pt-3 border-t border-zinc-800/80 space-y-1 text-xs">
+                    <div className="mt-3 pt-3 border-t border-[#262a33] space-y-1 text-xs">
                       {veh.cliente_nombre && (
                         <div className="flex items-center gap-1.5 text-zinc-300">
                           <User className="w-3.5 h-3.5 text-zinc-500" />
@@ -124,15 +124,15 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
                 </div>
 
                 {/* Footer de Tarjeta */}
-                <div className="pt-3 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+                <div className="pt-3 border-t border-[#262a33] flex items-center justify-between text-xs">
                   <span className="text-zinc-500 flex items-center gap-1">
-                    <Wrench className="w-3.5 h-3.5 text-amber-500/80" />
+                    <Wrench className="w-3.5 h-3.5 text-[#D31A24]/80" />
                     <strong className="text-zinc-300">{srvCount}</strong> {srvCount === 1 ? 'servicio' : 'servicios'}
                   </span>
 
                   <Link
                     href={`/admin/vehicles/${veh.id}`}
-                    className="flex items-center gap-1 text-amber-400 hover:text-amber-300 font-bold group"
+                    className="flex items-center gap-1 text-[#D31A24] hover:text-red-400 font-bold group min-h-[36px]"
                   >
                     <span>Ficha y QR</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />

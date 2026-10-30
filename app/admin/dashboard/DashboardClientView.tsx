@@ -138,11 +138,11 @@ export function DashboardClientView({
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Barra superior con Buscador Rápido de Patente y Acciones */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
+      <div className="bg-[#14161b] border border-[#262a33] rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-lg sm:text-xl font-black uppercase tracking-tight text-zinc-100 flex items-center gap-2">
-              <Wrench className="w-5 h-5 text-amber-500" />
+              <Wrench className="w-5 h-5 text-[#D31A24]" />
               Gestión de Servicios y Vehículos
             </h1>
             <p className="text-xs text-zinc-400 mt-0.5">
@@ -153,14 +153,14 @@ export function DashboardClientView({
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => setIsQuickCreateOpen(true)}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-all cursor-pointer"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-850 hover:bg-zinc-800 text-zinc-200 text-xs font-bold border border-[#262a33] transition-all cursor-pointer min-h-[44px]"
             >
-              <Car className="w-4 h-4 text-amber-400" />
+              <Car className="w-4 h-4 text-[#D31A24]" />
               <span>+ Alta de Vehículo</span>
             </button>
             <Link
               href="/admin/services/new"
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-black uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-red-900/30 transition-all cursor-pointer min-h-[44px]"
             >
               <Plus className="w-4 h-4" />
               <span>+ Nuevo Servicio</span>
@@ -176,18 +176,18 @@ export function DashboardClientView({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Escribí una patente (ej. AA123BB), cliente o marca..."
-            className="w-full pl-11 pr-4 py-3 rounded-2xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-amber-500 font-medium"
+            className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#0A0B0D] border border-[#262a33] text-zinc-100 text-sm focus:outline-none focus:border-[#D31A24] font-medium min-h-[48px]"
           />
         </div>
 
         {/* Coincidencias de vehículos rápidos si el usuario está buscando */}
         {searchTerm.trim().length >= 2 && (
-          <div className="p-3 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-2">
+          <div className="p-3 rounded-2xl bg-[#0A0B0D] border border-[#262a33] space-y-2">
             <div className="flex items-center justify-between text-[11px] text-zinc-400 font-bold uppercase tracking-wider px-2">
               <span>Vehículos Encontrados ({matchedVehicles.length})</span>
               <button
                 onClick={() => setIsQuickCreateOpen(true)}
-                className="text-amber-400 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-red-500 hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <Plus className="w-3 h-3" />
                 <span>¿No existe? Crearlo ahora</span>
@@ -199,7 +199,7 @@ export function DashboardClientView({
                 No encontramos ningún vehículo con esa búsqueda.{' '}
                 <button
                   onClick={() => setIsQuickCreateOpen(true)}
-                  className="text-amber-400 font-bold underline cursor-pointer"
+                  className="text-red-500 font-bold underline cursor-pointer"
                 >
                   Hacé clic acá para darlo de alta
                 </button>
@@ -210,10 +210,10 @@ export function DashboardClientView({
                   <Link
                     key={veh.id}
                     href={`/admin/vehicles/${veh.id}`}
-                    className="p-3 rounded-xl bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 hover:border-amber-500/40 flex items-center justify-between gap-2 transition-all group"
+                    className="p-3 rounded-xl bg-[#14161b] hover:bg-[#1a1d24] border border-[#262a33] hover:border-red-500/40 flex items-center justify-between gap-2 transition-all group"
                   >
                     <div>
-                      <span className="font-mono font-bold text-amber-400 text-xs block">
+                      <span className="font-mono font-bold text-[#D31A24] text-xs block">
                         {formatPatenteDisplay(veh.patente)}
                       </span>
                       <p className="text-xs text-zinc-200 font-semibold truncate">
@@ -223,7 +223,7 @@ export function DashboardClientView({
                         <p className="text-[10px] text-zinc-400 truncate">{veh.cliente_nombre}</p>
                       )}
                     </div>
-                    <ArrowRight className="w-4 h-4 text-zinc-600 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-zinc-600 group-hover:text-red-400 group-hover:translate-x-0.5 transition-all" />
                   </Link>
                 ))}
               </div>
@@ -237,7 +237,7 @@ export function DashboardClientView({
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-black uppercase tracking-tight text-zinc-200 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-amber-500" />
+              <Clock className="w-4 h-4 text-[#D31A24]" />
               Servicios Recientes
             </h2>
             <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-800 font-bold text-zinc-400">
@@ -248,7 +248,7 @@ export function DashboardClientView({
           {/* Filtros de Fecha y Tipo */}
           <div className="flex flex-wrap items-center gap-2">
             {/* Filtro Fecha */}
-            <div className="flex items-center bg-zinc-900 border border-zinc-800 rounded-xl p-1 text-[11px] font-bold">
+            <div className="flex items-center bg-[#14161b] border border-[#262a33] rounded-xl p-1 text-[11px] font-bold">
               {[
                 { id: 'todos', label: 'Todos' },
                 { id: 'hoy', label: 'Hoy' },
@@ -259,8 +259,8 @@ export function DashboardClientView({
                   key={f.id}
                   onClick={() => setDateFilter(f.id as any)}
                   className={cn(
-                    'px-2.5 py-1 rounded-lg transition-colors cursor-pointer',
-                    dateFilter === f.id ? 'bg-amber-500 text-zinc-950 font-black' : 'text-zinc-400 hover:text-zinc-200'
+                    'px-2.5 py-1 rounded-lg transition-colors cursor-pointer min-h-[36px]',
+                    dateFilter === f.id ? 'bg-[#D31A24] text-white font-black' : 'text-zinc-400 hover:text-zinc-200'
                   )}
                 >
                   {f.label}
@@ -272,7 +272,7 @@ export function DashboardClientView({
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="px-3 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold focus:outline-none focus:border-amber-500 cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-[#14161b] border border-[#262a33] text-zinc-300 text-xs font-semibold focus:outline-none focus:border-[#D31A24] cursor-pointer min-h-[36px]"
             >
               <option value="todos">Todos los tipos</option>
               <option value="neumaticos">Neumáticos</option>
@@ -319,7 +319,7 @@ export function DashboardClientView({
                       {srv.vehicles ? (
                         <Link
                           href={`/admin/vehicles/${srv.vehicles.id}`}
-                          className="px-2.5 py-0.5 rounded-lg bg-zinc-950 border border-zinc-800 font-mono font-bold text-xs text-amber-400 hover:border-amber-500 transition-colors"
+                          className="px-2.5 py-0.5 rounded-lg bg-[#0A0B0D] border border-[#262a33] font-mono font-bold text-xs text-white hover:border-[#D31A24] transition-colors"
                         >
                           {formatPatenteDisplay(srv.vehicles.patente)}
                         </Link>
@@ -330,7 +330,7 @@ export function DashboardClientView({
                       <ServiceBadge tipo={srv.tipo} />
 
                       {srv.editado && (
-                        <span className="px-1.5 py-0.5 rounded bg-zinc-800 text-amber-400 text-[9px] font-bold flex items-center gap-1">
+                        <span className="px-1.5 py-0.5 rounded bg-zinc-800 text-red-400 text-[9px] font-bold flex items-center gap-1">
                           <FileEdit className="w-2.5 h-2.5" />
                           Editado
                         </span>
@@ -366,7 +366,7 @@ export function DashboardClientView({
                   </div>
 
                   {/* Precio y Acciones */}
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-zinc-800 shrink-0">
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-[#262a33] shrink-0">
                     <div className="text-right">
                       <span className="text-sm font-mono font-black text-zinc-100">
                         {formatCurrencyARS(effectivePrice)}
@@ -378,16 +378,16 @@ export function DashboardClientView({
                         <button
                           onClick={() => setSelectedQRVehicle(srv.vehicles)}
                           title="Ver QR del Vehículo"
-                          className="p-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors cursor-pointer"
+                          className="p-2 rounded-xl bg-zinc-800 hover:bg-zinc-750 text-zinc-300 transition-colors cursor-pointer min-h-[36px]"
                         >
-                          <QrCode className="w-3.5 h-3.5 text-amber-400" />
+                          <QrCode className="w-3.5 h-3.5 text-[#D31A24]" />
                         </button>
                       )}
 
                       <Link
                         href={`/admin/services/${srv.id}/edit`}
                         title="Editar Servicio"
-                        className="p-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors"
+                        className="p-2 rounded-xl bg-zinc-800 hover:bg-zinc-750 text-zinc-300 transition-colors min-h-[36px] flex items-center"
                       >
                         <FileEdit className="w-3.5 h-3.5" />
                       </Link>
@@ -396,7 +396,7 @@ export function DashboardClientView({
                         <button
                           onClick={() => setAnulandoServiceId(srv.id)}
                           title="Anular Servicio"
-                          className="p-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 transition-colors cursor-pointer"
+                          className="p-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 transition-colors cursor-pointer min-h-[36px]"
                         >
                           <Ban className="w-3.5 h-3.5" />
                         </button>
@@ -405,7 +405,7 @@ export function DashboardClientView({
                       {srv.vehicles && (
                         <Link
                           href={`/admin/vehicles/${srv.vehicles.id}`}
-                          className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-amber-500 hover:text-zinc-950 text-zinc-200 text-xs font-bold transition-all"
+                          className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-[#D31A24] hover:text-white text-zinc-200 text-xs font-bold transition-all min-h-[36px]"
                         >
                           <span>Historial</span>
                           <ArrowRight className="w-3.5 h-3.5" />

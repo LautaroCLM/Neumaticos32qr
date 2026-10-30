@@ -28,7 +28,7 @@ export function RevisionsHistory({ revisions }: RevisionsHistoryProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
-        <History className="w-4 h-4 text-amber-500" />
+        <History className="w-4 h-4 text-[#D31A24]" />
         <h4 className="text-xs font-black uppercase tracking-wider text-zinc-300">
           Historial de Revisiones ({revisions.length})
         </h4>
@@ -41,11 +41,11 @@ export function RevisionsHistory({ revisions }: RevisionsHistoryProps) {
           return (
             <div
               key={rev.id || index}
-              className="p-4 rounded-2xl bg-zinc-950/80 border border-zinc-800 space-y-2.5"
+              className="p-4 rounded-2xl bg-[#14161b] border border-[#262a33] space-y-2.5"
             >
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-amber-500" />
+                  <span className="w-2 h-2 rounded-full bg-[#D31A24]" />
                   <span className="font-bold text-zinc-200">
                     {isAnulacion ? 'Anulación de servicio' : 'Modificación de datos'}
                   </span>

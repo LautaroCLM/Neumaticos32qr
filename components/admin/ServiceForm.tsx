@@ -333,10 +333,10 @@ export function ServiceForm({
   return (
     <div className="relative pb-28">
       {/* Top Warning Banner */}
-      <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
-        <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+      <div className="mb-6 p-4 rounded-2xl bg-[#880e14]/20 border border-[#d31a24]/30 flex items-start gap-3">
+        <AlertTriangle className="w-5 h-5 text-[#d31a24] shrink-0 mt-0.5" />
         <div className="text-xs">
-          <p className="font-bold text-amber-400 uppercase tracking-wider">Aviso de Privacidad del Ticket Digital</p>
+          <p className="font-bold text-[#d31a24] uppercase tracking-wider">Aviso de Privacidad del Ticket Digital</p>
           <p className="text-zinc-300 mt-0.5">
             Los datos marcados con toggle de visibilidad activo serán visibles para el cliente al escanear el QR.
             Las <strong className="text-zinc-100">Notas Internas</strong> nunca se comparten públicamente.
@@ -358,7 +358,7 @@ export function ServiceForm({
           {/* Vehículo Asociado Card */}
           <div className="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center text-amber-400">
+              <div className="w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center text-[#d31a24]">
                 <Car className="w-5 h-5" />
               </div>
               <div>
@@ -368,7 +368,7 @@ export function ServiceForm({
                 </h3>
               </div>
             </div>
-            <div className="px-3 py-1 rounded-lg bg-zinc-950 border border-zinc-800 font-mono font-bold text-amber-400 text-xs">
+            <div className="px-3 py-1 rounded-lg bg-zinc-950 border border-zinc-800 font-mono font-bold text-[#d31a24] text-xs">
               {formatPatenteDisplay(vehicle.patente)}
             </div>
           </div>
@@ -377,13 +377,13 @@ export function ServiceForm({
           {templates.length > 0 && !isEditing && (
             <div className="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-2">
               <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-400" />
+                <Sparkles className="w-4 h-4 text-[#d31a24]" />
                 Cargar desde Plantilla de Servicio
               </label>
               <select
                 onChange={(e) => handleApplyTemplate(e.target.value)}
                 defaultValue=""
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-200 text-xs font-medium focus:outline-none focus:border-amber-500 cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-200 text-xs font-medium focus:outline-none focus:border-[#d31a24] cursor-pointer"
               >
                 <option value="" disabled>
                   Seleccioná una plantilla para prellenar conceptos y visibilidad...
@@ -400,7 +400,7 @@ export function ServiceForm({
           {/* Datos Principales del Trabajo */}
           <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
             <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2 border-b border-zinc-800 pb-2">
-              <Wrench className="w-4 h-4 text-amber-500" />
+              <Wrench className="w-4 h-4 text-[#d31a24]" />
               Detalles del Servicio
             </h3>
 
@@ -411,7 +411,7 @@ export function ServiceForm({
                 <select
                   value={tipo}
                   onChange={(e) => setTipo(e.target.value as any)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-bold focus:outline-none focus:border-amber-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-bold focus:outline-none focus:border-[#d31a24]"
                 >
                   <option value="neumaticos">Neumáticos</option>
                   <option value="alineacion_balanceo">Alineación y Balanceo</option>
@@ -430,7 +430,7 @@ export function ServiceForm({
                   value={fechaHora}
                   onChange={(e) => setFechaHora(e.target.value)}
                   required
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-medium focus:outline-none focus:border-amber-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-medium focus:outline-none focus:border-[#d31a24]"
                 />
               </div>
             </div>
@@ -445,7 +445,7 @@ export function ServiceForm({
                   onChange={(e) => setKilometraje(e.target.value)}
                   min="0"
                   required
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-mono font-bold focus:outline-none focus:border-amber-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-mono font-bold focus:outline-none focus:border-[#d31a24]"
                 />
               </div>
 
@@ -455,7 +455,7 @@ export function ServiceForm({
                   type="text"
                   value={sucursal}
                   onChange={(e) => setSucursal(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-amber-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
                 />
               </div>
             </div>
@@ -471,7 +471,7 @@ export function ServiceForm({
                 rows={3}
                 placeholder="Detallá el trabajo realizado (ej. Cambio de dos cubiertas delanteras 205/55R16, válvulas nuevas y balanceo computarizado)..."
                 required
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
               />
             </div>
           </div>
@@ -480,13 +480,13 @@ export function ServiceForm({
           <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
             <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
               <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2">
-                <Calculator className="w-4 h-4 text-amber-500" />
+                <Calculator className="w-4 h-4 text-[#d31a24]" />
                 Ítems y Precios
               </h3>
               <button
                 type="button"
                 onClick={handleAddItem}
-                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[11px] font-bold transition-colors cursor-pointer"
+                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#880e14]/20 hover:bg-[#880e14]/30 text-[#d31a24] border border-[#d31a24]/30 text-[11px] font-bold transition-colors cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Agregar Ítem</span>
@@ -506,7 +506,7 @@ export function ServiceForm({
                       value={item.concepto}
                       onChange={(e) => handleItemChange(idx, 'concepto', e.target.value)}
                       placeholder="Concepto / Producto / Mano de obra"
-                      className="w-full px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-amber-500"
+                      className="w-full px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
                     />
                   </div>
                   <div className="col-span-4 sm:col-span-2">
@@ -518,7 +518,7 @@ export function ServiceForm({
                       step="1"
                       title="Cantidad"
                       placeholder="Cant."
-                      className="w-full px-2 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs text-center font-mono focus:outline-none focus:border-amber-500"
+                      className="w-full px-2 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs text-center font-mono focus:outline-none focus:border-[#d31a24]"
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
@@ -530,7 +530,7 @@ export function ServiceForm({
                       step="100"
                       title="Precio Unitario"
                       placeholder="Precio Unit."
-                      className="w-full px-2.5 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs text-right font-mono focus:outline-none focus:border-amber-500"
+                      className="w-full px-2.5 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs text-right font-mono focus:outline-none focus:border-[#d31a24]"
                     />
                   </div>
                   <div className="col-span-2 sm:col-span-1 flex justify-center">
@@ -562,7 +562,7 @@ export function ServiceForm({
                   type="checkbox"
                   checked={useTotalManual}
                   onChange={(e) => setUseTotalManual(e.target.checked)}
-                  className="w-4 h-4 rounded text-amber-500 bg-zinc-900 border-zinc-700"
+                  className="w-4 h-4 rounded text-[#d31a24] bg-zinc-900 border-zinc-700"
                 />
                 <span className="text-xs font-bold text-zinc-300">
                   Sobrescribir con un Total Manual (reemplaza la suma de ítems)
@@ -578,7 +578,7 @@ export function ServiceForm({
                     placeholder="Monto total convenido ($)"
                     min="0"
                     step="100"
-                    className="w-full sm:w-64 px-3 py-2 rounded-xl bg-zinc-950 border border-amber-500/50 text-amber-400 font-mono font-bold text-sm focus:outline-none"
+                    className="w-full sm:w-64 px-3 py-2 rounded-xl bg-zinc-950 border border-[#d31a24]/50 text-[#d31a24] font-mono font-bold text-sm focus:outline-none"
                   />
                   <p className="text-[10px] text-zinc-500 mt-1">
                     Este valor final será el que figure como total del ticket.
@@ -591,7 +591,7 @@ export function ServiceForm({
           {/* Próximo Servicio Recomendado */}
           <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2 border-b border-zinc-800 pb-2">
-              <Calendar className="w-4 h-4 text-amber-500" />
+              <Calendar className="w-4 h-4 text-[#d31a24]" />
               Próximo Service Recomendado
             </h3>
 
@@ -603,7 +603,7 @@ export function ServiceForm({
                   value={proximoKm}
                   onChange={(e) => setProximoKm(e.target.value)}
                   placeholder="Ej. 60000"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-mono focus:outline-none focus:border-amber-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-mono focus:outline-none focus:border-[#d31a24]"
                 />
               </div>
 
@@ -613,7 +613,7 @@ export function ServiceForm({
                   type="date"
                   value={proximoFecha}
                   onChange={(e) => setProximoFecha(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-amber-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
                 />
               </div>
             </div>
@@ -623,7 +623,7 @@ export function ServiceForm({
           <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
             <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
               <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2">
-                <Layers className="w-4 h-4 text-amber-500" />
+                <Layers className="w-4 h-4 text-[#d31a24]" />
                 Campos Personalizados ({camposExtra.length}/10)
               </h3>
               <button
@@ -675,7 +675,7 @@ export function ServiceForm({
           {/* Notas: Internas vs Cliente */}
           <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
             <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2 border-b border-zinc-800 pb-2">
-              <FileText className="w-4 h-4 text-amber-500" />
+              <FileText className="w-4 h-4 text-[#d31a24]" />
               Observaciones y Notas
             </h3>
 
@@ -692,14 +692,14 @@ export function ServiceForm({
                 onChange={(e) => setNotasCliente(e.target.value)}
                 rows={2}
                 placeholder="Recomendaciones o aclaraciones para el cliente (ej. Revisar presión a los 1000 km)..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
               />
             </div>
 
             {/* Notas Internas (Confidenciales) */}
             <div className="pt-2 border-t border-zinc-800/80">
-              <label className="text-xs font-bold text-amber-400 flex items-center gap-1.5 mb-1">
-                <Lock className="w-3.5 h-3.5 text-amber-400" />
+              <label className="text-xs font-bold text-[#d31a24] flex items-center gap-1.5 mb-1">
+                <Lock className="w-3.5 h-3.5 text-[#d31a24]" />
                 Notas Internas (CONFIDENCIAL TALLER - Nunca viaja al cliente)
               </label>
               <textarea
@@ -707,7 +707,7 @@ export function ServiceForm({
                 onChange={(e) => setNotasInternas(e.target.value)}
                 rows={2}
                 placeholder="Anotaciones de uso exclusivo del personal (ej. Cliente pidió descuento, llanta trasera con pequeño golpe)..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-amber-500/30 text-zinc-200 text-xs focus:outline-none focus:border-amber-500 font-mono"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-[#d31a24]/30 text-zinc-200 text-xs focus:outline-none focus:border-[#d31a24] font-mono"
               />
             </div>
           </div>
@@ -715,7 +715,7 @@ export function ServiceForm({
           {/* Toggles de Visibilidad en el QR */}
           <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2 border-b border-zinc-800 pb-2">
-              <Eye className="w-4 h-4 text-amber-500" />
+              <Eye className="w-4 h-4 text-[#d31a24]" />
               Visibilidad de Campos en el Ticket Público (QR)
             </h3>
 
@@ -735,7 +735,7 @@ export function ServiceForm({
                     className={cn(
                       'flex items-center justify-between p-3 rounded-xl border text-xs font-semibold cursor-pointer transition-colors',
                       isChecked
-                        ? 'bg-zinc-950/80 border-amber-500/40 text-zinc-200'
+                        ? 'bg-zinc-950/80 border-[#d31a24]/40 text-zinc-200'
                         : 'bg-zinc-950/40 border-zinc-800/60 text-zinc-500'
                     )}
                   >
@@ -749,7 +749,7 @@ export function ServiceForm({
                           [key]: e.target.checked,
                         })
                       }
-                      className="w-4 h-4 rounded text-amber-500 bg-zinc-900 border-zinc-700 focus:ring-amber-500"
+                      className="w-4 h-4 rounded text-[#d31a24] bg-zinc-900 border-zinc-700 focus:ring-[#d31a24]"
                     />
                   </label>
                 );
@@ -759,8 +759,8 @@ export function ServiceForm({
 
           {/* Motivo de Edición (Si estamos editando) */}
           {isEditing && (
-            <div className="p-5 rounded-2xl bg-zinc-900 border border-amber-500/30 space-y-2">
-              <label className="block text-xs font-bold text-amber-400 uppercase tracking-wider">
+            <div className="p-5 rounded-2xl bg-zinc-900 border border-[#d31a24]/30 space-y-2">
+              <label className="block text-xs font-bold text-[#d31a24] uppercase tracking-wider">
                 Motivo de la Edición (Opcional, queda en auditoría inmutable)
               </label>
               <input
@@ -768,7 +768,7 @@ export function ServiceForm({
                 value={motivoEdicion}
                 onChange={(e) => setMotivoEdicion(e.target.value)}
                 placeholder="Ej. Corrección de kilometraje cargado por error..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
               />
             </div>
           )}
@@ -799,7 +799,7 @@ export function ServiceForm({
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-lg shadow-amber-500/20 transition-all cursor-pointer disabled:opacity-50"
+                className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-[#d31a24] hover:bg-[#e52530] text-white shadow-lg shadow-[#d31a24]/20 transition-all cursor-pointer disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
                 <span>{loading ? 'Guardando...' : isEditing ? 'Guardar Cambios' : 'Registrar Servicio'}</span>
@@ -811,7 +811,7 @@ export function ServiceForm({
         {/* Live Preview Column (Desktop) */}
         <div className="hidden lg:block lg:col-span-5 sticky top-24 space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-zinc-800">
-            <h4 className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+            <h4 className="text-xs font-black uppercase tracking-wider text-[#d31a24] flex items-center gap-1.5">
               <Eye className="w-4 h-4" />
               Vista Previa en Vivo del Ticket
             </h4>
@@ -829,7 +829,7 @@ export function ServiceForm({
             <p className="font-bold text-zinc-300">Resumen para el taller:</p>
             <div className="flex justify-between">
               <span>Total a cobrar:</span>
-              <span className="font-mono font-bold text-amber-400">{formatCurrencyARS(effectiveTotal)}</span>
+              <span className="font-mono font-bold text-[#d31a24]">{formatCurrencyARS(effectiveTotal)}</span>
             </div>
             <div className="flex justify-between">
               <span>Visible al cliente:</span>
@@ -843,7 +843,7 @@ export function ServiceForm({
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800 p-3 flex items-center justify-between gap-2 shadow-2xl">
         <div>
           <span className="text-[10px] text-zinc-400 uppercase font-bold block">Total Calculado</span>
-          <span className="text-sm font-mono font-black text-amber-400">
+          <span className="text-sm font-mono font-black text-[#d31a24]">
             {formatCurrencyARS(effectiveTotal)}
           </span>
         </div>
@@ -854,14 +854,14 @@ export function ServiceForm({
             onClick={() => setShowPreviewModal(true)}
             className="flex items-center gap-1 px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-bold text-zinc-200 cursor-pointer"
           >
-            <Eye className="w-4 h-4 text-amber-400" />
+            <Eye className="w-4 h-4 text-[#d31a24]" />
             <span>Previsualizar</span>
           </button>
           <button
             type="button"
             onClick={handleSubmit}
             disabled={loading}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-amber-500 text-zinc-950 text-xs font-black uppercase tracking-wider shadow-lg shadow-amber-500/20 cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#d31a24] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-[#d31a24]/20 cursor-pointer disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
             <span>{loading ? 'Guardando...' : 'Guardar'}</span>
