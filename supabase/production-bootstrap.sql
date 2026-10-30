@@ -38,10 +38,10 @@ INSERT INTO public.shops (
     '/logo.webp',
     '#D31A24',
     '#0A0B0D',
-    '',
-    '',
-    '',
-    '',
+    'COMPLETAR EN CONFIGURACIÓN',
+    'COMPLETAR EN CONFIGURACIÓN',
+    'COMPLETAR EN CONFIGURACIÓN',
+    'COMPLETAR EN CONFIGURACIÓN',
     FALSE,
     '{
         "titulo_ticket": "Último Servicio Realizado",
@@ -80,7 +80,7 @@ INSERT INTO public.service_templates (
     'alineacion_balanceo',
     'Control y calibración de convergencia, comba y avance con alineadora 3D láser. Balanceo en tren delantero y trasero.',
     '[{"concepto": "Alineación láser 3D", "cantidad": 1, "precio_unitario": 0}, {"concepto": "Balanceo por rueda", "cantidad": 4, "precio_unitario": 0}]'::jsonb,
-    '[{"titulo": "Estado Tren Delantero", "valor": "Correcto"}]'::jsonb,
+    '[{"titulo": "Estado Tren Delantero", "valor": ""}]'::jsonb,
     '{"mostrar_km": true, "mostrar_productos": true, "mostrar_precio": true, "mostrar_proximo_servicio": true, "mostrar_sucursal": true, "mostrar_notas": false}'::jsonb,
     TRUE
 ),
@@ -90,7 +90,7 @@ INSERT INTO public.service_templates (
     'neumaticos',
     'Desmonte de cubierta, inspección interna de carcasa, vulcanizado/parche en frío y calibración de inflado con nitrógeno.',
     '[{"concepto": "Parche en frío / Reparación", "cantidad": 1, "precio_unitario": 0}]'::jsonb,
-    '[{"titulo": "Ubicación de Rueda", "valor": "Delantera Derecha"}]'::jsonb,
+    '[{"titulo": "Ubicación de Rueda", "valor": ""}]'::jsonb,
     '{"mostrar_km": true, "mostrar_productos": true, "mostrar_precio": true, "mostrar_proximo_servicio": false, "mostrar_sucursal": true, "mostrar_notas": false}'::jsonb,
     TRUE
 ),

@@ -1,14 +1,23 @@
 import { notFound } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { createClient } from '@/lib/supabase/server';
 import { formatPatenteDisplay } from '@/lib/utils/formatters';
 import { TicketCard } from '@/components/public/TicketCard';
-import { HistoryList } from '@/components/public/HistoryList';
-import { ShareButton } from '@/components/public/ShareButton';
 import { WhatsAppButton } from '@/components/public/WhatsAppButton';
 import { ShieldCheck, MapPin, Clock, AlertTriangle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import type { PublicVehicleTicketResult, ServiceRecord } from '@/lib/types/database';
+
+const ShareButton = dynamic(
+  () => import('@/components/public/ShareButton').then((mod) => mod.ShareButton),
+  { ssr: true }
+);
+
+const HistoryList = dynamic(
+  () => import('@/components/public/HistoryList').then((mod) => mod.HistoryList),
+  { ssr: true }
+);
 
 interface PageProps {
   params: Promise<{ token: string }>;
@@ -106,7 +115,7 @@ export default async function VehicleTicketPage({ params }: PageProps) {
   const pastServices = services.slice(1) as ServiceRecord[];
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
+    <div className="space-y-6">
       {/* Cabecera del Vehículo */}
       <div className="p-5 rounded-2xl bg-[#14161b] border border-[#262a33] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
         <div className="space-y-1">

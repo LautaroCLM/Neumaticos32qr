@@ -27,6 +27,11 @@ async function runAdminPanelIntegrationTests() {
   const env = loadEnvLocal();
   Object.assign(process.env, env);
   const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:55321';
+
+  if (!supabaseUrl.includes('127.0.0.1') && !supabaseUrl.includes('localhost')) {
+    console.error('⛔ ABORTADO POR SEGURIDAD: Los tests solo pueden ejecutarse contra una base de datos local (127.0.0.1 o localhost).');
+    process.exit(1);
+  }
   const anonKey = env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
   const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY!;
 

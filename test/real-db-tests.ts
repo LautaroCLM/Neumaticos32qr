@@ -62,6 +62,11 @@ async function runRealDatabaseTests() {
     process.exit(1);
   }
 
+  if (!supabaseUrl.includes('127.0.0.1') && !supabaseUrl.includes('localhost')) {
+    console.error('⛔ ABORTADO POR SEGURIDAD: Los tests solo pueden ejecutarse contra una base de datos local (127.0.0.1 o localhost).');
+    process.exit(1);
+  }
+
   console.log(`Conectando a base de datos real: ${supabaseUrl}...`);
   const adminClient = createClient(supabaseUrl, serviceRoleKey);
   const anonClient = createClient(supabaseUrl, anonKey);

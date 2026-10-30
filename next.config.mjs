@@ -1,6 +1,41 @@
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+let supabaseOrigin = '';
+let supabaseWsOrigin = '';
+
+if (supabaseUrl) {
+  try {
+    const parsed = new URL(supabaseUrl);
+    supabaseOrigin = parsed.origin;
+    const wsProto = parsed.protocol === 'https:' ? 'wss:' : 'ws:';
+    supabaseWsOrigin = `${wsProto}//${parsed.host}`;
+  } catch {
+    // Ignorar error de parsing en build time si no está definida
+  }
+}
+
+const connectSources = [
+  "'self'",
+  supabaseOrigin,
+  supabaseWsOrigin,
+  // En desarrollo o pruebas locales se admiten localhost y 127.0.0.1
+  process.env.NODE_ENV !== 'production' ? 'http://127.0.0.1:* http://localhost:* ws://127.0.0.1:* ws://localhost:*' : '',
+]
+  .filter(Boolean)
+  .join(' ');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  compress: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
+  },
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
   async headers() {
     return [
       {
@@ -15,10 +50,12 @@ const nextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob: https:",
+              `img-src 'self' data: blob: ${supabaseOrigin} https:`.trim(),
               "font-src 'self' data:",
-              "connect-src 'self' https: http://127.0.0.1:* http://localhost:* ws://127.0.0.1:* ws://localhost:*",
+              `connect-src ${connectSources}`,
               "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
             ].join('; '),
           },
         ],

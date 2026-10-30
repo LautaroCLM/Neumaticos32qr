@@ -25,7 +25,13 @@ Vinculá el repositorio local al proyecto remoto de producción utilizando su Re
 npx supabase link --project-ref <tu-project-ref>
 ```
 
-### 1.2. Aplicación de Migraciones
+### 1.2. Activación de Extensiones y Aplicación de Migraciones
+1. **Activar pg_cron en el Dashboard de Supabase:**
+   - Antes de empujar las migraciones, ingresá a Supabase Dashboard -> **Database** -> **Extensions**.
+   - Buscá `pg_cron` y asegurate de activarla (toggle en ON).
+   - *Nota:* Si tu proyecto aún no la tiene activa, la migración de cron está diseñada con detección tolerante (`DO $$ ... $$`) para continuar sin romper el despliegue.
+
+2. **Empujar Migraciones:**
 Empujá todas las migraciones de forma atómica y ordenada a la base remota:
 ```bash
 npx supabase db push
@@ -187,9 +193,9 @@ Los proyectos gratuitos de Supabase que no reciben tráfico durante 7 días entr
 
 #### Opción A (Recomendada): Tarea Cron Externa Gratuita
 Configurá un ping HTTP semanal utilizando cualquier servicio gratuito de monitoreo (como [Cron-Job.org](https://cron-job.org/), [UptimeRobot](https://uptimerobot.com/) o [Better Stack](https://betterstack.com/)):
-- **URL a monitorear:** `https://<tu-app-en-vercel>/api/search-plate?plate=AE123CD`
+- **URL a monitorear:** `https://<tu-app-en-vercel>/api/health`
 - **Frecuencia:** Cada 3 días (o cada lunes a las 09:00 hs).
-- Esta simple petición despierta la función Serverless y ejecuta una consulta ligera en Supabase, garantizando que el proyecto permanezca siempre 100% activo.
+- Esta petición GET invoca `/api/health`, que realiza una verificación trivial en la base de datos de Supabase sin registrar intentos de rate limit ni exponer datos del taller, garantizando que el proyecto permanezca siempre 100% activo.
 
 #### Opción B: Script en GitHub Actions
 Podés crear un flujo programado en `.github/workflows/keep-alive.yml`:
@@ -204,8 +210,8 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Public Endpoint
-        run: curl -sSf "https://${{ secrets.PROD_SITE_URL }}/api/search-plate?plate=AE123CD" > /dev/null
+      - name: Ping Health Endpoint
+        run: curl -sSf "https://${{ secrets.PROD_SITE_URL }}/api/health" > /dev/null
 ```
 
 ### 5.2. Políticas de Copias de Respaldo (Backups)

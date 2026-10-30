@@ -48,6 +48,11 @@ async function runSearchPlateApiTests() {
   const { POST } = await import('../app/api/search-plate/route');
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:55321';
+
+  if (!supabaseUrl.includes('127.0.0.1') && !supabaseUrl.includes('localhost')) {
+    console.error('⛔ ABORTADO POR SEGURIDAD: Los tests solo pueden ejecutarse contra una base de datos local (127.0.0.1 o localhost).');
+    process.exit(1);
+  }
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
   const adminClient = createClient(supabaseUrl, serviceRoleKey);
 

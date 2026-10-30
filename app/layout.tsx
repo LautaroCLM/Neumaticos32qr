@@ -1,6 +1,12 @@
 import type { Metadata, Viewport } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
-import '@/lib/env';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+});
 
 export const metadata: Metadata = {
   title: 'Neumáticos el 32 | Historial de Mantenimientos y Tickets Digitales',
@@ -24,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="dark">
+    <html lang="es" className={`dark ${inter.variable}`}>
       <body className="bg-[#0a0b0d] text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-[#d31a24] selection:text-white font-sans">
         {children}
       </body>

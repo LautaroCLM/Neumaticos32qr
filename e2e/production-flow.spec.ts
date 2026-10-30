@@ -2,6 +2,12 @@ import { test, expect } from '@playwright/test';
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:53321';
+
+if (!SUPABASE_URL.includes('127.0.0.1') && !SUPABASE_URL.includes('localhost')) {
+  throw new Error(
+    '⛔ ABORTADO POR SEGURIDAD: Playwright solo puede ejecutarse contra una base de datos local (127.0.0.1 o localhost).'
+  );
+}
 const ANON_KEY =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRvAdvDIRTxPOu_tXpedb_dd_mptszFcz1OC4mxhn4U';
