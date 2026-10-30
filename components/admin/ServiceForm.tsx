@@ -849,6 +849,17 @@ export function ServiceForm({
         </div>
 
         <div className="flex items-center gap-2">
+          {isEditing && currentUserRole === 'admin' && (
+            <button
+              type="button"
+              onClick={() => setShowAnularModal(true)}
+              className="flex items-center gap-1 px-3 py-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs font-bold text-red-400 cursor-pointer"
+              title="Anular Servicio"
+            >
+              <Ban className="w-4 h-4" />
+              <span>Anular</span>
+            </button>
+          )}
           <button
             type="button"
             onClick={() => setShowPreviewModal(true)}
@@ -864,7 +875,7 @@ export function ServiceForm({
             className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#d31a24] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-[#d31a24]/20 cursor-pointer disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
-            <span>{loading ? 'Guardando...' : 'Guardar'}</span>
+            <span>{loading ? 'Guardando...' : isEditing ? 'Guardar Cambios' : 'Registrar Servicio'}</span>
           </button>
         </div>
       </div>
