@@ -94,6 +94,23 @@ npx tsx test/unit-test.ts
 npx tsx test/ticket-customization.test.ts
 
 # 3. Pruebas contra Base de Datos Real (PostgreSQL / Supabase en Vivo)
-# Requiere configurar claves válidas en .env.local y haber corrido las migraciones:
+# Requiere base de datos activa y migraciones aplicadas:
 npx tsx test/real-db-tests.ts
+
+# 4. Pruebas de Seguridad y Rate Limiting en API de Patentes
+npx tsx test/search-plate-api.test.ts
+
+# 5. Pruebas del Panel del Taller y Roles (Admin vs Operario, auditoría)
+npx tsx test/admin-panel.test.ts
+
+# 6. Pruebas End-to-End Completas con Playwright (Flujo Cliente, Taller, Roles y Enlaces)
+npx playwright test
 ```
+
+---
+
+## 📖 Despliegue a Producción y Manual Operativo
+
+Para la guía paso a paso de salida a producción (Supabase + Vercel), checklist de pre-lanzamiento, manual de uso para operarios y mitigación de pausas en free-tier, consultá:
+👉 **[DEPLOYMENT.md](DEPLOYMENT.md)**
+
