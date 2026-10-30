@@ -68,6 +68,8 @@ export function PlateSearchForm() {
 
             <input
               type="text"
+              id="patente-input"
+              aria-label="Número de patente del vehículo"
               value={patenteInput}
               onChange={handleInputChange}
               placeholder="EJ: AE 123 CD ó ABC 123"

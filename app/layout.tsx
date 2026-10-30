@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import '@/lib/env';
 
 export const metadata: Metadata = {
   title: 'Neumáticos el 32 | Historial de Mantenimientos y Tickets Digitales',

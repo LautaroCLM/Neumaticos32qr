@@ -67,6 +67,10 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // Cabeceras de seguridad estrictas para el panel de administración
+  supabaseResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  supabaseResponse.headers.set('X-Robots-Tag', 'noindex, nofollow');
+
   return supabaseResponse;
 }
 

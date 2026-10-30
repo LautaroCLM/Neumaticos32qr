@@ -19,6 +19,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `Ticket Digital de Servicio | Neumáticos el 32`,
     description: `Consultá el ticket de mantenimiento e historial completo para este vehículo en Neumáticos el 32.`,
+    robots: {
+      index: false,
+      follow: false,
+      nocache: true,
+      noarchive: true,
+    },
   };
 }
 
@@ -26,7 +32,26 @@ export default async function VehicleTicketPage({ params }: PageProps) {
   const { token } = await params;
 
   if (!token || token.length < 16) {
-    notFound();
+    return (
+      <div className="py-12 px-4 text-center space-y-4 max-w-md mx-auto animate-in fade-in">
+        <div className="w-14 h-14 mx-auto rounded-2xl bg-red-950/40 border border-red-500/40 flex items-center justify-center text-[#d31a24]">
+          <AlertTriangle className="w-7 h-7" />
+        </div>
+        <h1 className="text-xl font-bold text-white">Formato de Enlace Inválido</h1>
+        <p className="text-sm text-[#8b929e] leading-relaxed">
+          El identificador del enlace no tiene el largo requerido. Asegurate de escanear el código QR completo provisto por el taller.
+        </p>
+        <div className="pt-2">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#14161b] hover:bg-[#1c1f26] border border-[#262a33] text-white text-sm font-semibold transition-colors min-h-[44px]"
+          >
+            <ArrowLeft className="w-4 h-4 text-[#d31a24]" />
+            <span>Volver a buscar por patente</span>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   // Llamar a get_vehicle_by_token
@@ -38,17 +63,31 @@ export default async function VehicleTicketPage({ params }: PageProps) {
   const ticketData = data as PublicVehicleTicketResult | null;
 
   if (error || !ticketData || !ticketData.success || !ticketData.vehicle) {
+    const isNetworkError = Boolean(error);
+    const errorMessage = ticketData?.error || '';
+    const isRevoked = errorMessage.toLowerCase().includes('revocado');
+
+    let title = 'Enlace Inexistente';
+    let description =
+      'El código ingresado no corresponde a ningún vehículo registrado en el taller. Verificá que la dirección o el código QR sea el correcto.';
+
+    if (isNetworkError) {
+      title = 'Error de Conexión';
+      description =
+        'No se pudo conectar con el servidor para consultar el ticket. Verificá tu conexión a internet e intentá nuevamente.';
+    } else if (isRevoked) {
+      title = 'Acceso Revocado por el Taller';
+      description =
+        'El código QR o enlace ingresado fue revocado por el personal tras la emisión de un nuevo código para el vehículo. Solicitá el sticker actualizado en el taller.';
+    }
+
     return (
       <div className="py-12 px-4 text-center space-y-4 max-w-md mx-auto animate-in fade-in">
         <div className="w-14 h-14 mx-auto rounded-2xl bg-red-950/40 border border-red-500/40 flex items-center justify-center text-[#d31a24]">
           <AlertTriangle className="w-7 h-7" />
         </div>
-        <h1 className="text-xl font-bold text-white">
-          Enlace no disponible o revocado
-        </h1>
-        <p className="text-sm text-[#8b929e] leading-relaxed">
-          El código QR o enlace ingresado no existe, fue revocado por el taller tras una reemisión, o el vehículo fue dado de baja.
-        </p>
+        <h1 className="text-xl font-bold text-white">{title}</h1>
+        <p className="text-sm text-[#8b929e] leading-relaxed">{description}</p>
         <div className="pt-2">
           <Link
             href="/"

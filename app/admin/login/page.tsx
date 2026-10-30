@@ -58,12 +58,13 @@ export default function AdminLoginPage() {
 
         <form action={formAction} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-[#c8cdd5] uppercase tracking-wider mb-1.5">
+            <label htmlFor="login-email" className="block text-xs font-bold text-[#c8cdd5] uppercase tracking-wider mb-1.5">
               Correo Electrónico
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
+                id="login-email"
                 type="email"
                 name="email"
                 required
@@ -74,12 +75,13 @@ export default function AdminLoginPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#c8cdd5] uppercase tracking-wider mb-1.5">
+            <label htmlFor="login-password" className="block text-xs font-bold text-[#c8cdd5] uppercase tracking-wider mb-1.5">
               Contraseña
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
+                id="login-password"
                 type={showPassword ? 'text' : 'password'}
                 name="password"
                 required

@@ -1,6 +1,13 @@
 import Image from 'next/image';
 import { PlateSearchForm } from '@/components/public/PlateSearchForm';
 import { QrCode, ShieldCheck } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Neumáticos el 32 | Historial de Mantenimientos y Tickets Digitales',
+  description:
+    'Consultá el historial digital y servicios de tu vehículo en Neumáticos el 32 Quilmes. Búsqueda por patente y comprobantes de mantenimiento.',
+};
 
 export default function HomePage() {
   return (
