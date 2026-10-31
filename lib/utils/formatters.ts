@@ -81,16 +81,21 @@ export function formatDateBA(
     }).format(date);
   }
 
-  const formatter = new Intl.DateTimeFormat('es-AR', {
+  // Se arma a mano porque el servidor y el navegador unen fecha y hora distinto (", " o " a las "),
+  // y esa diferencia rompe la hidratación de React.
+  const parts = new Intl.DateTimeFormat('es-AR', {
     timeZone: ARGENTINA_TIMEZONE,
     day: 'numeric',
     month: 'long',
     year: 'numeric',
-    ...(options?.includeTime ? { hour: '2-digit', minute: '2-digit', hour12: false } : {}),
-  });
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(date);
+  const get = (type: string) => parts.find((p) => p.type === type)?.value;
 
-  const formatted = formatter.format(date);
-  return options?.includeTime ? `${formatted} hs` : formatted;
+  const formatted = `${get('day')} de ${get('month')} de ${get('year')}`;
+  return options?.includeTime ? `${formatted}, ${get('hour')}:${get('minute')} hs` : formatted;
 }
 
 /**
@@ -139,6 +144,54 @@ export function getWhatsAppDigits(value?: string | null): string | null {
   if (isConfigPlaceholder(value)) return null;
   const digits = value!.replace(/\D/g, '');
   return digits.length >= 8 && digits.length <= 15 ? digits : null;
+}
+
+/**
+ * Normaliza un teléfono al formato internacional en dígitos que usa WhatsApp.
+ * Los números argentinos se completan con 549 y pierden el 0 y el 15.
+ * Ej: '011 15 3456-7890' -> '5491134567890'. Devuelve null si no es un número válido.
+ */
+export function normalizePhone(value: string): string | null {
+  const trimmed = value.trim();
+  let digits = trimmed.replace(/\D/g, '');
+
+  // Número con prefijo internacional de otro país: se conserva tal cual
+  if (trimmed.startsWith('+') && !digits.startsWith('54')) {
+    return digits.length >= 8 && digits.length <= 15 ? digits : null;
+  }
+
+  digits = digits.replace(/^54/, '').replace(/^9/, '').replace(/^0/, '');
+
+  if (digits.length === 12) {
+    // El 15 va después del código de área, que tiene de 2 a 4 dígitos
+    for (const areaLength of [2, 3, 4]) {
+      if (digits.slice(areaLength, areaLength + 2) === '15') {
+        digits = digits.slice(0, areaLength) + digits.slice(areaLength + 2);
+        break;
+      }
+    }
+  }
+
+  return digits.length === 10 ? `549${digits}` : null;
+}
+
+/**
+ * Formatea un teléfono normalizado para mostrarlo: '5491134567890' -> '+54 9 11 3456-7890'
+ */
+export function formatPhoneDisplay(phone: string | null | undefined): string {
+  if (!phone) return '—';
+  if (/^549\d{10}$/.test(phone)) {
+    const national = phone.slice(3);
+    return `+54 9 ${national.slice(0, 2)} ${national.slice(2, 6)}-${national.slice(6)}`;
+  }
+  return `+${phone}`;
+}
+
+/**
+ * Formatea el número de ticket: 12 -> 'N.º 000012'
+ */
+export function formatTicketNumber(numero: number): string {
+  return `N.º ${String(numero).padStart(6, '0')}`;
 }
 
 /**

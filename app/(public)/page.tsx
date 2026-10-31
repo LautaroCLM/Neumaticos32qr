@@ -31,7 +31,7 @@ export default function HomePage() {
             Historial de Servicios
           </h1>
           <p className="text-xs sm:text-sm text-[#c8cdd5] max-w-sm mx-auto leading-relaxed">
-            Ingresá tu patente para ver el último service y la fecha del próximo control en el taller.
+            Ingresá tu patente para ver los trabajos realizados, los costos y el próximo control de tu vehículo.
           </p>
         </div>
       </div>
@@ -60,7 +60,7 @@ export default function HomePage() {
             ¿Tenés el sticker de tu vehículo?
           </p>
           <p className="leading-relaxed">
-            Escaneá el código QR con la cámara de tu celular para ver el <strong>ticket completo</strong> con detalle de repuestos colocados, comprobante de alineación y precios abonados.
+            Escaneá el código QR con la cámara de tu celular y entrás directo a tu historial, sin escribir ningún dato.
           </p>
         </div>
       </div>

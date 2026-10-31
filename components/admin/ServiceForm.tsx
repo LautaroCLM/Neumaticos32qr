@@ -128,6 +128,7 @@ export function ServiceForm({
     mostrar_proximo_servicio: initialService?.visibilidad?.mostrar_proximo_servicio ?? true,
     mostrar_sucursal: initialService?.visibilidad?.mostrar_sucursal ?? true,
     mostrar_notas: initialService?.visibilidad?.mostrar_notas ?? false,
+    mostrar_campos_extra: initialService?.visibilidad?.mostrar_campos_extra ?? true,
   });
 
   // Edit / Anular reason
@@ -164,14 +165,14 @@ export function ServiceForm({
       descripcion: descripcion || 'Descripción del trabajo realizado',
       productos: null,
       precio: visibilidad.mostrar_precio ? effectiveTotal : null,
-      items: visibilidad.mostrar_precio ? items : [],
+      items: visibilidad.mostrar_productos ? items : [],
       total_manual: visibilidad.mostrar_precio && useTotalManual ? Number(totalManual) || 0 : null,
       proximo_servicio_km: visibilidad.mostrar_proximo_servicio && proximoKm ? Number(proximoKm) : null,
       proximo_servicio_fecha: visibilidad.mostrar_proximo_servicio && proximoFecha ? proximoFecha : null,
       sucursal: visibilidad.mostrar_sucursal ? sucursal : null,
       notas_cliente: visibilidad.mostrar_notas && notasCliente ? notasCliente : null,
       notas_internas: null, // Strictly excluded
-      campos_extra: camposExtra,
+      campos_extra: visibilidad.mostrar_campos_extra ? camposExtra : [],
       visibilidad,
       anulado: false,
       editado: isEditing,
@@ -735,6 +736,7 @@ export function ServiceForm({
                 { key: 'mostrar_proximo_servicio', label: 'Mostrar Próximo Control' },
                 { key: 'mostrar_sucursal', label: 'Mostrar Sucursal' },
                 { key: 'mostrar_notas', label: 'Mostrar Notas al Cliente' },
+                { key: 'mostrar_campos_extra', label: 'Mostrar Campos Personalizados' },
               ].map(({ key, label }) => {
                 const isChecked = (visibilidad as any)[key];
                 return (

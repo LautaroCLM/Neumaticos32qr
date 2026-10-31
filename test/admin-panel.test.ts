@@ -26,7 +26,7 @@ async function runAdminPanelIntegrationTests() {
 
   const env = loadEnvLocal();
   Object.assign(process.env, env);
-  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:55321';
+  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:53321';
 
   if (!supabaseUrl.includes('127.0.0.1') && !supabaseUrl.includes('localhost')) {
     console.error('⛔ ABORTADO POR SEGURIDAD: Los tests solo pueden ejecutarse contra una base de datos local (127.0.0.1 o localhost).');
@@ -103,7 +103,6 @@ async function runAdminPanelIntegrationTests() {
         marca: 'Toyota',
         modelo: 'Hilux',
         anio: 2024,
-        cliente_nombre: 'Prueba Operario',
       })
       .select('id, public_token, patente')
       .single();
@@ -146,7 +145,6 @@ async function runAdminPanelIntegrationTests() {
         marca: 'Ford',
         modelo: 'Ranger',
         anio: 2023,
-        cliente_nombre: 'Intento Inyección Token',
         public_token: maliciousToken,
       })
       .select('id, public_token, patente')
@@ -176,6 +174,7 @@ async function runAdminPanelIntegrationTests() {
       .insert({
         vehicle_id: testVehicleId,
         shop_id: shopId,
+        created_by: operarioUserId,
         kilometraje: 15000,
         tipo: 'neumaticos',
         descripcion: 'Colocación 2 neumáticos 265/65 R17',

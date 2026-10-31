@@ -46,8 +46,6 @@ INSERT INTO public.vehicles (
     marca,
     modelo,
     anio,
-    cliente_nombre,
-    cliente_telefono,
     ocultar_precios
 ) VALUES (
     '11111111-1111-4111-a111-111111111111',
@@ -57,8 +55,6 @@ INSERT INTO public.vehicles (
     'Volkswagen',
     'Amarok 2.0 TDI Highline 4x4 (Demo)',
     2022,
-    'Martín Gómez (Ficticio)',
-    '11 5566-7788',
     NULL
 ) ON CONFLICT (id) DO NOTHING;
 
@@ -71,8 +67,6 @@ INSERT INTO public.vehicles (
     marca,
     modelo,
     anio,
-    cliente_nombre,
-    cliente_telefono,
     ocultar_precios
 ) VALUES (
     '22222222-2222-4222-a222-222222222222',
@@ -82,8 +76,6 @@ INSERT INTO public.vehicles (
     'Toyota',
     'Hilux 2.8 SRV 4x2 (Demo)',
     2019,
-    'Claudio Fernández (Ficticio)',
-    '11 4433-2211',
     NULL
 ) ON CONFLICT (id) DO NOTHING;
 
@@ -100,6 +92,23 @@ SET public_token = 'demo-token-hilux-ac456xy-el32'
 WHERE id = '22222222-2222-4222-a222-222222222222';
 
 SELECT set_config('app.allow_token_mutation', 'off', true);
+
+-- Clientes ficticios y propietarios actuales
+INSERT INTO public.customers (id, shop_id, nombre, telefono) VALUES
+    ('c1111111-1111-4111-a111-111111111111', '00000000-0000-0000-0000-000000000001', 'Martín Gómez (Ficticio)', '5491155667788'),
+    ('c2222222-2222-4222-a222-222222222222', '00000000-0000-0000-0000-000000000001', 'Claudio Fernández (Ficticio)', '5491144332211')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO public.vehicle_owners (shop_id, vehicle_id, customer_id)
+SELECT o.shop_id::uuid, o.vehicle_id::uuid, o.customer_id::uuid
+FROM (VALUES
+    ('00000000-0000-0000-0000-000000000001', '11111111-1111-4111-a111-111111111111', 'c1111111-1111-4111-a111-111111111111'),
+    ('00000000-0000-0000-0000-000000000001', '22222222-2222-4222-a222-222222222222', 'c2222222-2222-4222-a222-222222222222')
+) AS o(shop_id, vehicle_id, customer_id)
+WHERE NOT EXISTS (
+    SELECT 1 FROM public.vehicle_owners actual
+    WHERE actual.vehicle_id = o.vehicle_id::uuid AND actual.hasta IS NULL
+);
 
 -- 3. Historial de Servicios de Demostración para Vehículo 1 (Amarok AE123CD)
 INSERT INTO public.services (

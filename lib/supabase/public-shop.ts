@@ -1,22 +1,27 @@
 import 'server-only';
 import { unstable_cache } from 'next/cache';
-import { createAdminClient } from './admin';
+import { createClient } from '@supabase/supabase-js';
+import { env } from '@/lib/env';
 
 export const PUBLIC_SHOP_CACHE_TAG = 'public-shop';
 
-// shops no es legible por anon (RLS): se consulta en servidor y solo se piden los datos de contacto públicos.
+interface PublicShop {
+  nombre: string;
+  whatsapp: string | null;
+  direccion: string | null;
+  horarios: string | null;
+}
+
+// Sin cookies: unstable_cache no las admite y estos datos son iguales para todos los visitantes.
 const fetchPublicShop = unstable_cache(
   async () => {
-    const { data, error } = await createAdminClient()
-      .from('shops')
-      .select('nombre, whatsapp, direccion, horarios')
-      .is('deleted_at', null)
-      .order('created_at', { ascending: true })
-      .limit(1)
-      .maybeSingle();
+    const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+    const { data, error } = await supabase.rpc('get_public_shop');
 
     if (error) throw error;
-    return data;
+    return data as PublicShop | null;
   },
   [PUBLIC_SHOP_CACHE_TAG],
   { tags: [PUBLIC_SHOP_CACHE_TAG], revalidate: 300 }

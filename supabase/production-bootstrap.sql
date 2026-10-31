@@ -49,9 +49,7 @@ INSERT INTO public.shops (
         "etiqueta_proximo_service": "Próximo control recomendado",
         "colores_personalizados": {}
     }'::jsonb
-) ON CONFLICT (id) DO UPDATE 
-SET nombre = EXCLUDED.nombre,
-    ticket_config = EXCLUDED.ticket_config;
+) ON CONFLICT (id) DO NOTHING;
 
 -- 2. Plantillas de Servicios Estándar (Activas)
 INSERT INTO public.service_templates (
@@ -114,4 +112,4 @@ INSERT INTO public.service_templates (
     '{"mostrar_km": true, "mostrar_productos": true, "mostrar_precio": true, "mostrar_proximo_servicio": true, "mostrar_sucursal": true, "mostrar_notas": false}'::jsonb,
     TRUE
 )
-ON CONFLICT DO NOTHING;
+ON CONFLICT (shop_id, nombre) DO NOTHING;

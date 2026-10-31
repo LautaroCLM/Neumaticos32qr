@@ -12,7 +12,7 @@ export async function GET() {
   try {
     const supabase = await createClient();
     // Consulta trivial para verificar conectividad con la base de datos sin extraer datos sensibles
-    const { error } = await supabase.from('shops').select('id').limit(1);
+    const { error } = await supabase.rpc('get_public_shop');
 
     if (error) {
       return NextResponse.json(

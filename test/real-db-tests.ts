@@ -157,6 +157,7 @@ async function runRealDatabaseTests() {
     console.log('[TEST 1/11] Verificando que operario NO pueda hacer UPDATE directo sobre services...');
     // Crear un servicio inicial válido
     const { data: srvData, error: srvErr } = await operarioClient.from('services').insert({
+      created_by: operarioUserId,
       vehicle_id: vehicleId,
       shop_id: shopId,
       kilometraje: 50000,
@@ -228,6 +229,7 @@ async function runRealDatabaseTests() {
     // --------------------------------------------------------------------------
     console.log('\n[TEST 4/11] Verificando que Admin SÍ puede anular servicio...');
     const { data: srvAnular } = await operarioClient.from('services').insert({
+      created_by: operarioUserId,
       vehicle_id: vehicleId,
       shop_id: shopId,
       kilometraje: 51000,
@@ -301,6 +303,7 @@ async function runRealDatabaseTests() {
     // --------------------------------------------------------------------------
     console.log('\n[TEST 7/11] Verificando que ítems negativos sean rechazados en INSERT directo...');
     const { error: negItemErr } = await operarioClient.from('services').insert({
+      created_by: operarioUserId,
       vehicle_id: vehicleId,
       shop_id: shopId,
       kilometraje: 52000,
@@ -320,6 +323,7 @@ async function runRealDatabaseTests() {
     // --------------------------------------------------------------------------
     console.log('\n[TEST 8/11] Verificando que precio enviado por el cliente sea IGNORADO...');
     const { data: srvPriceIgnored, error: priceIgnoredErr } = await operarioClient.from('services').insert({
+      created_by: operarioUserId,
       vehicle_id: vehicleId,
       shop_id: shopId,
       kilometraje: 53000,
@@ -343,6 +347,7 @@ async function runRealDatabaseTests() {
     // --------------------------------------------------------------------------
     console.log('\n[TEST 9/11] Verificando que visibilidad con valor no booleano sea rechazada por CHECK...');
     const { error: nonBoolVisErr } = await operarioClient.from('services').insert({
+      created_by: operarioUserId,
       vehicle_id: vehicleId,
       shop_id: shopId,
       kilometraje: 54000,

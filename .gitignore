@@ -25,11 +25,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Local environment files (NEVER commit secrets or service_role keys)
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*
+!.env.example
 *.local
 
 # Vercel
@@ -37,6 +34,7 @@ yarn-error.log*
 
 # Supabase Local
 supabase/.temp/
+supabase/.branches/
 .temp/
 
 # TypeScript

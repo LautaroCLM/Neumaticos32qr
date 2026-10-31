@@ -78,6 +78,14 @@ export async function updateServiceAction(
   values: Partial<ServiceFormValues>,
   motivo?: string
 ) {
+  const validation = serviceFormSchema.partial().safeParse(values);
+  if (!validation.success) {
+    return {
+      success: false,
+      error: validation.error.issues[0]?.message || 'Datos del servicio inválidos',
+    };
+  }
+
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
@@ -98,7 +106,7 @@ export async function updateServiceAction(
   // Llamada a la función con auditoría inmutable
   const { data, error } = await supabase.rpc('update_service_with_audit', {
     p_service_id: serviceId,
-    p_datos: values,
+    p_datos: validation.data,
     p_motivo: motivo || 'Modificación desde panel admin',
   });
 

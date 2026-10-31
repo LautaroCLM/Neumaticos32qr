@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentStaff } from '@/lib/actions/auth';
+import { VEHICLE_OWNERS_SELECT, withCurrentOwner } from '@/lib/data/vehicles';
+import { env } from '@/lib/env';
 import { notFound, redirect } from 'next/navigation';
 import { VehicleDetailClientView } from './VehicleDetailClientView';
 
@@ -17,7 +19,7 @@ export default async function AdminVehicleDetailPage({
   // Obtener vehículo respetando RLS del taller
   const { data: vehicle, error: vehErr } = await supabase
     .from('vehicles')
-    .select('*')
+    .select(`*, ${VEHICLE_OWNERS_SELECT}`)
     .eq('id', id)
     .is('deleted_at', null)
     .single();
@@ -34,16 +36,24 @@ export default async function AdminVehicleDetailPage({
     .is('deleted_at', null)
     .order('fecha_hora', { ascending: false });
 
+  // Clientes disponibles para asociar como propietarios
+  const { data: customers } = await supabase
+    .from('customers')
+    .select('id, nombre, telefono')
+    .is('deleted_at', null)
+    .order('nombre');
+
   return (
     <VehicleDetailClientView
-      vehicle={vehicle}
+      vehicle={withCurrentOwner(vehicle as any)}
       services={services || []}
+      customers={customers || []}
       staffUser={{
         nombre: staffData.staff.nombre,
         rol: staffData.staff.rol,
       }}
       shopName={staffData.shop?.nombre || 'Neumáticos el 32'}
-      siteUrl={process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}
+      siteUrl={env.NEXT_PUBLIC_SITE_URL}
     />
   );
 }

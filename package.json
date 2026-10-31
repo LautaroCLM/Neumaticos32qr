@@ -34,7 +34,9 @@
     "@types/react-dom": "^19.3.0",
     "postcss": "^8.5.32",
     "puppeteer-core": "^25.16.0",
+    "supabase": "2.122.0",
     "tailwindcss": "^4.3.3",
+    "tsx": "4.23.15",
     "typescript": "^5.9.3"
   }
 }

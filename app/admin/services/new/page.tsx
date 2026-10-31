@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { getCurrentStaff } from '@/lib/actions/auth';
 import { redirect } from 'next/navigation';
 import { ServiceForm } from '@/components/admin/ServiceForm';
+import { VEHICLE_OWNERS_SELECT, withCurrentOwner } from '@/lib/data/vehicles';
 import { ServiceNewVehicleSelector } from './ServiceNewVehicleSelector';
 
 export default async function AdminNewServicePage({
@@ -19,11 +20,11 @@ export default async function AdminNewServicePage({
   if (!vehicle_id) {
     const { data: vehicles } = await supabase
       .from('vehicles')
-      .select('id, patente, marca, modelo, anio, cliente_nombre')
+      .select(`id, patente, marca, modelo, anio, ${VEHICLE_OWNERS_SELECT}`)
       .is('deleted_at', null)
       .order('created_at', { ascending: false });
 
-    return <ServiceNewVehicleSelector vehicles={(vehicles as any[]) || []} />;
+    return <ServiceNewVehicleSelector vehicles={((vehicles as any[]) || []).map(withCurrentOwner) as any[]} />;
   }
 
   // Obtener vehículo seleccionado

@@ -123,7 +123,7 @@ export function VehicleQuickCreateModal({
                 value={patente}
                 onChange={(e) => setPatente(e.target.value.toUpperCase())}
                 placeholder="AA 123 BB o ABC 123"
-                maxLength={8}
+                maxLength={10}
                 required
                 className="flex-1 px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 font-mono text-base font-bold uppercase tracking-wider focus:outline-none focus:border-[#d31a24]"
               />
@@ -208,6 +208,9 @@ export function VehicleQuickCreateModal({
                 placeholder="Ej. 11 3456-7890"
                 className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-sm focus:outline-none focus:border-[#d31a24]"
               />
+              <p className="text-[11px] text-zinc-500 mt-1">
+                Si el teléfono ya está cargado, el vehículo se asocia a ese cliente. Con sus últimos 4 dígitos, el cliente puede ver su historial desde la web.
+              </p>
             </div>
 
             <label className="flex items-center gap-3 p-3 rounded-xl bg-zinc-950/60 border border-zinc-800/80 cursor-pointer hover:border-zinc-700 transition-colors">

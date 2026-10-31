@@ -73,6 +73,7 @@ export interface ServiceVisibility {
   mostrar_proximo_servicio: boolean;
   mostrar_sucursal: boolean;
   mostrar_notas: boolean;
+  mostrar_campos_extra?: boolean;
 }
 
 export interface ShopTicketConfig {
@@ -90,9 +91,9 @@ export interface Shop {
   color_primario: string;
   color_fondo: string;
   telefono: string | null;
-  whatsapp: string;
-  direccion: string;
-  horarios: string;
+  whatsapp: string | null;
+  direccion: string | null;
+  horarios: string | null;
   ocultar_precios: boolean;
   ticket_config: ShopTicketConfig;
   deleted_at: string | null;
@@ -110,16 +111,37 @@ export interface Vehicle {
   marca: string;
   modelo: string;
   anio: number | null;
-  cliente_nombre?: string | null;
-  cliente_telefono?: string | null;
   ocultar_precios: boolean | null;
   deleted_at: string | null;
   created_at: string;
   updated_at: string;
 }
 
+export interface Customer {
+  id: string;
+  shop_id: string;
+  nombre: string;
+  telefono: string | null;
+  email: string | null;
+  notas_internas: string | null;
+  deleted_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface VehicleOwner {
+  id: string;
+  shop_id: string;
+  vehicle_id: string;
+  customer_id: string;
+  desde: string;
+  hasta: string | null;
+  created_by: string | null;
+}
+
 export interface ServiceRecord {
   id: string;
+  numero?: number;
   vehicle_id: string;
   shop_id?: string;
   fecha_hora: string;
@@ -180,23 +202,6 @@ export interface StaffUser {
   created_at: string;
 }
 
-export interface PublicPlateSearchResult {
-  success: boolean;
-  blocked?: boolean;
-  not_found?: boolean;
-  error?: string;
-  data?: {
-    patente: string;
-    marca: string;
-    modelo: string;
-    anio: number | null;
-    fecha_ultimo_servicio: string | null;
-    proximo_servicio_km: number | null;
-    proximo_servicio_fecha: string | null;
-    has_qr_access: boolean;
-  };
-}
-
 export interface PublicVehicleTicketResult {
   success: boolean;
   error?: string;
@@ -214,9 +219,9 @@ export interface PublicVehicleTicketResult {
     color_primario: string;
     color_fondo: string;
     telefono: string | null;
-    whatsapp: string;
-    direccion: string;
-    horarios: string;
+    whatsapp: string | null;
+    direccion: string | null;
+    horarios: string | null;
     ticket_config: ShopTicketConfig;
   };
   services?: ServiceRecord[];

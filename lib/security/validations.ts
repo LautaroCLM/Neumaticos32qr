@@ -1,5 +1,24 @@
 import { z } from 'zod';
-import { isValidPatente, normalizePatente } from '../utils/formatters';
+import { isValidPatente, normalizePatente, normalizePhone } from '../utils/formatters';
+
+const phoneSchema = z
+  .string()
+  .trim()
+  .max(30)
+  .optional()
+  .nullable()
+  .transform((val, ctx) => {
+    if (!val) return null;
+    const normalized = normalizePhone(val);
+    if (!normalized) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Teléfono inválido (ej. 11 3456-7890, o con + si es de otro país).',
+      });
+      return z.NEVER;
+    }
+    return normalized;
+  });
 
 export const serviceTypeSchema = z.enum([
   'neumaticos',
@@ -29,6 +48,7 @@ export const serviceVisibilitySchema = z.object({
   mostrar_proximo_servicio: z.boolean().default(true),
   mostrar_sucursal: z.boolean().default(true),
   mostrar_notas: z.boolean().default(false), // Unificado en false por defecto
+  mostrar_campos_extra: z.boolean().default(true),
 });
 
 export const serviceFormSchema = z.object({
@@ -53,6 +73,7 @@ export const serviceFormSchema = z.object({
     mostrar_proximo_servicio: true,
     mostrar_sucursal: true,
     mostrar_notas: false,
+    mostrar_campos_extra: true,
   }),
 });
 
@@ -64,9 +85,23 @@ export const vehicleCreateSchema = z.object({
   modelo: z.string().trim().min(1, 'Modelo requerido').max(50),
   anio: z.number().int().min(1950).max(new Date().getFullYear() + 2).optional().nullable(),
   cliente_nombre: z.string().trim().max(100).optional().nullable(),
-  cliente_telefono: z.string().trim().max(30).optional().nullable(),
+  cliente_telefono: phoneSchema,
   ocultar_precios: z.boolean().optional().nullable(),
 });
 
+export const vehicleUpdateSchema = vehicleCreateSchema.omit({
+  cliente_nombre: true,
+  cliente_telefono: true,
+});
+
+export const customerSchema = z.object({
+  nombre: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres').max(100),
+  telefono: phoneSchema,
+  email: z.union([z.string().trim().email('Email inválido').max(254), z.literal('')]).optional().nullable(),
+  notas_internas: z.string().trim().max(2000).optional().nullable(),
+});
+
 export type ServiceFormValues = z.infer<typeof serviceFormSchema>;
-export type VehicleCreateValues = z.infer<typeof vehicleCreateSchema>;
+export type VehicleCreateValues = z.input<typeof vehicleCreateSchema>;
+export type VehicleUpdateValues = z.input<typeof vehicleUpdateSchema>;
+export type CustomerValues = z.input<typeof customerSchema>;

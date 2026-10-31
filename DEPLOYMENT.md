@@ -42,6 +42,9 @@ Esto aplicará en orden:
 3. `20261030000000_rate_limit_cleanup_cron.sql` (programación horaria de limpieza con `pg_cron`).
 4. `20261030000001_differentiate_token_error.sql` (diferenciación clara de token revocado vs inexistente).
 5. `20261031000000_vehicle_hide_prices_inherit.sql` (los vehículos heredan del taller la opción de ocultar precios).
+6. `20261031000001_customers_and_owners.sql` (clientes y propietarios de cada vehículo).
+7. `20261031000002_ticket_number_and_public_access.sql` (número de ticket y acceso público por patente y teléfono).
+8. `20261031000003_security_hardening.sql` (permisos explícitos sobre tablas y funciones).
 
 ### 1.3. Carga del Bootstrap de Producción (¡NO usar `seed.sql`!)
 > [!CAUTION]
@@ -52,10 +55,7 @@ Para producción, utilizá **exclusivamente** el archivo:
 ```
 supabase/production-bootstrap.sql
 ```
-Podés correrlo desde el **SQL Editor** del dashboard de Supabase o mediante la CLI:
-```bash
-npx supabase db execute --file supabase/production-bootstrap.sql
-```
+Corrélo desde el **SQL Editor** del dashboard de Supabase. No pisa datos ni duplica plantillas si se ejecuta dos veces.
 Este script inicializa:
 - El registro principal del taller (con ID `00000000-0000-0000-0000-000000000001`).
 - Las 5 plantillas oficiales de trabajo de gomería (Neumáticos Nuevos, Alineación y Balanceo 3D, Frenos Delanteros, etc.).
@@ -63,9 +63,9 @@ Este script inicializa:
 
 ### 1.4. Configuración de Seguridad en el Dashboard de Supabase
 1. **Deshabilitar Signups Públicos:**
-   - Navegá a **Authentication** -> **Providers** -> **Email**.
-   - **Desactivá** la casilla `Enable email signups` (Permitir registros públicos).
-   - De esta forma, ningún usuario externo podrá auto-registrarse en el sistema.
+   - Navegá a **Authentication** -> **Sign In / Providers** -> **User Signups**.
+   - **Desactivá** `Allow new users to sign up`. De esta forma, ningún usuario externo podrá auto-registrarse en el sistema.
+   - **No desactives el proveedor Email:** si se apaga, el personal tampoco puede iniciar sesión.
 2. **Crear el Primer Usuario Administrador:**
    - En **Authentication** -> **Users**, hacé clic en **Add User** -> **Create User**.
    - Ingresá el correo del dueño o encargado del taller y una contraseña robusta (mínimo 12 caracteres, mayúsculas, números y símbolos).
@@ -93,6 +93,8 @@ SET rol = 'admin', is_active = TRUE;
 1. Ingresá a [Vercel](https://vercel.com/) y hacé clic en **Add New...** -> **Project**.
 2. Conectá el repositorio Git donde subiste el código.
 3. El framework detectado debe ser **Next.js**.
+4. En **Settings** -> **Functions**, elegí la región **São Paulo (`gru1`)**, la misma de la base de datos.
+5. Como rama de producción, elegí `master`.
 
 ### 2.2. Configuración de Variables de Entorno (Environment Variables)
 Configurá las siguientes variables obligatorias para los entornos **Production** y **Preview**:
@@ -123,7 +125,7 @@ Completá cada uno de estos ítems antes de imprimir los primeros stickers en el
 
 - [ ] **Base de datos limpia:** Verificado que `vehicles` y `services` no tienen filas ficticias de prueba.
 - [ ] **Bootstrap aplicado:** `shops` contiene el registro con id `00000000-0000-0000-0000-000000000001` y `service_templates` tiene las 5 plantillas base.
-- [ ] **Auth protegido:** `Enable email signups` apagado en Supabase Auth.
+- [ ] **Auth protegido:** `Allow new users to sign up` apagado y proveedor Email encendido en Supabase Auth.
 - [ ] **Admin inicial asignado:** El usuario de login tiene su fila en `staff_users` con `rol = 'admin'` y `is_active = TRUE`.
 - [ ] **Dominio y SSL:** Vercel muestra estado **Ready** con HTTPS activo en el dominio canónico.
 - [ ] **Cabeceras de seguridad:** Comprobado que `curl -I https://<tu-dominio>/v/<token>` responde:
@@ -131,8 +133,8 @@ Completá cada uno de estos ítems antes de imprimir los primeros stickers en el
   - `X-Robots-Tag: noindex, nofollow`
   - `Referrer-Policy: no-referrer`
 - [ ] **robots.txt activo:** `https://<tu-dominio>/robots.txt` prohíbe explícitamente el indexado de `/admin/`, `/api/` y `/v/`.
-- [ ] **Prueba de búsqueda pública:** Consultar una patente no registrada y verificar que responde `"No encontramos esa patente"` sin arrojar errores 500 ni exponer datos internos.
-- [ ] **Prueba de login de operario:** Crear un operario desde el panel, iniciar sesión, y confirmar que al entrar a `/admin/settings` es redirigido inmediatamente a `/admin/dashboard`.
+- [ ] **Prueba de acceso público:** Probar una patente no registrada y verificar que responde `"Los datos no coinciden con ningún vehículo registrado."` sin arrojar errores 500 ni exponer datos. Probar una registrada con los últimos 4 dígitos del propietario y verificar que abre el historial.
+- [ ] **Prueba de login de operario:** Crear un operario desde Supabase (Auth + `staff_users`, igual que el administrador), iniciar sesión, y confirmar que al entrar a `/admin/settings` es redirigido inmediatamente a `/admin/dashboard`.
 - [ ] **Prueba de sticker QR con celular real:** Crear un vehículo de prueba, abrir el modal de sticker, escanear el QR con la cámara del celular y comprobar que carga en menos de 3 segundos en red 4G. (Luego anular el servicio de prueba).
 
 ---
@@ -146,7 +148,9 @@ Completá cada uno de estos ítems antes de imprimir los primeros stickers en el
    - **Patente:** Formato nuevo (`AA 123 BB`) o antiguo (`ABC 123`).
    - **Marca y Modelo:** Ej. `Toyota Hilux`.
    - **Año:** Ej. `2023` (opcional).
+   - **Nombre y teléfono del cliente:** Si el teléfono ya está cargado, el vehículo se asocia a ese cliente. Con sus últimos 4 dígitos, el cliente puede ver su historial desde la web sin el sticker.
 4. Tocá **"Registrar Vehículo"**. El sistema generará automáticamente un código QR único y seguro.
+5. Desde la ficha del vehículo, tocá **"Enviar Historial por WhatsApp"** para mandarle el enlace al cliente.
 
 ### 4.2. Impresión y Colocación del Sticker
 1. En la ficha del vehículo, tocá **"Imprimir Sticker"**.
@@ -180,8 +184,11 @@ Completá cada uno de estos ítems antes de imprimir los primeros stickers en el
   - El registro quedará archivado y desaparecerá automáticamente de la vista pública del cliente.
 
 ### 4.5. ¿Qué hacer si el cliente perdió el sticker o el vehículo cambió de dueño?
+**Si cambió de dueño:** en la ficha del vehículo, tocá **"Cambiar Propietario"**, elegí o cargá al nuevo dueño e indicá **"El vehículo cambió de dueño"**. El QR se regenera solo y el nuevo dueño ve el historial técnico, sin los precios ni las notas de los trabajos anteriores. Imprimí el nuevo sticker. Si el propietario solo estaba mal cargado, indicá **"Estaba mal cargado"**: el QR no cambia.
+
+**Si perdió el sticker:**
 1. Buscá el auto por patente en `/admin/vehicles`.
-2. Entrá a su ficha y seleccioná **"Regenerar Código QR"**.
+2. Entrá a su ficha y seleccioná **"Regenerar QR"**.
 3. Al confirmar:
    - El enlace viejo queda **invalidado de inmediato**. Si alguien intenta escanear el sticker viejo, la web le informará *"Enlace Inexistente"* y no mostrará ningún dato del vehículo.
    - Se crea un nuevo código QR seguro.

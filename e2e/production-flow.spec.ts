@@ -103,13 +103,20 @@ test.describe.serial('Suite End-to-End: Neumáticos el 32 (Playwright)', () => {
     const input = page.locator('#patente-input');
     await expect(input).toBeVisible();
 
-    await input.fill('AE123CD');
-    await page.locator('button[type="submit"]').click();
-
-    // Verificación de resultado público sin precios ni km
-    await expect(page.getByText('Volkswagen')).toBeVisible({ timeout: 5000 });
-    await expect(page.getByText('Amarok 2.0 TDI Highline 4x4 (Demo)')).toBeVisible();
     await expect(page.getByText('¿Tenés el sticker de tu vehículo?')).toBeVisible();
+
+    // Con datos incorrectos no se revela nada del vehículo
+    await input.fill('AE123CD');
+    await page.locator('#digitos-input').fill('0000');
+    await page.locator('button[type="submit"]').click();
+    await expect(page.getByText('Los datos no coinciden con ningún vehículo registrado.')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('Volkswagen')).not.toBeVisible();
+
+    // Con los últimos 4 dígitos del teléfono del propietario se abre el historial
+    await page.locator('#digitos-input').fill('7788');
+    await page.locator('button[type="submit"]').click();
+    await expect(page).toHaveURL(/\/v\/demo-token-amarok-ae123cd-el32/, { timeout: 5000 });
+    await expect(page.getByText('Amarok 2.0 TDI Highline 4x4 (Demo)')).toBeVisible();
 
     // Ahora abrir el ticket con token real generado por la base con toggles apagados
     await page.goto(`/v/${testVehicleToken}`);

@@ -10,12 +10,16 @@ import {
 } from '@/lib/actions/vehicles';
 import { anularServiceAction } from '@/lib/actions/services';
 import { QRPrintModal } from '@/components/admin/QRPrintModal';
+import { VehicleEditModal } from '@/components/admin/VehicleEditModal';
+import { VehicleOwnerModal } from '@/components/admin/VehicleOwnerModal';
 import { ServiceBadge } from '@/components/public/ServiceBadge';
 import {
   formatDateBA,
   formatCurrencyARS,
   formatKilometers,
   formatPatenteDisplay,
+  formatPhoneDisplay,
+  formatTicketNumber,
 } from '@/lib/utils/formatters';
 import {
   Car,
@@ -37,12 +41,16 @@ import {
   ArrowLeft,
   ShieldAlert,
   Loader2,
+  Pencil,
+  MessageCircle,
+  UserCog,
 } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 
 interface VehicleDetailClientViewProps {
   vehicle: any;
   services: any[];
+  customers: Array<{ id: string; nombre: string; telefono: string | null }>;
   staffUser: {
     nombre: string;
     rol: 'admin' | 'operario';
@@ -54,6 +62,7 @@ interface VehicleDetailClientViewProps {
 export function VehicleDetailClientView({
   vehicle,
   services,
+  customers,
   staffUser,
   shopName,
   siteUrl,
@@ -64,6 +73,10 @@ export function VehicleDetailClientView({
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
   const [copied, setCopied] = useState(false);
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+
+  // Vehicle data and owner modals
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isOwnerModalOpen, setIsOwnerModalOpen] = useState(false);
 
   // Token management modals
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
@@ -77,6 +90,9 @@ export function VehicleDetailClientView({
 
   const isTokenRevoked = !!vehicle.token_revoked_at;
   const publicUrl = `${siteUrl}/v/${vehicle.public_token}`;
+  const whatsappMessage = encodeURIComponent(
+    `Hola${vehicle.cliente_nombre ? ` ${vehicle.cliente_nombre}` : ''}! Este es el historial de tu ${vehicle.marca} ${vehicle.modelo} en ${shopName}: ${publicUrl}`
+  );
 
   useEffect(() => {
     if (!vehicle.public_token || isTokenRevoked) return;
@@ -208,28 +224,41 @@ export function VehicleDetailClientView({
               {vehicle.marca} {vehicle.modelo} {vehicle.anio ? `(${vehicle.anio})` : ''}
             </h1>
 
-            {/* Datos del Cliente */}
-            {(vehicle.cliente_nombre || vehicle.cliente_telefono) && (
-              <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-400 pt-1">
-                {vehicle.cliente_nombre && (
-                  <span className="flex items-center gap-1.5 text-zinc-300">
-                    <User className="w-3.5 h-3.5 text-zinc-500" />
-                    {vehicle.cliente_nombre}
-                  </span>
-                )}
-                {vehicle.cliente_telefono && (
-                  <a
-                    href={`https://wa.me/${vehicle.cliente_telefono.replace(/\D/g, '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-emerald-400 hover:underline font-mono"
-                  >
-                    <Phone className="w-3.5 h-3.5" />
-                    {vehicle.cliente_telefono}
-                  </a>
-                )}
-              </div>
-            )}
+            {/* Datos del Propietario */}
+            <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-400 pt-1">
+              <span className="flex items-center gap-1.5 text-zinc-300">
+                <User className="w-3.5 h-3.5 text-zinc-500" />
+                {vehicle.cliente_nombre || 'Sin propietario asignado'}
+              </span>
+              {vehicle.cliente_telefono && (
+                <a
+                  href={`https://wa.me/${vehicle.cliente_telefono}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-emerald-400 hover:underline font-mono"
+                >
+                  <Phone className="w-3.5 h-3.5" />
+                  {formatPhoneDisplay(vehicle.cliente_telefono)}
+                </a>
+              )}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 pt-2">
+              <button
+                onClick={() => setIsEditModalOpen(true)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors cursor-pointer min-h-[40px]"
+              >
+                <Pencil className="w-3.5 h-3.5 text-[#D31A24]" />
+                <span>Editar Vehículo</span>
+              </button>
+              <button
+                onClick={() => setIsOwnerModalOpen(true)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors cursor-pointer min-h-[40px]"
+              >
+                <UserCog className="w-3.5 h-3.5 text-[#D31A24]" />
+                <span>{vehicle.cliente_id ? 'Cambiar Propietario' : 'Asignar Propietario'}</span>
+              </button>
+            </div>
           </div>
 
           {/* Botón "+ Nuevo Servicio" */}
@@ -341,6 +370,18 @@ export function VehicleDetailClientView({
                 </div>
               </div>
 
+              {vehicle.cliente_telefono && (
+                <a
+                  href={`https://wa.me/${vehicle.cliente_telefono}?text=${whatsappMessage}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors min-h-[44px]"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Enviar Historial por WhatsApp</span>
+                </a>
+              )}
+
               {/* Acciones de Seguridad del Token */}
               <div className="pt-3 border-t border-[#262a33] flex flex-wrap items-center gap-3">
                 <button
@@ -419,6 +460,9 @@ export function VehicleDetailClientView({
                   <div className="space-y-2 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <ServiceBadge tipo={srv.tipo} />
+                      <span className="text-xs text-zinc-300 font-mono font-bold">
+                        {formatTicketNumber(srv.numero)}
+                      </span>
                       <span className="text-xs text-zinc-400 font-mono">
                         {formatKilometers(srv.kilometraje)}
                       </span>
@@ -475,6 +519,20 @@ export function VehicleDetailClientView({
           </div>
         )}
       </div>
+
+      <VehicleEditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        vehicle={vehicle}
+      />
+
+      <VehicleOwnerModal
+        isOpen={isOwnerModalOpen}
+        onClose={() => setIsOwnerModalOpen(false)}
+        vehicleId={vehicle.id}
+        currentCustomerId={vehicle.cliente_id}
+        customers={customers}
+      />
 
       {/* Modal QR Completo e Imprimir */}
       <QRPrintModal

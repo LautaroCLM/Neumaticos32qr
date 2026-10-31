@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { VehicleQuickCreateModal } from '@/components/admin/VehicleQuickCreateModal';
 import { QRPrintModal } from '@/components/admin/QRPrintModal';
-import { formatPatenteDisplay, normalizePatente } from '@/lib/utils/formatters';
+import { formatPatenteDisplay, formatPhoneDisplay, normalizePatente } from '@/lib/utils/formatters';
 import { Car, Search, Plus, QrCode, ArrowRight, Phone, User, Calendar, Wrench } from 'lucide-react';
 
 interface VehiclesListViewProps {
@@ -116,7 +116,7 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
                       {veh.cliente_telefono && (
                         <div className="flex items-center gap-1.5 text-zinc-400 font-mono">
                           <Phone className="w-3.5 h-3.5 text-zinc-500" />
-                          <span>{veh.cliente_telefono}</span>
+                          <span>{formatPhoneDisplay(veh.cliente_telefono)}</span>
                         </div>
                       )}
                     </div>

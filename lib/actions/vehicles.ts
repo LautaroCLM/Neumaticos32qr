@@ -1,7 +1,14 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import { vehicleCreateSchema, VehicleCreateValues } from '@/lib/security/validations';
+import {
+  customerSchema,
+  vehicleCreateSchema,
+  vehicleUpdateSchema,
+  VehicleCreateValues,
+  VehicleUpdateValues,
+} from '@/lib/security/validations';
+import { findOrCreateCustomer, UNIQUE_VIOLATION } from '@/lib/data/customers';
 import { normalizePatente } from '@/lib/utils/formatters';
 import { revalidatePath } from 'next/cache';
 
@@ -51,6 +58,17 @@ export async function createVehicleAction(values: VehicleCreateValues) {
     };
   }
 
+  const { cliente_nombre: clienteNombre, cliente_telefono: clienteTelefono } = validation.data;
+  let customerId: string | undefined;
+
+  if (clienteNombre || clienteTelefono) {
+    const customer = await findOrCreateCustomer(supabase, staff.shop_id, clienteNombre, clienteTelefono);
+    if (customer.error) {
+      return { success: false, error: customer.error };
+    }
+    customerId = customer.customerId;
+  }
+
   // Inserción respetando RLS del usuario. El public_token se genera estrictamente en servidor
   const { data: newVehicle, error: insertErr } = await supabase
     .from('vehicles')
@@ -60,8 +78,6 @@ export async function createVehicleAction(values: VehicleCreateValues) {
       marca: validation.data.marca.trim(),
       modelo: validation.data.modelo.trim(),
       anio: validation.data.anio || null,
-      cliente_nombre: validation.data.cliente_nombre?.trim() || null,
-      cliente_telefono: validation.data.cliente_telefono?.trim() || null,
       // NULL hereda la configuración del taller; FALSE la pisaría y dejaría los precios visibles.
       ocultar_precios: validation.data.ocultar_precios || null,
     })
@@ -75,14 +91,136 @@ export async function createVehicleAction(values: VehicleCreateValues) {
     };
   }
 
+  if (customerId) {
+    const { error: ownerErr } = await supabase.rpc('assign_vehicle_owner', {
+      p_vehicle_id: newVehicle.id,
+      p_customer_id: customerId,
+    });
+
+    if (ownerErr) {
+      return {
+        success: false,
+        error: `El vehículo se guardó, pero no se pudo asociar al cliente: ${ownerErr.message}`,
+        vehicleId: newVehicle.id,
+      };
+    }
+  }
+
   revalidatePath('/admin/dashboard');
   revalidatePath('/admin/vehicles');
+  revalidatePath('/admin/customers');
 
   return {
     success: true,
     vehicleId: newVehicle.id,
     patente: newVehicle.patente,
   };
+}
+
+export async function updateVehicleAction(vehicleId: string, values: VehicleUpdateValues) {
+  const validation = vehicleUpdateSchema.safeParse(values);
+  if (!validation.success) {
+    return {
+      success: false,
+      error: validation.error.issues[0]?.message || 'Datos del vehículo inválidos',
+    };
+  }
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return { success: false, error: 'No autorizado. Iniciá sesión.' };
+  }
+
+  // RLS limita la edición a los vehículos del taller del usuario
+  const { error } = await supabase
+    .from('vehicles')
+    .update({
+      patente: normalizePatente(validation.data.patente),
+      marca: validation.data.marca,
+      modelo: validation.data.modelo,
+      anio: validation.data.anio || null,
+      ocultar_precios: validation.data.ocultar_precios || null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', vehicleId)
+    .is('deleted_at', null);
+
+  if (error) {
+    return {
+      success: false,
+      error: error.code === UNIQUE_VIOLATION ? 'Ya existe otro vehículo con esa patente.' : error.message,
+    };
+  }
+
+  revalidatePath('/admin/dashboard');
+  revalidatePath('/admin/vehicles');
+  revalidatePath(`/admin/vehicles/${vehicleId}`);
+  return { success: true };
+}
+
+interface ChangeOwnerValues {
+  // Cliente existente; si es null se usa nuevoCliente, y sin ninguno de los dos el vehículo queda sin dueño.
+  customerId: string | null;
+  nuevoCliente?: { nombre: string; telefono?: string | null } | null;
+  esTransferencia: boolean;
+}
+
+export async function changeVehicleOwnerAction(vehicleId: string, values: ChangeOwnerValues) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return { success: false, error: 'No autorizado. Iniciá sesión.' };
+  }
+
+  const { data: staff } = await supabase
+    .from('staff_users')
+    .select('shop_id')
+    .eq('id', user.id)
+    .eq('is_active', true)
+    .single();
+
+  if (!staff) {
+    return { success: false, error: 'Usuario no activo en el personal del taller.' };
+  }
+
+  let customerId = values.customerId;
+
+  if (!customerId && values.nuevoCliente) {
+    const validation = customerSchema.safeParse(values.nuevoCliente);
+    if (!validation.success) {
+      return {
+        success: false,
+        error: validation.error.issues[0]?.message || 'Datos del cliente inválidos',
+      };
+    }
+
+    const customer = await findOrCreateCustomer(
+      supabase,
+      staff.shop_id,
+      validation.data.nombre,
+      validation.data.telefono
+    );
+    if (customer.error || !customer.customerId) {
+      return { success: false, error: customer.error || 'Error al guardar el cliente.' };
+    }
+    customerId = customer.customerId;
+  }
+
+  const { data, error } = await supabase.rpc('assign_vehicle_owner', {
+    p_vehicle_id: vehicleId,
+    p_customer_id: customerId,
+    p_es_transferencia: values.esTransferencia,
+  });
+
+  if (error || !data?.success) {
+    return { success: false, error: error?.message || 'No se pudo cambiar el propietario.' };
+  }
+
+  revalidatePath('/admin/vehicles');
+  revalidatePath(`/admin/vehicles/${vehicleId}`);
+  revalidatePath('/admin/customers');
+  return { success: true, newToken: data.new_token as string | null };
 }
 
 export async function regenerateVehicleTokenAction(vehicleId: string) {

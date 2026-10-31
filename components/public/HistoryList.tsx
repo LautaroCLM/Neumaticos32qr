@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { ServiceRecord, ShopTicketConfig } from '@/lib/types/database';
 import { ServiceBadge } from './ServiceBadge';
 import { TicketDetails } from './TicketCard';
-import { formatDateBA, formatKilometers, formatCurrencyARS } from '@/lib/utils/formatters';
+import { formatDateBA, formatKilometers, formatCurrencyARS, formatTicketNumber } from '@/lib/utils/formatters';
 import { ChevronDown, FileEdit, History } from 'lucide-react';
 
 interface HistoryListProps {
@@ -36,7 +36,7 @@ export function HistoryList({ services, hidePrices = false, ticketConfig }: Hist
       </div>
 
       <div className="space-y-2.5">
-        {services.map((item, index) => {
+        {services.map((item) => {
           const isExpanded = expandedId === item.id;
 
           return (
@@ -52,9 +52,6 @@ export function HistoryList({ services, hidePrices = false, ticketConfig }: Hist
                 className="w-full p-3.5 sm:p-4 flex items-center justify-between gap-3 text-left hover:bg-zinc-800/40 transition-colors min-h-[48px]"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-[#0a0b0d] border border-[#262a33] flex items-center justify-center text-xs font-mono font-bold text-[#c8cdd5] shrink-0">
-                    #{services.length - index}
-                  </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <ServiceBadge tipo={item.tipo} />
@@ -72,6 +69,9 @@ export function HistoryList({ services, hidePrices = false, ticketConfig }: Hist
                     </div>
                     <p className="text-xs font-semibold text-[#c8cdd5] mt-1">
                       {formatDateBA(item.fecha_hora, { short: true })}
+                      {item.numero !== undefined && (
+                        <span className="font-mono font-normal text-[#8b929e]"> · {formatTicketNumber(item.numero)}</span>
+                      )}
                     </p>
                     <p className="text-xs text-[#8b929e] mt-0.5 truncate">
                       {item.descripcion}

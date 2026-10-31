@@ -9,6 +9,9 @@ import {
   fromDateTimeInputBA,
   isConfigPlaceholder,
   getWhatsAppDigits,
+  normalizePhone,
+  formatPhoneDisplay,
+  formatTicketNumber,
 } from '../lib/utils/formatters';
 
 console.log('🧪 Iniciando pruebas de reglas de negocio y formateo...');
@@ -69,5 +72,19 @@ console.log('9. Editar sin tocar la fecha conserva la hora:', i5 ? '✅ PASÓ' :
 const p1 = isConfigPlaceholder('COMPLETAR EN CONFIGURACIÓN') && !isConfigPlaceholder('Calle 1');
 const p2 = getWhatsAppDigits('+54 9 11 3200-3200') === '5491132003200' && getWhatsAppDigits('COMPLETAR') === null;
 console.log('10. Datos de contacto del taller:', p1 && p2 ? '✅ PASÓ' : '❌ FALLÓ');
+
+// Test 11: Teléfonos en formato internacional para WhatsApp
+const n1 = normalizePhone('11 3456-7890') === '5491134567890';
+const n2 = normalizePhone('011 15 3456-7890') === '5491134567890';
+const n3 = normalizePhone('+54 9 11 3456-7890') === '5491134567890';
+const n4 = normalizePhone('+54 11 3456-7890') === '5491134567890';
+const n5 = normalizePhone('0221 15 456-7890') === '5492214567890';
+const n6 = normalizePhone('+598 99 123 456') === '59899123456';
+const n7 = normalizePhone('1234') === null;
+const n8 = formatPhoneDisplay('5491134567890') === '+54 9 11 3456-7890';
+console.log('11. Normalización de teléfonos:', n1 && n2 && n3 && n4 && n5 && n6 && n7 && n8 ? '✅ PASÓ' : '❌ FALLÓ');
+
+// Test 12: Número de ticket
+console.log('12. Número de ticket:', formatTicketNumber(12) === 'N.º 000012' ? '✅ PASÓ' : '❌ FALLÓ');
 
 console.log('\n✨ Todas las pruebas unitarias básicas se ejecutaron con éxito.');

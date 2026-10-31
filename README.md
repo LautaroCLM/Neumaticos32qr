@@ -10,11 +10,12 @@ Permite a los clientes consultar su historial de servicios escaneando un código
 1. **Aislamiento Total entre Clientes:**
    - El acceso completo al ticket e historial se realiza mediante un `public_token` criptográfico de 48 caracteres hexadecimales no predecible ni enumerable.
    - Dos vehículos distintos jamás comparten datos ni historiales.
-2. **Búsqueda Pública por Patente Protegida:**
-   - La búsqueda en la página principal solo devuelve datos técnicos resumidos: Marca, Modelo, Año, Fecha del último servicio y Próximo service programado.
-   - **NUNCA** expone precios, kilometraje actual del último trabajo, descripciones de productos ni datos del titular.
-   - Ejecución restringida exclusivamente a nivel de servidor (`service_role` en `/api/search-plate`), con la IP extraída de las cabeceras `x-forwarded-for` / `x-real-ip`.
-   - **Rate Limiting:** Bloqueo tras 20 solicitudes/minuto por IP y bloqueo temporal tras 5 intentos fallidos sobre la misma patente.
+2. **Acceso desde la Web por Patente y Teléfono:**
+   - La página principal pide la patente y los últimos 4 dígitos del teléfono del propietario actual. Si coinciden, abre el historial; si no, responde lo mismo exista o no la patente.
+   - No muestra ningún dato del vehículo antes de validar.
+   - Ejecución restringida exclusivamente a nivel de servidor (`service_role` en `/api/vehicle-access`), con la IP extraída de las cabeceras `x-forwarded-for` / `x-real-ip`.
+   - **Rate Limiting:** Bloqueo tras 20 solicitudes/minuto por IP, y por patente tras 5 fallos en 15 minutos o 20 en 24 horas.
+   - **Cambio de Dueño:** El historial pertenece al vehículo. Al registrar un cambio de dueño se regenera el QR y los tickets anteriores dejan de mostrar precios y notas.
 3. **Control de Precios y Purga en Servidor:**
    - Configurable a nivel de taller o por vehículo individual (`ocultar_precios`).
    - Los campos desmarcados por visibilidad (`mostrar_km`, `mostrar_precio`, etc.) **se purgan directamente en la función SQL en el servidor**, de modo que jamás viajan en el JSON devuelto.
@@ -22,7 +23,7 @@ Permite a los clientes consultar su historial de servicios escaneando un código
    - `notas_internas`: solo visibles en el panel del taller, jamás se envían a la vista pública.
    - `service_revisions`: tabla inmutable protegida por un trigger que prohíbe `UPDATE` y `DELETE`.
    - `services`: RLS prohíbe `UPDATE` directo a todo el personal. Cualquier edición o anulación pasa por `update_service_with_audit`.
-   - `anon` no tiene acceso directo `SELECT` a ninguna tabla de la base de datos (RLS estricto).
+   - `anon` no tiene ningún permiso sobre las tablas: solo puede ejecutar `get_vehicle_by_token` y `get_public_shop`.
 
 ---
 
@@ -54,12 +55,16 @@ En el panel de Supabase (**SQL Editor**) o mediante el Supabase CLI (`supabase d
 3. `supabase/migrations/20261030000000_rate_limit_cleanup_cron.sql` (Limpieza horaria de intentos de búsqueda)
 4. `supabase/migrations/20261030000001_differentiate_token_error.sql` (Diferencia token revocado de inexistente)
 5. `supabase/migrations/20261031000000_vehicle_hide_prices_inherit.sql` (Los vehículos heredan del taller la opción de ocultar precios)
+6. `supabase/migrations/20261031000001_customers_and_owners.sql` (Clientes y propietarios de cada vehículo)
+7. `supabase/migrations/20261031000002_ticket_number_and_public_access.sql` (Número de ticket y acceso público)
+8. `supabase/migrations/20261031000003_security_hardening.sql` (Permisos explícitos)
 
 ### 3. Deshabilitar Registro Público en Supabase Auth
 Por seguridad, el registro libre de usuarios debe estar deshabilitado:
-1. Ir a Supabase Dashboard -> **Authentication** -> **Providers** -> **Email**.
-2. Desmarcar la casilla **"Enable email signups"** (Permitir nuevos registros).
-3. Guardar cambios.
+1. Ir a Supabase Dashboard -> **Authentication** -> **Sign In / Providers** -> **User Signups**.
+2. Desactivar **"Allow new users to sign up"**.
+3. **No desactivar el proveedor Email:** si se apaga, el personal tampoco puede iniciar sesión.
+4. Guardar cambios.
 
 ### 4. Crear el Primer Usuario Administrador
 Para dar de alta el primer administrador del taller:
@@ -100,8 +105,8 @@ npx tsx test/ticket-customization.test.ts
 # Requiere base de datos activa y migraciones aplicadas:
 npx tsx test/real-db-tests.ts
 
-# 4. Pruebas de Seguridad y Rate Limiting en API de Patentes
-npx tsx test/search-plate-api.test.ts
+# 4. Pruebas de Acceso por Patente, Rate Limiting, Propietarios y Privacidad
+npx tsx test/vehicle-access-api.test.ts
 
 # 5. Pruebas del Panel del Taller y Roles (Admin vs Operario, auditoría)
 npx tsx test/admin-panel.test.ts

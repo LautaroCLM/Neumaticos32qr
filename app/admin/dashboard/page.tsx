@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { getCurrentStaff } from '@/lib/actions/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { VEHICLE_OWNERS_SELECT, withCurrentOwner } from '@/lib/data/vehicles';
 import { DashboardClientView } from './DashboardClientView';
 
 export default async function AdminDashboardPage() {
@@ -32,9 +33,8 @@ export default async function AdminDashboardPage() {
         marca,
         modelo,
         anio,
-        cliente_nombre,
-        cliente_telefono,
-        public_token
+        public_token,
+        ${VEHICLE_OWNERS_SELECT}
       )
     `)
     .order('fecha_hora', { ascending: false })
@@ -43,15 +43,18 @@ export default async function AdminDashboardPage() {
   // Obtener lista rápida de vehículos del taller para el buscador
   const { data: vehicles } = await supabase
     .from('vehicles')
-    .select('id, patente, marca, modelo, anio, cliente_nombre, public_token')
+    .select(`id, patente, marca, modelo, anio, public_token, ${VEHICLE_OWNERS_SELECT}`)
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
     .limit(100);
 
   return (
     <DashboardClientView
-      initialServices={(services as any[]) || []}
-      vehicles={(vehicles as any[]) || []}
+      initialServices={((services as any[]) || []).map((srv) => ({
+        ...srv,
+        vehicles: srv.vehicles ? withCurrentOwner(srv.vehicles) : null,
+      }))}
+      vehicles={((vehicles as any[]) || []).map(withCurrentOwner)}
       staffUser={{
         nombre: staffData.staff.nombre,
         rol: staffData.staff.rol,

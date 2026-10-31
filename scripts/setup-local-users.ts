@@ -20,7 +20,7 @@ function loadEnvLocal(): Record<string, string> {
 
 async function main() {
   const env = loadEnvLocal();
-  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:55321';
+  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:53321';
 
   // ABORTAR si no apunta a 127.0.0.1 o localhost
   try {

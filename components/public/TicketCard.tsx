@@ -1,6 +1,6 @@
 import { ServiceRecord, ShopTicketConfig } from '@/lib/types/database';
 import { ServiceBadge } from './ServiceBadge';
-import { formatDateBA, formatKilometers, formatCurrencyARS } from '@/lib/utils/formatters';
+import { formatDateBA, formatKilometers, formatCurrencyARS, formatTicketNumber } from '@/lib/utils/formatters';
 import {
   Calendar,
   Gauge,
@@ -42,8 +42,12 @@ export function TicketCard({
               Editado
             </span>
           )}
-          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#0a0b0d]/30 text-white">
-            {isPreview ? 'VISTA PREVIA' : 'TICKET DIGITAL'}
+          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#0a0b0d]/30 text-white whitespace-nowrap">
+            {isPreview
+              ? 'VISTA PREVIA'
+              : service.numero !== undefined
+              ? formatTicketNumber(service.numero)
+              : 'TICKET DIGITAL'}
           </span>
         </div>
       </div>

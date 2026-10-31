@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { logoutAction } from '@/lib/actions/auth';
-import { LayoutDashboard, Car, PlusCircle, Settings, LogOut, ShieldCheck, User } from 'lucide-react';
+import { LayoutDashboard, Car, PlusCircle, Settings, LogOut, ShieldCheck, User, Users } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 
 interface AdminHeaderProps {
@@ -22,6 +22,7 @@ export function AdminHeader({ staffUser, shopName }: AdminHeaderProps) {
     { href: '/admin/dashboard', label: 'Inicio', icon: LayoutDashboard },
     { href: '/admin/services/new', label: 'Nuevo Servicio', icon: PlusCircle },
     { href: '/admin/vehicles', label: 'Vehículos', icon: Car },
+    { href: '/admin/customers', label: 'Clientes', icon: Users },
     ...(staffUser.rol === 'admin'
       ? [{ href: '/admin/settings', label: 'Configuración', icon: Settings }]
       : []),
