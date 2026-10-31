@@ -1,7 +1,7 @@
 # Neumáticos el 32 — Sistema de Historial Vehicular y Tickets QR
 
 Aplicación web mobile-first instalable como PWA para taller/gomería "Neumáticos el 32".
-Permite a los clientes consultar su historial de servicios escaneando un código QR adherido a su vehículo o mediante búsqueda rápida por patente con protección de privacidad. Cuenta con un panel privado para operarios y administradores del taller.
+Permite a los clientes consultar su historial de servicios escaneando un código QR pegado en el marco de la puerta de su vehículo o mediante búsqueda rápida por patente con protección de privacidad. Cuenta con un panel privado para operarios y administradores del taller.
 
 ---
 
@@ -51,6 +51,9 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 En el panel de Supabase (**SQL Editor**) o mediante el Supabase CLI (`supabase db push`), ejecutar en orden:
 1. `supabase/migrations/20261028000000_init_schema.sql` (Esquema base, RLS, tablas principales)
 2. `supabase/migrations/20261028000001_ticket_customization.sql` (Plantillas, auditoría, visibilidad y purga de campos)
+3. `supabase/migrations/20261030000000_rate_limit_cleanup_cron.sql` (Limpieza horaria de intentos de búsqueda)
+4. `supabase/migrations/20261030000001_differentiate_token_error.sql` (Diferencia token revocado de inexistente)
+5. `supabase/migrations/20261031000000_vehicle_hide_prices_inherit.sql` (Los vehículos heredan del taller la opción de ocultar precios)
 
 ### 3. Deshabilitar Registro Público en Supabase Auth
 Por seguridad, el registro libre de usuarios debe estar deshabilitado:

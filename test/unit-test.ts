@@ -5,6 +5,10 @@ import {
   formatDateBA,
   formatCurrencyARS,
   formatKilometers,
+  toDateTimeInputBA,
+  fromDateTimeInputBA,
+  isConfigPlaceholder,
+  getWhatsAppDigits,
 } from '../lib/utils/formatters';
 
 console.log('🧪 Iniciando pruebas de reglas de negocio y formateo...');
@@ -44,5 +48,26 @@ console.log('5. Formato de kilometraje:', k1 && k2 ? '✅ PASÓ' : '❌ FALLÓ')
 const dateSample = new Date('2026-10-28T15:00:00Z');
 const f1 = formatDateBA(dateSample, { short: true });
 console.log('6. Fecha Buenos Aires corta:', f1, f1.length === 10 ? '✅ PASÓ' : '❌ FALLÓ');
+
+// Test 7: Columnas DATE no se corren un día
+const f2 = formatDateBA('2027-03-15', { short: true }) === '15/03/2027';
+console.log('7. Fecha sin hora conserva el día:', f2 ? '✅ PASÓ' : '❌ FALLÓ');
+
+// Test 8: El input datetime-local trabaja en hora de Buenos Aires
+const i1 = toDateTimeInputBA('2026-10-31T17:00:00.000Z') === '2026-10-31T14:00';
+const i2 = fromDateTimeInputBA('2026-10-31T14:00') === '2026-10-31T17:00:00.000Z';
+const i3 = fromDateTimeInputBA('') === null;
+const i4 = toDateTimeInputBA('2026-11-01T03:30:00.000Z') === '2026-11-01T00:30';
+console.log('8. Conversión de datetime-local:', i1 && i2 && i3 && i4 ? '✅ PASÓ' : '❌ FALLÓ');
+
+// Test 9: Guardar y volver a editar no mueve la hora
+const original = '2026-10-31T17:00:00.000Z';
+const i5 = fromDateTimeInputBA(toDateTimeInputBA(original)) === original;
+console.log('9. Editar sin tocar la fecha conserva la hora:', i5 ? '✅ PASÓ' : '❌ FALLÓ');
+
+// Test 10: Datos de contacto del taller
+const p1 = isConfigPlaceholder('COMPLETAR EN CONFIGURACIÓN') && !isConfigPlaceholder('Calle 1');
+const p2 = getWhatsAppDigits('+54 9 11 3200-3200') === '5491132003200' && getWhatsAppDigits('COMPLETAR') === null;
+console.log('10. Datos de contacto del taller:', p1 && p2 ? '✅ PASÓ' : '❌ FALLÓ');
 
 console.log('\n✨ Todas las pruebas unitarias básicas se ejecutaron con éxito.');

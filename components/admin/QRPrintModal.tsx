@@ -180,7 +180,7 @@ export function QRPrintModal({
           </h3>
         </div>
         <p className="text-xs text-[#c8cdd5]">
-          Sticker imprimible para entregar al cliente o adherir al vehículo
+          Pegalo en el marco de la puerta del conductor: en el parabrisas, cualquiera podría escanearlo desde afuera y ver los precios
         </p>
 
         {/* Sticker Preview Container */}

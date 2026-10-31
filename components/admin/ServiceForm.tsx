@@ -4,7 +4,12 @@ import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { createServiceAction, updateServiceAction, anularServiceAction } from '@/lib/actions/services';
 import { TicketCard } from '@/components/public/TicketCard';
-import { formatCurrencyARS, formatPatenteDisplay } from '@/lib/utils/formatters';
+import {
+  formatCurrencyARS,
+  formatPatenteDisplay,
+  fromDateTimeInputBA,
+  toDateTimeInputBA,
+} from '@/lib/utils/formatters';
 import { ServiceRecord, ShopTicketConfig } from '@/lib/types/database';
 import {
   Wrench,
@@ -73,12 +78,9 @@ export function ServiceForm({
       ? initialService.kilometraje.toString()
       : '0'
   );
-  const [fechaHora, setFechaHora] = useState<string>(() => {
-    if (initialService?.fecha_hora) {
-      return new Date(initialService.fecha_hora).toISOString().slice(0, 16);
-    }
-    return new Date().toISOString().slice(0, 16);
-  });
+  const [fechaHora, setFechaHora] = useState<string>(() =>
+    toDateTimeInputBA(initialService?.fecha_hora ?? new Date())
+  );
   const [sucursal, setSucursal] = useState(initialService?.sucursal || 'Casa Central');
   const [proximoKm, setProximoKm] = useState<string>(
     initialService?.proximo_servicio_km?.toString() || ''
@@ -156,7 +158,7 @@ export function ServiceForm({
       id: initialService?.id || 'preview-mock-id',
       vehicle_id: vehicle.id,
       shop_id: vehicle.shop_id,
-      fecha_hora: new Date(fechaHora).toISOString(),
+      fecha_hora: fromDateTimeInputBA(fechaHora) ?? new Date().toISOString(),
       kilometraje: visibilidad.mostrar_km ? Number(kilometraje) || 0 : null,
       tipo,
       descripcion: descripcion || 'Descripción del trabajo realizado',
@@ -266,11 +268,17 @@ export function ServiceForm({
       return;
     }
 
+    const fechaHoraIso = fromDateTimeInputBA(fechaHora);
+    if (!fechaHoraIso) {
+      setError('Por favor completá la fecha y hora del servicio.');
+      return;
+    }
+
     setLoading(true);
     try {
       const payload = {
         vehicle_id: vehicle.id,
-        fecha_hora: new Date(fechaHora).toISOString(),
+        fecha_hora: fechaHoraIso,
         kilometraje: parseInt(kilometraje, 10) || 0,
         tipo,
         descripcion: descripcion.trim(),

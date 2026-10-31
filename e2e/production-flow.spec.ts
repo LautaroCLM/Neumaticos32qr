@@ -109,7 +109,7 @@ test.describe.serial('Suite End-to-End: Neumáticos el 32 (Playwright)', () => {
     // Verificación de resultado público sin precios ni km
     await expect(page.getByText('Volkswagen')).toBeVisible({ timeout: 5000 });
     await expect(page.getByText('Amarok 2.0 TDI Highline 4x4 (Demo)')).toBeVisible();
-    await expect(page.getByText('¿Tenés el sticker en el parabrisas?')).toBeVisible();
+    await expect(page.getByText('¿Tenés el sticker de tu vehículo?')).toBeVisible();
 
     // Ahora abrir el ticket con token real generado por la base con toggles apagados
     await page.goto(`/v/${testVehicleToken}`);

@@ -41,6 +41,7 @@ Esto aplicará en orden:
 2. `20261028000001_ticket_customization.sql` (plantillas, auditoría inmutable `service_revisions`, purga estricta en servidor).
 3. `20261030000000_rate_limit_cleanup_cron.sql` (programación horaria de limpieza con `pg_cron`).
 4. `20261030000001_differentiate_token_error.sql` (diferenciación clara de token revocado vs inexistente).
+5. `20261031000000_vehicle_hide_prices_inherit.sql` (los vehículos heredan del taller la opción de ocultar precios).
 
 ### 1.3. Carga del Bootstrap de Producción (¡NO usar `seed.sql`!)
 > [!CAUTION]
@@ -151,8 +152,10 @@ Completá cada uno de estos ítems antes de imprimir los primeros stickers en el
 1. En la ficha del vehículo, tocá **"Imprimir Sticker"**.
 2. Aparecerá la ventana con el sticker en tamaño normalizado (apto para hojas autoadhesivas de etiquetas o impresora térmica):
    - El sticker incluye el logo del taller, la patente bien visible, el QR de escaneo y el aviso para el conductor.
-3. Imprimilo y pegalo en la **esquina inferior izquierda del parabrisas** o en el parante de la puerta del conductor.
-4. Explicale al cliente: *"Cada vez que quieras ver qué cubiertas te pusimos, la fecha de rotación o cuándo te toca el próximo control, solo apuntá la cámara de tu celular al sticker"*.
+3. Imprimilo y pegalo en el **marco de la puerta del conductor**, donde solo se ve con la puerta abierta.
+   - **Nunca en el parabrisas ni en otro vidrio:** quien escanee el QR ve precios, kilometraje y todo el historial, y desde afuera lo podría hacer cualquiera.
+4. Explicale al cliente: *"Cada vez que quieras ver qué cubiertas te pusimos, la fecha de rotación o cuándo te toca el próximo control, abrí la puerta y apuntá la cámara de tu celular al sticker"*.
+5. **Si el vehículo cambia de dueño**, seguí los pasos de la sección 4.5 para que el nuevo dueño no vea lo que pagó el anterior.
 
 ### 4.3. Carga de un Nuevo Servicio (Menos de 1 minuto)
 1. Escaneá el sticker del auto o buscalo en `/admin/vehicles` por patente.
@@ -176,11 +179,11 @@ Completá cada uno de estos ítems antes de imprimir los primeros stickers en el
   - Al editar el servicio, tocá el botón rojo **"Anular Servicio"** e ingresá la justificación.
   - El registro quedará archivado y desaparecerá automáticamente de la vista pública del cliente.
 
-### 4.5. ¿Qué hacer si el cliente perdió el sticker o cambió el parabrisas?
+### 4.5. ¿Qué hacer si el cliente perdió el sticker o el vehículo cambió de dueño?
 1. Buscá el auto por patente en `/admin/vehicles`.
 2. Entrá a su ficha y seleccioná **"Regenerar Código QR"**.
 3. Al confirmar:
-   - El enlace viejo queda **invalidado de inmediato**. Si alguien intenta escanear el sticker viejo, la web le informará: *"Acceso Revocado por el Taller: solicitá un sticker actualizado"*.
+   - El enlace viejo queda **invalidado de inmediato**. Si alguien intenta escanear el sticker viejo, la web le informará *"Enlace Inexistente"* y no mostrará ningún dato del vehículo.
    - Se crea un nuevo código QR seguro.
 4. Imprimí el nuevo sticker y entregáselo al cliente.
 

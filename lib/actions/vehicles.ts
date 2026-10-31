@@ -62,7 +62,8 @@ export async function createVehicleAction(values: VehicleCreateValues) {
       anio: validation.data.anio || null,
       cliente_nombre: validation.data.cliente_nombre?.trim() || null,
       cliente_telefono: validation.data.cliente_telefono?.trim() || null,
-      ocultar_precios: validation.data.ocultar_precios || false,
+      // NULL hereda la configuración del taller; FALSE la pisaría y dejaría los precios visibles.
+      ocultar_precios: validation.data.ocultar_precios || null,
     })
     .select('id, public_token, patente')
     .single();

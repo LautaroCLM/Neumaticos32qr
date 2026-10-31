@@ -2,7 +2,8 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { z } from 'zod';
-import { revalidatePath } from 'next/cache';
+import { PUBLIC_SHOP_CACHE_TAG } from '@/lib/supabase/public-shop';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 const shopSettingsSchema = z.object({
   nombre: z.string().trim().min(2, 'Nombre de taller requerido').max(100),
@@ -79,6 +80,7 @@ export async function updateShopSettingsAction(data: z.infer<typeof shopSettings
 
   revalidatePath('/admin/settings');
   revalidatePath('/admin/dashboard');
+  revalidateTag(PUBLIC_SHOP_CACHE_TAG);
   return { success: true };
 }
 

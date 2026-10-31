@@ -5,6 +5,9 @@
 
 export const ARGENTINA_TIMEZONE = 'America/Argentina/Buenos_Aires';
 
+// Argentina no aplica horario de verano: el desfase respecto de UTC es fijo.
+const ARGENTINA_UTC_OFFSET = '-03:00';
+
 /**
  * Normaliza una patente: quita espacios, guiones y caracteres no alfanuméricos, convirtiendo a mayúsculas.
  * Ej: "ae 123 cd" -> "AE123CD", "abc-123" -> "ABC123"
@@ -60,7 +63,13 @@ export function formatDateBA(
 ): string {
   if (!dateInput) return '—';
 
-  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  // Las columnas DATE llegan como 'YYYY-MM-DD'; new Date() las leería como medianoche UTC
+  // y en Buenos Aires se mostrarían un día antes.
+  const isDateOnly = typeof dateInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput);
+  const date =
+    typeof dateInput === 'string'
+      ? new Date(isDateOnly ? `${dateInput}T12:00:00${ARGENTINA_UTC_OFFSET}` : dateInput)
+      : dateInput;
   if (isNaN(date.getTime())) return '—';
 
   if (options?.short) {
@@ -82,6 +91,54 @@ export function formatDateBA(
 
   const formatted = formatter.format(date);
   return options?.includeTime ? `${formatted} hs` : formatted;
+}
+
+/**
+ * Convierte una fecha al valor de un input datetime-local, en hora de Buenos Aires.
+ * Ej: '2026-10-31T17:00:00Z' -> '2026-10-31T14:00'
+ */
+export function toDateTimeInputBA(dateInput: string | Date): string {
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: ARGENTINA_TIMEZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(date);
+  const get = (type: string) => parts.find((p) => p.type === type)?.value;
+
+  return `${get('year')}-${get('month')}-${get('day')}T${get('hour')}:${get('minute')}`;
+}
+
+/**
+ * Interpreta el valor de un input datetime-local como hora de Buenos Aires y lo pasa a ISO (UTC).
+ * Devuelve null si el campo está vacío o incompleto.
+ * Ej: '2026-10-31T14:00' -> '2026-10-31T17:00:00.000Z'
+ */
+export function fromDateTimeInputBA(value: string): string | null {
+  // Se valida el formato antes: new Date() acepta textos incompletos y los convierte en fechas inventadas.
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value)) return null;
+  const date = new Date(`${value.slice(0, 16)}:00${ARGENTINA_UTC_OFFSET}`);
+  return isNaN(date.getTime()) ? null : date.toISOString();
+}
+
+/**
+ * Indica si un dato del taller está vacío o sigue con el texto "COMPLETAR" del bootstrap.
+ */
+export function isConfigPlaceholder(value?: string | null): boolean {
+  return !value || !value.trim() || value.toUpperCase().includes('COMPLETAR');
+}
+
+/**
+ * Devuelve los dígitos de un número de WhatsApp o null si no es un número utilizable (E.164: 8 a 15 dígitos).
+ */
+export function getWhatsAppDigits(value?: string | null): string | null {
+  if (isConfigPlaceholder(value)) return null;
+  const digits = value!.replace(/\D/g, '');
+  return digits.length >= 8 && digits.length <= 15 ? digits : null;
 }
 
 /**

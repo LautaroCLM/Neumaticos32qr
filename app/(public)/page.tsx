@@ -57,7 +57,7 @@ export default function HomePage() {
         </div>
         <div className="text-xs text-[#c8cdd5] space-y-1">
           <p className="font-bold text-white text-sm">
-            ¿Tenés el sticker en el parabrisas?
+            ¿Tenés el sticker de tu vehículo?
           </p>
           <p className="leading-relaxed">
             Escaneá el código QR con la cámara de tu celular para ver el <strong>ticket completo</strong> con detalle de repuestos colocados, comprobante de alineación y precios abonados.

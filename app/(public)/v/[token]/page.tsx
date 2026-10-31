@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { createClient } from '@/lib/supabase/server';
-import { formatPatenteDisplay } from '@/lib/utils/formatters';
+import { formatPatenteDisplay, isConfigPlaceholder } from '@/lib/utils/formatters';
 import { TicketCard } from '@/components/public/TicketCard';
 import { WhatsAppButton } from '@/components/public/WhatsAppButton';
 import { ShieldCheck, MapPin, Clock, AlertTriangle, ArrowLeft } from 'lucide-react';
@@ -161,7 +161,11 @@ export default async function VehicleTicketPage({ params }: PageProps) {
 
       {/* Ticket del Último Servicio Destacado */}
       {latestService ? (
-        <TicketCard service={latestService} hidePrices={hide_prices} />
+        <TicketCard
+          service={latestService}
+          hidePrices={hide_prices}
+          ticketConfig={shop?.ticket_config}
+        />
       ) : (
         <div className="p-8 text-center rounded-2xl bg-[#14161b] border border-[#262a33] text-[#8b929e] text-sm">
           Aún no hay servicios registrados para este vehículo.
@@ -170,17 +174,18 @@ export default async function VehicleTicketPage({ params }: PageProps) {
 
       {/* Historial Cronológico de Mantenimientos Anteriores */}
       {pastServices.length > 0 && (
-        <HistoryList services={pastServices} hidePrices={hide_prices} />
+        <HistoryList
+          services={pastServices}
+          hidePrices={hide_prices}
+          ticketConfig={shop?.ticket_config}
+        />
       )}
 
       {/* Ficha Informativa del Taller */}
       {(() => {
-        const isPlaceholder = (val?: string | null) =>
-          !val || !val.trim() || val.toUpperCase().includes('COMPLETAR');
-
-        const hasDireccion = !isPlaceholder(shop?.direccion);
-        const hasHorarios = !isPlaceholder(shop?.horarios);
-        const shopNombre = !isPlaceholder(shop?.nombre)
+        const hasDireccion = !isConfigPlaceholder(shop?.direccion);
+        const hasHorarios = !isConfigPlaceholder(shop?.horarios);
+        const shopNombre = !isConfigPlaceholder(shop?.nombre)
           ? shop!.nombre
           : 'Neumáticos el 32';
 

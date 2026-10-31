@@ -1,17 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { ServiceRecord } from '@/lib/types/database';
+import { ServiceRecord, ShopTicketConfig } from '@/lib/types/database';
 import { ServiceBadge } from './ServiceBadge';
+import { TicketDetails } from './TicketCard';
 import { formatDateBA, formatKilometers, formatCurrencyARS } from '@/lib/utils/formatters';
-import { ChevronDown, Calendar, Gauge, MapPin, PackageCheck, History } from 'lucide-react';
+import { ChevronDown, FileEdit, History } from 'lucide-react';
 
 interface HistoryListProps {
   services: ServiceRecord[];
   hidePrices?: boolean;
+  ticketConfig?: ShopTicketConfig;
 }
 
-export function HistoryList({ services, hidePrices = false }: HistoryListProps) {
+export function HistoryList({ services, hidePrices = false, ticketConfig }: HistoryListProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   if (services.length === 0) {
@@ -46,6 +48,7 @@ export function HistoryList({ services, hidePrices = false }: HistoryListProps) 
               <button
                 type="button"
                 onClick={() => toggleExpand(item.id)}
+                aria-expanded={isExpanded}
                 className="w-full p-3.5 sm:p-4 flex items-center justify-between gap-3 text-left hover:bg-zinc-800/40 transition-colors min-h-[48px]"
               >
                 <div className="flex items-center gap-3 min-w-0">
@@ -60,16 +63,25 @@ export function HistoryList({ services, hidePrices = false }: HistoryListProps) 
                           {formatKilometers(item.kilometraje)}
                         </span>
                       )}
+                      {item.editado && (
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#0a0b0d] text-[#c8cdd5] flex items-center gap-1">
+                          <FileEdit className="w-2.5 h-2.5 text-[#d31a24]" />
+                          Editado
+                        </span>
+                      )}
                     </div>
-                    <p className="text-xs text-[#8b929e] mt-1 truncate">
+                    <p className="text-xs font-semibold text-[#c8cdd5] mt-1">
+                      {formatDateBA(item.fecha_hora, { short: true })}
+                    </p>
+                    <p className="text-xs text-[#8b929e] mt-0.5 truncate">
                       {item.descripcion}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
-                  {!hidePrices && item.precio !== null && (
-                    <span className="text-sm font-bold font-mono text-white hidden sm:inline">
+                  {!hidePrices && item.precio !== null && item.precio !== undefined && (
+                    <span className="text-sm font-bold font-mono text-white">
                       {formatCurrencyARS(item.precio)}
                     </span>
                   )}
@@ -81,47 +93,10 @@ export function HistoryList({ services, hidePrices = false }: HistoryListProps) 
                 </div>
               </button>
 
-              {/* Contenido Desplegable */}
+              {/* Ticket completo desplegable */}
               {isExpanded && (
-                <div className="p-4 pt-2 border-t border-[#262a33] bg-[#0a0b0d] space-y-3.5 text-xs">
-                  <div className="grid grid-cols-2 gap-2 text-[#8b929e]">
-                    <div className="flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-[#8b929e]" />
-                      <span>{formatDateBA(item.fecha_hora, { includeTime: true })}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-[#8b929e]" />
-                      <span>{item.sucursal}</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-[#8b929e] mb-1">Detalle del trabajo:</p>
-                    <p className="text-zinc-200 bg-[#14161b] p-3 rounded-lg border border-[#262a33] leading-relaxed">
-                      {item.descripcion}
-                    </p>
-                  </div>
-
-                  {item.productos && (
-                    <div>
-                      <p className="font-semibold text-[#8b929e] mb-1 flex items-center gap-1">
-                        <PackageCheck className="w-3.5 h-3.5 text-[#d31a24]" />
-                        Repuestos utilizados:
-                      </p>
-                      <p className="text-zinc-300 bg-[#14161b] p-3 rounded-lg border border-[#262a33]">
-                        {item.productos}
-                      </p>
-                    </div>
-                  )}
-
-                  {!hidePrices && item.precio !== null && (
-                    <div className="pt-2 border-t border-[#262a33] flex items-center justify-between">
-                      <span className="text-[#8b929e] font-medium">Importe abonado:</span>
-                      <span className="text-base font-bold font-mono text-white">
-                        {formatCurrencyARS(item.precio)}
-                      </span>
-                    </div>
-                  )}
+                <div className="border-t border-[#262a33]">
+                  <TicketDetails service={item} hidePrices={hidePrices} ticketConfig={ticketConfig} />
                 </div>
               )}
             </div>
