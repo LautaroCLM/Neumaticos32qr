@@ -34,7 +34,6 @@ async function createStaff(tag: string) {
 
 async function login(page: Page, email: string) {
   await page.goto('/admin/login');
-  await page.waitForLoadState('networkidle');
   await page.locator('#login-email').fill(email);
   await page.locator('#login-password').fill(PASSWORD);
   await page.locator('button[type="submit"]', { hasText: 'Ingresar' }).click();

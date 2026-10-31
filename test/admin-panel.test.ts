@@ -362,7 +362,15 @@ async function runAdminPanelIntegrationTests() {
     // TEST 10: Revocación de token QR
     // --------------------------------------------------------------------------
     console.log('\n[TEST 10/10] Verificando revocación de token QR...');
-    const { data: revokeRes, error: revokeErr } = await testOperarioClient.rpc(
+    const { error: opRevokeErr } = await testOperarioClient.rpc('revoke_vehicle_token', {
+      p_vehicle_id: testVehicleId,
+    });
+    if (!opRevokeErr) {
+      throw new Error('FALLÓ: El operario pudo revocar el token del QR.');
+    }
+    console.log('✔ PASÓ: Operario bloqueado al revocar el token del QR.');
+
+    const { data: revokeRes, error: revokeErr } = await testAdminClient.rpc(
       'revoke_vehicle_token',
       { p_vehicle_id: testVehicleId }
     );

@@ -45,6 +45,7 @@ Esto aplicará en orden:
 6. `20261031000001_customers_and_owners.sql` (clientes y propietarios de cada vehículo).
 7. `20261031000002_ticket_number_and_public_access.sql` (número de ticket y acceso público por patente y teléfono).
 8. `20261031000003_security_hardening.sql` (permisos explícitos sobre tablas y funciones).
+9. `20261031000004_operator_permissions_and_auth_limits.sql` (permisos del operario y límite de intentos). **Aplicala antes de desplegar esta versión:** sin ella, el login rechaza todos los intentos.
 
 ### 1.3. Carga del Bootstrap de Producción (¡NO usar `seed.sql`!)
 > [!CAUTION]
@@ -66,7 +67,12 @@ Este script inicializa:
    - Navegá a **Authentication** -> **Sign In / Providers** -> **User Signups**.
    - **Desactivá** `Allow new users to sign up`. De esta forma, ningún usuario externo podrá auto-registrarse en el sistema.
    - **No desactives el proveedor Email:** si se apaga, el personal tampoco puede iniciar sesión.
-2. **Crear el Primer Usuario Administrador:**
+2. **Configurar la recuperación de contraseña:**
+   - En **Authentication** -> **URL Configuration**, poné tu dominio en **Site URL** y agregá `https://<tu-dominio>/admin/auth/confirm` en **Redirect URLs**.
+   - En **Authentication** -> **SMTP Settings**, configurá un servidor propio. El correo incluido en Supabase tiene un límite muy bajo y puede no entregar a direcciones ajenas al equipo del proyecto.
+   - *Opcional, para abrir el enlace en otro dispositivo:* en **Email Templates** -> **Reset Password**, usá `{{ .SiteURL }}/admin/auth/confirm?token_hash={{ .TokenHash }}&type=recovery` como enlace. Con la plantilla por defecto debe abrirse en el mismo navegador donde se pidió.
+3. **Revisar los límites de Auth:** en **Authentication** -> **Rate Limits**, dejá un valor bajo para los inicios de sesión. La aplicación limita los intentos que pasan por ella, pero la API de Supabase también se puede llamar directamente.
+4. **Crear el Primer Usuario Administrador:**
    - En **Authentication** -> **Users**, hacé clic en **Add User** -> **Create User**.
    - Ingresá el correo del dueño o encargado del taller y una contraseña robusta (mínimo 12 caracteres, mayúsculas, números y símbolos).
    - Marcá la opción `Auto Confirm User?` para que no requiera verificación por correo.
@@ -140,6 +146,20 @@ Completá cada uno de estos ítems antes de imprimir los primeros stickers en el
 ---
 
 ## 4. Manual de Operación para el Taller
+
+### Permisos por rol
+
+| Acción | Operario | Administrador |
+| :--- | :--- | :--- |
+| Crear y editar vehículos, clientes y servicios | ✅ | ✅ |
+| Regenerar el QR y cambiar propietarios | ✅ | ✅ |
+| Revocar el QR | ❌ | ✅ |
+| Dar de baja vehículos o clientes | ❌ | ✅ |
+| Cambiar si un vehículo oculta sus precios | ❌ (solo al crearlo) | ✅ |
+| Anular servicios, Configuración y plantillas | ❌ | ✅ |
+| Ver al resto del personal | ❌ | ✅ |
+
+**Bloqueo de intentos:** 5 contraseñas incorrectas desde una misma conexión bloquean esa cuenta en esa conexión durante 15 minutos. También hay un tope de 20 fallos por conexión y 20 por cuenta en ese lapso. El bloqueo se levanta solo.
 
 ### 4.1. Ingreso de un Vehículo por Primera Vez
 1. Abrí el panel del taller en el celular o tablet (`/admin/dashboard`).

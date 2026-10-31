@@ -1,7 +1,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import { customerSchema, CustomerValues } from '@/lib/security/validations';
+import { customerSchema, CustomerValues, entityIdSchema } from '@/lib/security/validations';
 import { UNIQUE_VIOLATION } from '@/lib/data/customers';
 import { revalidatePath } from 'next/cache';
 
@@ -54,10 +54,10 @@ export async function createCustomerAction(values: CustomerValues) {
 
 export async function updateCustomerAction(customerId: string, values: CustomerValues) {
   const validation = customerSchema.safeParse(values);
-  if (!validation.success) {
+  if (!validation.success || !entityIdSchema.safeParse(customerId).success) {
     return {
       success: false,
-      error: validation.error.issues[0]?.message || 'Datos del cliente inválidos',
+      error: validation.error?.issues[0]?.message || 'Datos del cliente inválidos',
     };
   }
 
@@ -67,8 +67,9 @@ export async function updateCustomerAction(customerId: string, values: CustomerV
     return { success: false, error: 'No autorizado. Iniciá sesión.' };
   }
 
-  // RLS limita la edición a los clientes del taller del usuario
-  const { error } = await supabase
+  // RLS limita la edición a los clientes del taller del usuario.
+  // Sin coincidencias no hay error: la fila devuelta es lo que confirma el cambio.
+  const { data: updated, error } = await supabase
     .from('customers')
     .update({
       nombre: validation.data.nombre,
@@ -78,12 +79,26 @@ export async function updateCustomerAction(customerId: string, values: CustomerV
       updated_at: new Date().toISOString(),
     })
     .eq('id', customerId)
-    .is('deleted_at', null);
+    .is('deleted_at', null)
+    .select('id');
 
   if (error) {
+    if (error.code !== UNIQUE_VIOLATION) {
+      console.error('Error al actualizar el cliente:', error.code);
+    }
     return {
       success: false,
-      error: error.code === UNIQUE_VIOLATION ? DUPLICATE_PHONE_ERROR : error.message,
+      error:
+        error.code === UNIQUE_VIOLATION
+          ? DUPLICATE_PHONE_ERROR
+          : 'No se pudo guardar el cliente. Volvé a intentar.',
+    };
+  }
+
+  if (!updated || updated.length === 0) {
+    return {
+      success: false,
+      error: 'No se guardó ningún cambio: el cliente ya no existe o no tenés permiso para editarlo.',
     };
   }
 

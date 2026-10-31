@@ -9,9 +9,9 @@ import Image from 'next/image';
 export default function AdminLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ acceso?: string }>;
+  searchParams: Promise<{ acceso?: string; clave?: string }>;
 }) {
-  const { acceso } = use(searchParams);
+  const { acceso, clave } = use(searchParams);
   const [state, formAction, isPending] = useActionState(loginAction, null);
   const [showPassword, setShowPassword] = useState(false);
   const errorMessage =
@@ -61,6 +61,12 @@ export default function AdminLoginPage({
           <div className="mb-6 p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 text-red-200 text-xs flex items-center gap-2.5">
             <AlertCircle className="w-4 h-4 shrink-0 text-[#d31a24]" />
             <span>{errorMessage}</span>
+          </div>
+        )}
+
+        {clave === 'actualizada' && !errorMessage && (
+          <div className="mb-6 p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
+            Tu contraseña se actualizó. Ya podés iniciar sesión.
           </div>
         )}
 
@@ -125,7 +131,16 @@ export default function AdminLoginPage({
           </div>
         </form>
 
-        <p className="mt-6 text-center text-[11px] text-[#8b929e]">
+        <div className="mt-4 text-center">
+          <Link
+            href="/admin/recuperar"
+            className="inline-flex items-center text-xs text-[#c8cdd5] hover:text-white underline underline-offset-2 min-h-[44px]"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </div>
+
+        <p className="mt-2 text-center text-[11px] text-[#8b929e]">
           Uso restringido al personal autorizado de Neumáticos el 32.
         </p>
       </div>

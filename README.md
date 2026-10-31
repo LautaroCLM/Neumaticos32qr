@@ -58,6 +58,7 @@ En el panel de Supabase (**SQL Editor**) o mediante el Supabase CLI (`supabase d
 6. `supabase/migrations/20261031000001_customers_and_owners.sql` (Clientes y propietarios de cada vehículo)
 7. `supabase/migrations/20261031000002_ticket_number_and_public_access.sql` (Número de ticket y acceso público)
 8. `supabase/migrations/20261031000003_security_hardening.sql` (Permisos explícitos)
+9. `supabase/migrations/20261031000004_operator_permissions_and_auth_limits.sql` (Permisos del operario y límite de intentos)
 
 ### 3. Deshabilitar Registro Público en Supabase Auth
 Por seguridad, el registro libre de usuarios debe estar deshabilitado:

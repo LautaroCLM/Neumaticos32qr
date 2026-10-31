@@ -47,9 +47,12 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const isLoginPage = request.nextUrl.pathname === '/admin/login';
+  const isRecoveryRoute =
+    request.nextUrl.pathname.startsWith('/admin/recuperar') ||
+    request.nextUrl.pathname === '/admin/auth/confirm';
 
   // Si intenta acceder a cualquier ruta admin sin estar logueado, redirigir a login
-  if (!isLoginPage && !user) {
+  if (!isLoginPage && !isRecoveryRoute && !user) {
     return redirectTo('/admin/login', { redirectTo: request.nextUrl.pathname });
   }
 

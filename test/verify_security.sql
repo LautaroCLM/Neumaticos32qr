@@ -68,6 +68,19 @@ BEGIN
 END;
 $$;
 
+-- 4.B. Test: Solo service_role puede tocar los contadores de intentos de autenticación
+DO $$
+BEGIN
+    IF has_function_privilege('anon', 'public.register_auth_attempt(text, text, text)', 'EXECUTE')
+       OR has_function_privilege('authenticated', 'public.register_auth_attempt(text, text, text)', 'EXECUTE')
+       OR has_function_privilege('anon', 'public.clear_login_attempts(text, text)', 'EXECUTE')
+       OR has_function_privilege('authenticated', 'public.clear_login_attempts(text, text)', 'EXECUTE') THEN
+        RAISE EXCEPTION 'TEST FALLÓ: los contadores de intentos son ejecutables fuera de service_role.';
+    END IF;
+    RAISE NOTICE 'TEST 4.B PASÓ: los contadores de intentos son exclusivos de service_role.';
+END;
+$$;
+
 -- 5. Test: Como anon, leer una tabla se rechaza y un token retorna solo su vehículo
 SET LOCAL ROLE anon;
 

@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import {
   customerSchema,
+  entityIdSchema,
   vehicleCreateSchema,
   vehicleUpdateSchema,
   VehicleCreateValues,
@@ -119,10 +120,10 @@ export async function createVehicleAction(values: VehicleCreateValues) {
 
 export async function updateVehicleAction(vehicleId: string, values: VehicleUpdateValues) {
   const validation = vehicleUpdateSchema.safeParse(values);
-  if (!validation.success) {
+  if (!validation.success || !entityIdSchema.safeParse(vehicleId).success) {
     return {
       success: false,
-      error: validation.error.issues[0]?.message || 'Datos del vehículo inválidos',
+      error: validation.error?.issues[0]?.message || 'Datos del vehículo inválidos',
     };
   }
 
@@ -132,24 +133,51 @@ export async function updateVehicleAction(vehicleId: string, values: VehicleUpda
     return { success: false, error: 'No autorizado. Iniciá sesión.' };
   }
 
-  // RLS limita la edición a los vehículos del taller del usuario
-  const { error } = await supabase
+  const { data: staff } = await supabase
+    .from('staff_users')
+    .select('rol')
+    .eq('id', user.id)
+    .eq('is_active', true)
+    .single();
+
+  if (!staff) {
+    return { success: false, error: 'Usuario no activo en el personal del taller.' };
+  }
+
+  // RLS limita la edición a los vehículos del taller del usuario.
+  // Sin coincidencias no hay error: la fila devuelta es lo que confirma el cambio.
+  const { data: updated, error } = await supabase
     .from('vehicles')
     .update({
       patente: normalizePatente(validation.data.patente),
       marca: validation.data.marca,
       modelo: validation.data.modelo,
       anio: validation.data.anio || null,
-      ocultar_precios: validation.data.ocultar_precios || null,
+      // La visibilidad de precios es decisión del administrador (también la exige un trigger)
+      ...(staff.rol === 'admin' ? { ocultar_precios: validation.data.ocultar_precios || null } : {}),
       updated_at: new Date().toISOString(),
     })
     .eq('id', vehicleId)
-    .is('deleted_at', null);
+    .is('deleted_at', null)
+    .select('id');
 
   if (error) {
+    if (error.code !== UNIQUE_VIOLATION) {
+      console.error('Error al actualizar el vehículo:', error.code);
+    }
     return {
       success: false,
-      error: error.code === UNIQUE_VIOLATION ? 'Ya existe otro vehículo con esa patente.' : error.message,
+      error:
+        error.code === UNIQUE_VIOLATION
+          ? 'Ya existe otro vehículo con esa patente.'
+          : 'No se pudo guardar el vehículo. Volvé a intentar.',
+    };
+  }
+
+  if (!updated || updated.length === 0) {
+    return {
+      success: false,
+      error: 'No se guardó ningún cambio: el vehículo ya no existe o no tenés permiso para editarlo.',
     };
   }
 
@@ -268,13 +296,17 @@ export async function revokeVehicleTokenAction(vehicleId: string) {
 
   const { data: staff } = await supabase
     .from('staff_users')
-    .select('id, shop_id')
+    .select('id, shop_id, rol')
     .eq('id', user.id)
     .eq('is_active', true)
     .single();
 
   if (!staff) {
     return { success: false, error: 'Usuario no activo en el personal del taller.' };
+  }
+
+  if (staff.rol !== 'admin') {
+    return { success: false, error: 'Solo un administrador puede revocar el acceso al QR.' };
   }
 
   const { data, error } = await supabase.rpc('revoke_vehicle_token', {

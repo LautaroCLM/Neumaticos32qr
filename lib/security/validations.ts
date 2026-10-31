@@ -20,6 +20,8 @@ const phoneSchema = z
     return normalized;
   });
 
+export const entityIdSchema = z.string().uuid();
+
 export const serviceTypeSchema = z.enum([
   'neumaticos',
   'alineacion_balanceo',

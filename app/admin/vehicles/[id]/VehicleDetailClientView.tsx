@@ -392,13 +392,15 @@ export function VehicleDetailClientView({
                   <span>Regenerar QR</span>
                 </button>
 
-                <button
-                  onClick={() => setShowRevokeModal(true)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 border border-zinc-700 hover:border-red-500/40 text-xs font-bold transition-colors cursor-pointer min-h-[40px]"
-                >
-                  <Ban className="w-3.5 h-3.5" />
-                  <span>Revocar Acceso</span>
-                </button>
+                {staffUser.rol === 'admin' && (
+                  <button
+                    onClick={() => setShowRevokeModal(true)}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 border border-zinc-700 hover:border-red-500/40 text-xs font-bold transition-colors cursor-pointer min-h-[40px]"
+                  >
+                    <Ban className="w-3.5 h-3.5" />
+                    <span>Revocar Acceso</span>
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -523,6 +525,7 @@ export function VehicleDetailClientView({
       <VehicleEditModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
+        canEditPriceVisibility={staffUser.rol === 'admin'}
         vehicle={vehicle}
       />
 
