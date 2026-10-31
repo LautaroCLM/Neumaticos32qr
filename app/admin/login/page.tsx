@@ -1,14 +1,22 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { use, useActionState, useState } from 'react';
 import { loginAction } from '@/lib/actions/auth';
 import { Lock, Mail, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function AdminLoginPage() {
+export default function AdminLoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ acceso?: string }>;
+}) {
+  const { acceso } = use(searchParams);
   const [state, formAction, isPending] = useActionState(loginAction, null);
   const [showPassword, setShowPassword] = useState(false);
+  const errorMessage =
+    state?.error ||
+    (acceso === 'denegado' ? 'Acceso denegado: tu usuario no está habilitado en el personal del taller.' : null);
 
   return (
     <div className="min-h-[85vh] flex flex-col items-center justify-center p-4">
@@ -49,10 +57,10 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Mensaje de Error */}
-        {state?.error && (
+        {errorMessage && (
           <div className="mb-6 p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 text-red-200 text-xs flex items-center gap-2.5">
             <AlertCircle className="w-4 h-4 shrink-0 text-[#d31a24]" />
-            <span>{state.error}</span>
+            <span>{errorMessage}</span>
           </div>
         )}
 

@@ -105,6 +105,9 @@ test.describe.serial('Suite End-to-End: Neumáticos el 32 (Playwright)', () => {
 
     await expect(page.getByText('¿Tenés el sticker de tu vehículo?')).toBeVisible();
 
+    // Los intentos de corridas anteriores no deben dejar la patente bloqueada
+    await supabaseAdmin.from('rate_limit_attempts').delete().eq('target_key', 'AE123CD');
+
     // Con datos incorrectos no se revela nada del vehículo
     await input.fill('AE123CD');
     await page.locator('#digitos-input').fill('0000');

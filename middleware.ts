@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { env } from '@/lib/env';
+import { SESSION_COOKIE_OPTIONS, withSessionMaxAge } from '@/lib/supabase/cookie-options';
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -11,6 +12,7 @@ export async function middleware(request: NextRequest) {
     env.NEXT_PUBLIC_SUPABASE_URL,
     env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
+      cookieOptions: SESSION_COOKIE_OPTIONS,
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -21,47 +23,58 @@ export async function middleware(request: NextRequest) {
             request,
           });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, withSessionMaxAge(options))
           );
         },
       },
     }
   );
 
+  // Las redirecciones conservan las cookies que Supabase haya renovado o borrado
+  const redirectTo = (pathname: string, params: Record<string, string> = {}) => {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname;
+    url.search = '';
+    Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+
+    const response = NextResponse.redirect(url);
+    supabaseResponse.cookies.getAll().forEach((cookie) => response.cookies.set(cookie));
+    return response;
+  };
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   const isLoginPage = request.nextUrl.pathname === '/admin/login';
-  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
 
   // Si intenta acceder a cualquier ruta admin sin estar logueado, redirigir a login
-  if (isAdminRoute && !isLoginPage && !user) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/admin/login';
-    url.searchParams.set('redirectTo', request.nextUrl.pathname);
-    return NextResponse.redirect(url);
+  if (!isLoginPage && !user) {
+    return redirectTo('/admin/login', { redirectTo: request.nextUrl.pathname });
   }
 
-  // Si ya está logueado e intenta entrar a login, redirigir al dashboard
-  if (isLoginPage && user) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/admin/dashboard';
-    return NextResponse.redirect(url);
-  }
-
-  // Si un usuario autenticado intenta acceder a /admin/settings, verificar rol admin en servidor
-  if (user && request.nextUrl.pathname.startsWith('/admin/settings')) {
-    const { data: staff } = await supabase
+  if (user) {
+    const { data: staff, error: staffError } = await supabase
       .from('staff_users')
       .select('rol, is_active')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
 
-    if (!staff || !staff.is_active || staff.rol !== 'admin') {
-      const url = request.nextUrl.clone();
-      url.pathname = '/admin/dashboard';
-      return NextResponse.redirect(url);
+    // Sesión válida de alguien que ya no es personal activo: se cierra para que no quede
+    // rebotando entre el panel y el login. Si falló la consulta no se sabe, y no se cierra.
+    if (!staffError && !staff?.is_active) {
+      await supabase.auth.signOut();
+      return redirectTo('/admin/login', { acceso: 'denegado' });
+    }
+
+    // Si ya está logueado e intenta entrar a login, redirigir al dashboard
+    if (isLoginPage && staff?.is_active) {
+      return redirectTo('/admin/dashboard');
+    }
+
+    // Solo administradores pueden acceder a /admin/settings
+    if (request.nextUrl.pathname.startsWith('/admin/settings') && staff?.rol !== 'admin') {
+      return redirectTo('/admin/dashboard');
     }
   }
 
