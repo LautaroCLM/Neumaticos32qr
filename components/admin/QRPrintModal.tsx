@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
 import { QrCode, Download, Printer, Copy, Check, X, ExternalLink } from 'lucide-react';
-import { formatPatenteDisplay } from '@/lib/utils/formatters';
+import { escapeHtml, formatPatenteDisplay } from '@/lib/utils/formatters';
 import Image from 'next/image';
 
 interface QRPrintModalProps {
@@ -73,13 +73,17 @@ export function QRPrintModal({
     }
 
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    // Marca, modelo y nombre los carga el personal: se escapan porque la ventana comparte el origen del panel
+    const safePatente = escapeHtml(formatPatenteDisplay(patente));
+    const safeVehiculo = escapeHtml(`${marca} ${modelo}`);
+    const safeShopName = escapeHtml(shopName);
 
     const htmlContent = `
       <!DOCTYPE html>
       <html>
         <head>
           <meta charset="utf-8">
-          <title>Sticker QR - ${patente}</title>
+          <title>Sticker QR - ${safePatente}</title>
           <style>
             @page {
               size: 70mm 55mm;
@@ -139,10 +143,10 @@ export function QRPrintModal({
           </style>
         </head>
         <body>
-          <img src="${origin}/logo.png" class="logo-header" alt="${shopName}" />
-          <img src="${qrDataUrl}" class="qr-img" alt="QR" />
-          <div class="patente-badge">${formatPatenteDisplay(patente)}</div>
-          <div class="car-info">${marca} ${modelo}</div>
+          <img src="${escapeHtml(origin)}/logo.png" class="logo-header" alt="${safeShopName}" />
+          <img src="${escapeHtml(qrDataUrl)}" class="qr-img" alt="QR" />
+          <div class="patente-badge">${safePatente}</div>
+          <div class="car-info">${safeVehiculo}</div>
           <div class="scan-hint">Escaneá para ver tu historial</div>
           <script>
             window.onload = function() {

@@ -213,3 +213,15 @@ export function formatKilometers(km: number | null | undefined): string {
   if (km === null || km === undefined) return '—';
   return `${new Intl.NumberFormat('es-AR').format(km)} km`;
 }
+
+/**
+ * Escapa texto para insertarlo en HTML armado a mano (ej. la ventana de impresión del sticker)
+ */
+export function escapeHtml(value: string | null | undefined): string {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}

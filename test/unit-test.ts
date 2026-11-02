@@ -12,6 +12,7 @@ import {
   normalizePhone,
   formatPhoneDisplay,
   formatTicketNumber,
+  escapeHtml,
 } from '../lib/utils/formatters';
 
 console.log('🧪 Iniciando pruebas de reglas de negocio y formateo...');
@@ -86,5 +87,10 @@ console.log('11. Normalización de teléfonos:', n1 && n2 && n3 && n4 && n5 && n
 
 // Test 12: Número de ticket
 console.log('12. Número de ticket:', formatTicketNumber(12) === 'N.º 000012' ? '✅ PASÓ' : '❌ FALLÓ');
+
+// Test 13: Escape de HTML para la ventana de impresión del sticker
+const e1 = escapeHtml('<img src=x onerror="alert(1)">') === '&lt;img src=x onerror=&quot;alert(1)&quot;&gt;';
+const e2 = escapeHtml("Peugeot 208 & 'GT'") === 'Peugeot 208 &amp; &#39;GT&#39;' && escapeHtml(null) === '';
+console.log('13. Escape de HTML del sticker:', e1 && e2 ? '✅ PASÓ' : '❌ FALLÓ');
 
 console.log('\n✨ Todas las pruebas unitarias básicas se ejecutaron con éxito.');

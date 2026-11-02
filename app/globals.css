@@ -51,14 +51,19 @@
   --radius-sm: 3px;
   --radius-md: 4px;
 
-  --animate-fade-in: fade-in 280ms var(--ease-out) both;
+  /*
+   * Las entradas solo animan opacidad y no retienen el estado final (backwards):
+   * un transform activo en un contenedor lo vuelve el bloque contenedor de sus
+   * hijos position: fixed y saca los modales de la pantalla.
+   */
+  --animate-fade-in: fade-in 280ms var(--ease-out) backwards;
   --animate-shake: shake 360ms var(--ease-out);
   /* Momento propio: la patente del vehículo entra y se asienta en su lugar */
-  --animate-plate-in: plate-in 560ms var(--ease-out) both;
+  --animate-plate-in: plate-in 560ms var(--ease-out) backwards;
 
   @keyframes fade-in {
-    from { opacity: 0.6; transform: translateY(4px); }
-    to { opacity: 1; transform: none; }
+    from { opacity: 0.6; }
+    to { opacity: 1; }
   }
   @keyframes plate-in {
     from { opacity: 0.5; transform: translateX(-14px); }
