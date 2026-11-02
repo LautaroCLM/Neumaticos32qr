@@ -1,6 +1,6 @@
 ---
 name: Neumáticos el 32
-description: Digital service history per vehicle, read from a QR sticker or a plate search; one workshop, one record per car.
+description: Digital service history per vehicle, opened by plate search from the workshop's single QR; one workshop, one record per car.
 colors:
   rubber-black: "#0d0d0e"
   carcass: "#161719"

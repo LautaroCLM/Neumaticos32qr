@@ -63,7 +63,7 @@ export default async function VehicleTicketPage({ params }: PageProps) {
     return (
       <TicketErrorView
         title="Formato de Enlace Inválido"
-        description="El identificador del enlace no tiene el largo requerido. Asegurate de escanear el código QR completo provisto por el taller."
+        description="El identificador del enlace no tiene el largo requerido. Volvé a la página principal y buscá tu vehículo con la patente y los últimos 4 dígitos de tu teléfono."
       />
     );
   }
@@ -83,7 +83,7 @@ export default async function VehicleTicketPage({ params }: PageProps) {
 
     let title = 'Enlace Inexistente';
     let description =
-      'El código ingresado no corresponde a ningún vehículo registrado en el taller. Verificá que la dirección o el código QR sea el correcto.';
+      'El código ingresado no corresponde a ningún vehículo registrado en el taller. Volvé a buscar tu vehículo con la patente y los últimos 4 dígitos de tu teléfono.';
 
     if (isNetworkError) {
       title = 'Error de Conexión';
@@ -92,7 +92,7 @@ export default async function VehicleTicketPage({ params }: PageProps) {
     } else if (isRevoked) {
       title = 'Acceso Revocado por el Taller';
       description =
-        'El código QR o enlace ingresado fue revocado por el personal tras la emisión de un nuevo código para el vehículo. Solicitá el sticker actualizado en el taller.';
+        'El enlace ingresado fue revocado por el personal del taller. Volvé a buscar tu vehículo con la patente y los últimos 4 dígitos de tu teléfono, o consultá en el taller.';
     }
 
     return <TicketErrorView title={title} description={description} />;

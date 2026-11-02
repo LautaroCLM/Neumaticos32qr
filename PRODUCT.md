@@ -8,8 +8,8 @@ web
 
 ## Users
 
-- **Clientes del taller:** dueños de autos y camionetas atendidos en Neumáticos el 32. Consultan el historial de su vehículo desde el celular, casi siempre escaneando el sticker QR pegado en el marco de la puerta, sin crear cuenta.
-- **Dueño del taller (Leandro):** único administrador. Carga vehículos, clientes y servicios, configura el taller e imprime stickers. Usa el panel desde el celular en el taller y desde la computadora en el mostrador.
+- **Clientes del taller:** dueños de autos y camionetas atendidos en Neumáticos el 32. Consultan el historial de su vehículo desde el celular, sin crear cuenta: escanean el QR general del taller, que lleva a la página principal, e ingresan la patente y los últimos 4 dígitos de su teléfono.
+- **Dueño del taller (Leandro):** único administrador. Carga vehículos, clientes y servicios, configura el taller e imprime el QR general. Usa el panel desde el celular en el taller y desde la computadora en el mostrador.
 - **Operario (opcional):** rol con permisos reducidos, sin uso confirmado hoy.
 
 ## Product Purpose
@@ -18,14 +18,14 @@ Darle a cada vehículo atendido un historial digital propio: el último servicio
 
 ## Positioning
 
-El historial pertenece al vehículo, no al cliente: cada auto tiene un QR único e impredecible que abre su ticket sin registro. Es una herramienta propia de un solo taller, no una plataforma para varios.
+El historial pertenece al vehículo, no al cliente: se abre con la patente más los últimos 4 dígitos del teléfono del propietario actual, sin registro. Cada vehículo además tiene un enlace propio e impredecible que el taller puede enviarle al cliente. Es una herramienta propia de un solo taller, no una plataforma para varios.
 
 ## Operating Context
 
-- El cliente abre el ticket con la cámara del celular, muchas veces en la calle o en el taller.
-- Sin el QR, puede abrirlo desde la web con la patente y los últimos 4 dígitos del teléfono que dejó en el taller.
+- El cliente escanea el QR del taller con la cámara del celular, muchas veces en la calle o en el taller, y busca su vehículo con la patente y los últimos 4 dígitos del teléfono que dejó.
+- Sin teléfono cargado en la ficha del vehículo, el cliente no puede consultar por su cuenta; el taller puede mandarle el enlace directo.
 - Leandro carga cada servicio al terminar el trabajo, con plantillas para los trabajos frecuentes.
-- Los stickers se imprimen desde el panel en formato de 70 × 55 mm.
+- El QR es uno solo para todos los clientes: se imprime por adelantado desde Configuración (hoja A4 de 12 stickers o cartel A4) o se descarga en PNG.
 
 ## Capabilities and Constraints
 

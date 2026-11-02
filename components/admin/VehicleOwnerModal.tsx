@@ -167,7 +167,7 @@ export function VehicleOwnerModal({
                   className="mt-0.5"
                 />
                 <span className="text-xs text-zinc-300">
-                  <strong className="text-zinc-100">Estaba mal cargado.</strong> Solo se corrige el propietario, sin cambiar el QR.
+                  <strong className="text-zinc-100">Estaba mal cargado.</strong> Solo se corrige el propietario, sin cambiar el enlace del historial.
                 </span>
               </label>
             </fieldset>
@@ -177,7 +177,7 @@ export function VehicleOwnerModal({
             <div className="p-3 rounded-sm bg-[#880e14]/20 border border-[#d31a24]/30 flex items-start gap-2 text-xs text-zinc-300">
               <AlertTriangle className="w-4 h-4 text-[#f04d55] shrink-0 mt-0.5" />
               <span>
-                El QR actual dejará de funcionar y habrá que imprimir uno nuevo. Desde el nuevo QR no se verán los precios ni las notas de los trabajos anteriores.
+                El enlace anterior del historial dejará de funcionar. El nuevo dueño consulta con su propio teléfono y no verá los precios ni las notas de los trabajos anteriores.
               </span>
             </div>
           )}

@@ -103,7 +103,7 @@ test.describe.serial('Suite End-to-End: Neumáticos el 32 (Playwright)', () => {
     const input = page.locator('#patente-input');
     await expect(input).toBeVisible();
 
-    await expect(page.getByText('¿Tenés el sticker de tu vehículo?')).toBeVisible();
+    await expect(page.getByText('¿Tu teléfono no está cargado?')).toBeVisible();
 
     // Los intentos de corridas anteriores no deben dejar la patente bloqueada
     await supabaseAdmin.from('rate_limit_attempts').delete().eq('target_key', 'AE123CD');
@@ -161,10 +161,10 @@ test.describe.serial('Suite End-to-End: Neumáticos el 32 (Playwright)', () => {
     await page.locator('input[placeholder*="Buscar"]').fill(adminPlate);
     await expect(page.getByText('Ford Ranger 4x4')).toBeVisible({ timeout: 6000 });
 
-    // Clic en "Ficha y QR"
-    await page.locator('a', { hasText: 'Ficha y QR' }).first().click();
-    await expect(page.getByText('Ticket Digital y Código QR')).toBeVisible();
-    await expect(page.locator('button', { hasText: 'Imprimir Sticker' })).toBeVisible();
+    // Clic en "Ver Ficha": el vehículo ya no tiene QR propio, solo el enlace del historial
+    await page.locator('a', { hasText: 'Ver Ficha' }).first().click();
+    await expect(page.getByText('Enlace del Historial')).toBeVisible();
+    await expect(page.locator('button', { hasText: 'Imprimir Sticker' })).toHaveCount(0);
 
     // Cargar nuevo servicio para este vehículo
     await page.locator('a[href*="/admin/services/new?vehicle_id="]').first().click();
@@ -267,7 +267,7 @@ test.describe.serial('Suite End-to-End: Neumáticos el 32 (Playwright)', () => {
       await page.goto(`/v/${revokedVehicleToken}`);
       await expect(page.getByText('Acceso Revocado por el Taller')).toBeVisible({ timeout: 8000 });
       await expect(
-        page.getByText('El código QR o enlace ingresado fue revocado por el personal tras la emisión de un nuevo código')
+        page.getByText('El enlace ingresado fue revocado por el personal del taller.')
       ).toBeVisible();
     }
   });

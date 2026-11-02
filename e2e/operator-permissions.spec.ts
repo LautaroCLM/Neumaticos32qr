@@ -151,7 +151,7 @@ test.describe('Permisos efectivos por rol', () => {
       await login(page, email);
       await page.goto(`/admin/vehicles/${vehicle.id}`);
       await page.waitForLoadState('networkidle');
-      await expect(page.locator('button', { hasText: 'Regenerar QR' })).toBeVisible();
+      await expect(page.locator('button', { hasText: 'Regenerar Enlace' })).toBeVisible();
       await expect(page.locator('button', { hasText: 'Revocar Acceso' })).toHaveCount(canManage ? 1 : 0);
       await page.locator('button', { hasText: 'Editar Vehículo' }).click();
       await expect(page.getByText('Ocultar precios en el ticket público')).toHaveCount(canManage ? 1 : 0);

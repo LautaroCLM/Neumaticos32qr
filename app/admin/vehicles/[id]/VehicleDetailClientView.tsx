@@ -1,16 +1,14 @@
 'use client';
 
 import { Plate } from '@/components/public/Plate';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import QRCode from 'qrcode';
 import {
   regenerateVehicleTokenAction,
   revokeVehicleTokenAction,
 } from '@/lib/actions/vehicles';
 import { anularServiceAction } from '@/lib/actions/services';
-import { QRPrintModal } from '@/components/admin/QRPrintModal';
 import { VehicleEditModal } from '@/components/admin/VehicleEditModal';
 import { VehicleOwnerModal } from '@/components/admin/VehicleOwnerModal';
 import { ServiceBadge } from '@/components/public/ServiceBadge';
@@ -18,13 +16,12 @@ import {
   formatDateBA,
   formatCurrencyARS,
   formatKilometers,
-  formatPatenteDisplay,
   formatPhoneDisplay,
   formatTicketNumber,
 } from '@/lib/utils/formatters';
 import {
   Car,
-  QrCode,
+  Link2,
   Copy,
   Check,
   ExternalLink,
@@ -35,8 +32,6 @@ import {
   FileEdit,
   User,
   Phone,
-  Printer,
-  Download,
   AlertTriangle,
   Clock,
   ArrowLeft,
@@ -70,10 +65,8 @@ export function VehicleDetailClientView({
 }: VehicleDetailClientViewProps) {
   const router = useRouter();
 
-  // QR state
-  const [qrDataUrl, setQrDataUrl] = useState<string>('');
+  // Enlace del historial
   const [copied, setCopied] = useState(false);
-  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
   // Vehicle data and owner modals
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -94,19 +87,6 @@ export function VehicleDetailClientView({
   const whatsappMessage = encodeURIComponent(
     `Hola${vehicle.cliente_nombre ? ` ${vehicle.cliente_nombre}` : ''}! Este es el historial de tu ${vehicle.marca} ${vehicle.modelo} en ${shopName}: ${publicUrl}`
   );
-
-  useEffect(() => {
-    if (!vehicle.public_token || isTokenRevoked) return;
-
-    QRCode.toDataURL(publicUrl, {
-      width: 400,
-      margin: 1,
-      color: { dark: '#000000', light: '#ffffff' },
-      errorCorrectionLevel: 'H',
-    })
-      .then(setQrDataUrl)
-      .catch((err) => console.error('Error generando QR:', err));
-  }, [publicUrl, vehicle.public_token, isTokenRevoked]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(publicUrl);
@@ -203,12 +183,12 @@ export function VehicleDetailClientView({
               {isTokenRevoked ? (
                 <span className="px-2.5 py-1 rounded-sm bg-red-500/20 text-red-400 text-xs font-bold border border-red-500/30 flex items-center gap-1">
                   <Ban className="w-3.5 h-3.5" />
-                  QR Revocado
+                  Acceso Revocado
                 </span>
               ) : (
                 <span className="px-2.5 py-1 rounded-sm bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30 flex items-center gap-1">
-                  <QrCode className="w-3.5 h-3.5" />
-                  QR Activo
+                  <Link2 className="w-3.5 h-3.5" />
+                  Historial Público Activo
                 </span>
               )}
 
@@ -273,63 +253,41 @@ export function VehicleDetailClientView({
         </div>
       </div>
 
-      {/* Tarjeta de Gestión del Código QR y Acceso Digital */}
+      {/* Enlace público del historial (lo usa la búsqueda por patente y se puede enviar al cliente) */}
       <div className="bg-[#161719] border border-[#2a2b2e] rounded-sm p-6 space-y-6">
         <div className="flex items-center justify-between border-b border-[#2a2b2e] pb-4">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-sm bg-red-500/10 border border-red-500/30 flex items-center justify-center text-[#f04d55]">
-              <QrCode className="w-4 h-4" />
+              <Link2 className="w-4 h-4" />
             </div>
             <div>
               <h2 className="text-sm font-black uppercase tracking-tight text-zinc-200">
-                Ticket Digital y Código QR
+                Enlace del Historial
               </h2>
               <p className="text-[11px] text-zinc-400">
-                El cliente accede al ticket escaneando este QR (sin registrarse)
+                Para mandarle al cliente su historial sin que tenga que buscar la patente
               </p>
             </div>
           </div>
-
-          <button
-            onClick={() => setIsPrintModalOpen(true)}
-            disabled={isTokenRevoked}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors disabled:opacity-40 cursor-pointer min-h-[40px]"
-          >
-            <Printer className="w-3.5 h-3.5 text-[#f04d55]" />
-            <span>Imprimir Sticker</span>
-          </button>
         </div>
 
         {isTokenRevoked ? (
           <div className="p-6 rounded-sm bg-red-500/10 border border-red-500/30 text-center space-y-3">
             <ShieldAlert className="w-8 h-8 text-red-400 mx-auto" />
-            <h3 className="text-sm font-bold text-red-300">El acceso público por QR fue revocado</h3>
+            <h3 className="text-sm font-bold text-red-300">El acceso público al historial fue revocado</h3>
             <p className="text-xs text-zinc-400 max-w-md mx-auto">
-              Nadie puede ver el ticket de este vehículo en este momento. Podés generar un nuevo token y QR cuando lo desees.
+              Nadie puede ver el historial de este vehículo, ni con el enlace ni buscando la patente. Podés generar un enlace nuevo cuando lo desees.
             </p>
             <button
               onClick={() => setShowRegenerateModal(true)}
               className="px-4 py-2 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white font-black text-xs uppercase tracking-wider transition-colors cursor-pointer min-h-[44px]"
             >
-              Generar Nuevo Código QR
+              Generar Nuevo Enlace
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-            {/* Visualización del QR */}
-            <div className="md:col-span-4 flex flex-col items-center justify-center p-4 rounded-sm bg-white max-w-[220px] mx-auto">
-              {qrDataUrl ? (
-                <img src={qrDataUrl} alt="Código QR" className="w-44 h-44 object-contain" />
-              ) : (
-                <div className="w-44 h-44 bg-zinc-100 animate-pulse rounded-sm" />
-              )}
-              <span className="text-[11px] font-mono font-bold text-zinc-900 mt-2">
-                {formatPatenteDisplay(vehicle.patente)}
-              </span>
-            </div>
-
-            {/* Opciones y Enlace Directo */}
-            <div className="md:col-span-8 space-y-4">
+          <div>
+            <div className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1">
                   Enlace Público Directo
@@ -388,7 +346,7 @@ export function VehicleDetailClientView({
                   className="flex items-center gap-1.5 px-3 py-2 rounded-sm bg-zinc-800 hover:bg-red-500/20 text-zinc-300 hover:text-red-400 border border-zinc-700 hover:border-red-500/40 text-xs font-bold transition-colors cursor-pointer min-h-[40px]"
                 >
                   <RefreshCw className="w-3.5 h-3.5 text-[#f04d55]" />
-                  <span>Regenerar QR</span>
+                  <span>Regenerar Enlace</span>
                 </button>
 
                 {staffUser.rol === 'admin' && (
@@ -536,29 +494,17 @@ export function VehicleDetailClientView({
         customers={customers}
       />
 
-      {/* Modal QR Completo e Imprimir */}
-      <QRPrintModal
-        isOpen={isPrintModalOpen}
-        onClose={() => setIsPrintModalOpen(false)}
-        token={vehicle.public_token}
-        patente={vehicle.patente}
-        marca={vehicle.marca}
-        modelo={vehicle.modelo}
-        shopName={shopName}
-        siteUrl={siteUrl}
-      />
-
       {/* Modal Confirmación Regenerar Token */}
       {showRegenerateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 animate-fade-in">
           <div className="w-full max-w-md bg-[#161719] border border-[#2a2b2e] rounded-sm p-6 space-y-4">
             <div className="flex items-center gap-2 text-[#f04d55]">
               <RefreshCw className="w-5 h-5" />
-              <h3 className="text-base font-black uppercase tracking-tight text-white">¿Regenerar Código QR?</h3>
+              <h3 className="text-base font-black uppercase tracking-tight text-white">¿Regenerar el Enlace?</h3>
             </div>
             <p className="text-xs text-zinc-300">
-              Al regenerar el token, <strong className="text-zinc-100">todos los stickers o códigos QR impresos anteriormente dejarán de funcionar</strong>.
-              Deberás imprimir y entregarle el nuevo código al cliente.
+              <strong className="text-zinc-100">El enlace anterior dejará de funcionar.</strong> Si se lo habías enviado al cliente,
+              mandale el nuevo. La búsqueda por patente sigue funcionando igual.
             </p>
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
@@ -589,10 +535,10 @@ export function VehicleDetailClientView({
           <div className="w-full max-w-md bg-zinc-900 border border-red-500/30 rounded-sm p-6 space-y-4">
             <div className="flex items-center gap-2 text-red-400">
               <Ban className="w-5 h-5" />
-              <h3 className="text-base font-black uppercase tracking-tight">¿Revocar Acceso al QR?</h3>
+              <h3 className="text-base font-black uppercase tracking-tight">¿Revocar Acceso al Historial?</h3>
             </div>
             <p className="text-xs text-zinc-300">
-              El cliente no podrá acceder más a este ticket público hasta que decidas regenerar un nuevo código.
+              El cliente no podrá ver este historial, ni con el enlace ni buscando la patente, hasta que generes un enlace nuevo.
             </p>
             <div className="flex items-center justify-end gap-3 pt-2">
               <button

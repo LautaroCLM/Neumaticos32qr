@@ -347,7 +347,7 @@ export function ServiceForm({
         <div className="text-xs">
           <p className="font-semibold text-sm text-[#f2f2ef]">Aviso de Privacidad del Ticket Digital</p>
           <p className="text-zinc-300 mt-0.5">
-            Los datos marcados con toggle de visibilidad activo serán visibles para el cliente al escanear el QR.
+            Los datos marcados con toggle de visibilidad activo serán visibles para el cliente al consultar su historial.
             Las <strong className="text-zinc-100">Notas Internas</strong> nunca se comparten públicamente.
           </p>
         </div>
@@ -716,11 +716,11 @@ export function ServiceForm({
             </div>
           </div>
 
-          {/* Toggles de Visibilidad en el QR */}
+          {/* Toggles de Visibilidad en el ticket público */}
           <div className="p-5 rounded-sm bg-zinc-900 border border-zinc-800 space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2 border-b border-zinc-800 pb-2">
               <Eye className="w-4 h-4 text-[#f04d55]" />
-              Visibilidad de Campos en el Ticket Público (QR)
+              Visibilidad de Campos en el Ticket Público
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">

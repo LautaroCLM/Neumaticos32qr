@@ -5,7 +5,6 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { VehicleQuickCreateModal } from '@/components/admin/VehicleQuickCreateModal';
-import { QRPrintModal } from '@/components/admin/QRPrintModal';
 import { ServiceBadge } from '@/components/public/ServiceBadge';
 import { formatDateBA, formatCurrencyARS, formatPatenteDisplay, normalizePatente } from '@/lib/utils/formatters';
 import { anularServiceAction } from '@/lib/actions/services';
@@ -17,7 +16,6 @@ import {
   Filter,
   FileEdit,
   Ban,
-  QrCode,
   ArrowRight,
   ExternalLink,
   Wrench,
@@ -53,7 +51,6 @@ export function DashboardClientView({
 
   // Modals
   const [isQuickCreateOpen, setIsQuickCreateOpen] = useState(false);
-  const [selectedQRVehicle, setSelectedQRVehicle] = useState<any | null>(null);
 
   // Anulación state
   const [anulandoServiceId, setAnulandoServiceId] = useState<string | null>(null);
@@ -374,16 +371,6 @@ export function DashboardClientView({
                     </div>
 
                     <div className="flex items-center gap-1.5">
-                      {srv.vehicles?.public_token && (
-                        <button
-                          onClick={() => setSelectedQRVehicle(srv.vehicles)}
-                          title="Ver QR del Vehículo"
-                          className="p-2 rounded-sm bg-zinc-800 hover:bg-zinc-750 text-zinc-300 transition-colors cursor-pointer min-h-[36px]"
-                        >
-                          <QrCode className="w-3.5 h-3.5 text-[#f04d55]" />
-                        </button>
-                      )}
-
                       <Link
                         href={`/admin/services/${srv.id}/edit`}
                         title="Editar Servicio"
@@ -426,19 +413,6 @@ export function DashboardClientView({
         onClose={() => setIsQuickCreateOpen(false)}
         initialPatente={searchTerm}
       />
-
-      {/* Modal QR & Print */}
-      {selectedQRVehicle && (
-        <QRPrintModal
-          isOpen={true}
-          onClose={() => setSelectedQRVehicle(null)}
-          token={selectedQRVehicle.public_token}
-          patente={selectedQRVehicle.patente}
-          marca={selectedQRVehicle.marca}
-          modelo={selectedQRVehicle.modelo}
-          shopName={shopName}
-        />
-      )}
 
       {/* Modal de Anulación de Servicio */}
       {anulandoServiceId && (

@@ -215,7 +215,7 @@ export function formatKilometers(km: number | null | undefined): string {
 }
 
 /**
- * Escapa texto para insertarlo en HTML armado a mano (ej. la ventana de impresión del sticker)
+ * Escapa texto para insertarlo en HTML armado a mano (ej. la ventana de impresión del QR del taller)
  */
 export function escapeHtml(value: string | null | undefined): string {
   return String(value ?? '')

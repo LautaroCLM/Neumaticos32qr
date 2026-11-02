@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { PlateSearchForm } from '@/components/public/PlateSearchForm';
-import { QrCode } from 'lucide-react';
+import { Smartphone } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -36,13 +36,13 @@ export default function HomePage() {
 
         <div className="mt-8 pt-5 border-t border-[#2a2b2e] grid grid-cols-[44px_1fr] gap-4">
           <span className="w-11 h-11 flex items-center justify-center border-2 border-[#f2f2ef] text-[#f2f2ef]" aria-hidden="true">
-            <QrCode className="w-6 h-6" />
+            <Smartphone className="w-6 h-6" />
           </span>
           <p className="text-sm leading-relaxed text-[#c8cad0]">
             <strong className="block text-[15px] font-semibold text-[#f2f2ef] mb-0.5">
-              ¿Tenés el sticker de tu vehículo?
+              ¿Tu teléfono no está cargado?
             </strong>
-            Escaneá el QR con la cámara del celular y entrás directo a tu historial, sin escribir ningún dato.
+            Pedile al taller que lo agregue a la ficha de tu vehículo y vas a poder consultar tu historial desde acá.
           </p>
         </div>
       </section>

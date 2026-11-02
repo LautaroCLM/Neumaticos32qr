@@ -93,7 +93,7 @@ export function VehicleQuickCreateModal({
               <h2 className="text-base font-black text-zinc-100 uppercase tracking-tight">
                 Alta Rápida de Vehículo
               </h2>
-              <p className="text-[11px] text-zinc-400">El token y QR se generan automáticamente en el servidor</p>
+              <p className="text-[11px] text-zinc-400">Con el teléfono del cliente, puede consultar su historial desde la web</p>
             </div>
           </div>
           <button

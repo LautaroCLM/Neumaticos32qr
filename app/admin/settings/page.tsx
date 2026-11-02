@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { getCurrentStaff } from '@/lib/actions/auth';
 import { redirect } from 'next/navigation';
 import { SettingsClientView } from './SettingsClientView';
+import { env } from '@/lib/env';
 
 export default async function AdminSettingsPage() {
   const staffData = await getCurrentStaff();
@@ -32,6 +33,7 @@ export default async function AdminSettingsPage() {
     <SettingsClientView
       shop={shop}
       templates={templates || []}
+      siteUrl={env.NEXT_PUBLIC_SITE_URL}
     />
   );
 }

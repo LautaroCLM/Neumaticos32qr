@@ -4,9 +4,8 @@ import { Plate } from '@/components/public/Plate';
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { VehicleQuickCreateModal } from '@/components/admin/VehicleQuickCreateModal';
-import { QRPrintModal } from '@/components/admin/QRPrintModal';
 import { formatPatenteDisplay, formatPhoneDisplay, normalizePatente } from '@/lib/utils/formatters';
-import { Car, Search, Plus, QrCode, ArrowRight, Phone, User, Calendar, Wrench } from 'lucide-react';
+import { Car, Search, Plus, ArrowRight, Phone, User, Calendar, Wrench } from 'lucide-react';
 
 interface VehiclesListViewProps {
   vehicles: any[];
@@ -16,7 +15,6 @@ interface VehiclesListViewProps {
 export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isQuickCreateOpen, setIsQuickCreateOpen] = useState(false);
-  const [selectedQRVehicle, setSelectedQRVehicle] = useState<any | null>(null);
 
   const normalized = normalizePatente(searchTerm);
   const filtered = useMemo(() => {
@@ -40,7 +38,7 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
             Parque de Vehículos ({vehicles.length})
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
-            Gestioná los coches registrados, generá etiquetas QR o cargá mantenimientos
+            Gestioná los coches registrados, sus propietarios y sus mantenimientos
           </p>
         </div>
 
@@ -85,16 +83,7 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
                 className="p-5 rounded-sm bg-[#161719] border border-[#2a2b2e] hover:border-zinc-700 transition-all flex flex-col justify-between space-y-4"
               >
                 <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <Plate patente={veh.patente} size="md" />
-                    <button
-                      onClick={() => setSelectedQRVehicle(veh)}
-                      title="Generar o Imprimir QR"
-                      className="p-2 rounded-sm bg-[#0d0d0e] hover:bg-zinc-800 text-zinc-400 hover:text-[#f04d55] border border-[#2a2b2e] transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
-                    >
-                      <QrCode className="w-4 h-4" />
-                    </button>
-                  </div>
+                  <Plate patente={veh.patente} size="md" />
 
                   <h3 className="text-base font-black text-zinc-100 mt-2">
                     {veh.marca} {veh.modelo}
@@ -133,7 +122,7 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
                     href={`/admin/vehicles/${veh.id}`}
                     className="flex items-center gap-1 text-[#f04d55] hover:text-red-400 font-bold group min-h-[36px]"
                   >
-                    <span>Ficha y QR</span>
+                    <span>Ver Ficha</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 </div>
@@ -149,18 +138,6 @@ export function VehiclesListView({ vehicles, shopName }: VehiclesListViewProps) 
         onClose={() => setIsQuickCreateOpen(false)}
       />
 
-      {/* Modal QR */}
-      {selectedQRVehicle && (
-        <QRPrintModal
-          isOpen={true}
-          onClose={() => setSelectedQRVehicle(null)}
-          token={selectedQRVehicle.public_token}
-          patente={selectedQRVehicle.patente}
-          marca={selectedQRVehicle.marca}
-          modelo={selectedQRVehicle.modelo}
-          shopName={shopName}
-        />
-      )}
     </div>
   );
 }

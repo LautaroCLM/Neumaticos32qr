@@ -276,7 +276,7 @@ export async function regenerateVehicleTokenAction(vehicleId: string) {
   if (error || !data?.success) {
     return {
       success: false,
-      error: error?.message || data?.error || 'No se pudo regenerar el token del QR.',
+      error: error?.message || data?.error || 'No se pudo regenerar el enlace del historial.',
     };
   }
 
@@ -306,7 +306,7 @@ export async function revokeVehicleTokenAction(vehicleId: string) {
   }
 
   if (staff.rol !== 'admin') {
-    return { success: false, error: 'Solo un administrador puede revocar el acceso al QR.' };
+    return { success: false, error: 'Solo un administrador puede revocar el acceso al historial.' };
   }
 
   const { data, error } = await supabase.rpc('revoke_vehicle_token', {
@@ -316,7 +316,7 @@ export async function revokeVehicleTokenAction(vehicleId: string) {
   if (error || !data?.success) {
     return {
       success: false,
-      error: error?.message || data?.error || 'No se pudo revocar el token del QR.',
+      error: error?.message || data?.error || 'No se pudo revocar el enlace del historial.',
     };
   }
 

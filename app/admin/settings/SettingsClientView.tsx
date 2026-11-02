@@ -16,17 +16,20 @@ import {
   Trash2,
   Power,
   X,
+  QrCode,
 } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
+import { ShopQRCard } from '@/components/admin/ShopQRCard';
 
 interface SettingsClientViewProps {
   shop: any;
   templates: any[];
+  siteUrl: string;
 }
 
-export function SettingsClientView({ shop, templates }: SettingsClientViewProps) {
+export function SettingsClientView({ shop, templates, siteUrl }: SettingsClientViewProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'taller' | 'ticket' | 'plantillas'>('taller');
+  const [activeTab, setActiveTab] = useState<'taller' | 'ticket' | 'plantillas' | 'qr'>('taller');
 
   // Shop details form state
   const [nombre, setNombre] = useState(shop?.nombre || 'Neumáticos el 32');
@@ -187,7 +190,7 @@ export function SettingsClientView({ shop, templates }: SettingsClientViewProps)
       )}
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-[#2a2b2e] pb-2">
+      <div className="flex items-center gap-2 border-b border-[#2a2b2e] pb-2 overflow-x-auto [&>button]:shrink-0 [&>button]:whitespace-nowrap">
         <button
           onClick={() => setActiveTab('taller')}
           className={cn(
@@ -226,7 +229,27 @@ export function SettingsClientView({ shop, templates }: SettingsClientViewProps)
           <Sparkles className="w-4 h-4" />
           <span>Plantillas de Servicios</span>
         </button>
+
+        <button
+          onClick={() => setActiveTab('qr')}
+          className={cn(
+            'flex items-center gap-2 px-4 py-2.5 rounded-sm text-xs font-bold transition-all cursor-pointer min-h-[44px]',
+            activeTab === 'qr'
+              ? 'bg-[#d31a24] text-white  font-black'
+              : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#161719]'
+          )}
+        >
+          <QrCode className="w-4 h-4" />
+          <span>QR del Local</span>
+        </button>
       </div>
+
+      {/* Tab 4: QR general del taller */}
+      {activeTab === 'qr' && (
+        <div className="bg-[#161719] border border-[#2a2b2e] rounded-sm p-6">
+          <ShopQRCard siteUrl={siteUrl} shopName={nombre} />
+        </div>
+      )}
 
       {/* Tab 1: Datos del Taller */}
       {activeTab === 'taller' && (
@@ -343,7 +366,7 @@ export function SettingsClientView({ shop, templates }: SettingsClientViewProps)
               className="w-full px-3.5 py-2.5 rounded-sm bg-[#0d0d0e] border border-[#2a2b2e] text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24] font-bold min-h-[44px]"
             />
             <p className="text-[11px] text-zinc-500 mt-1">
-              Encabezado superior del ticket digital cuando el cliente escanea el QR.
+              Encabezado superior del ticket digital cuando el cliente consulta su historial.
             </p>
           </div>
 
