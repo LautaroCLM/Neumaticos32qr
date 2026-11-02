@@ -14,7 +14,7 @@ export default async function AdminLayout({
   const staffData = await getCurrentStaff();
 
   return (
-    <div className="min-h-screen bg-[#0A0B0D] text-zinc-100 flex flex-col font-sans selection:bg-[#D31A24] selection:text-white">
+    <div className="min-h-screen bg-[#0d0d0e] text-zinc-100 flex flex-col font-sans selection:bg-[#d31a24] selection:text-white">
       {staffData && (
         <AdminHeader
           staffUser={{

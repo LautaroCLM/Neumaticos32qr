@@ -21,9 +21,9 @@ export function WhatsAppButton({ whatsappNumber, patente, vehiculoInfo }: WhatsA
       href={waUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-950/40 min-h-[48px]"
+      className="flex-1 min-h-[48px] px-3 rounded-xs whitespace-nowrap bg-[#1a7a42] hover:bg-[#166a39] text-white text-sm font-semibold flex items-center justify-center gap-2 transition-colors"
     >
-      <MessageCircle className="w-4 h-4 fill-white" />
+      <MessageCircle className="w-4 h-4" aria-hidden="true" />
       <span>Consultar al taller</span>
     </a>
   );

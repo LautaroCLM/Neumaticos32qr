@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { PlateSearchForm } from '@/components/public/PlateSearchForm';
-import { QrCode, ShieldCheck } from 'lucide-react';
+import { QrCode } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -9,61 +9,62 @@ export const metadata: Metadata = {
     'Consultá el historial digital y servicios de tu vehículo en Neumáticos el 32 Quilmes. Búsqueda por patente y comprobantes de mantenimiento.',
 };
 
+const VEHICLE_FACTS = [
+  { term: 'Último servicio', detail: 'Fecha, kilometraje y trabajo realizado.' },
+  { term: 'Historial completo', detail: 'Todos los servicios anteriores del vehículo, del más reciente al primero.' },
+  { term: 'Próximo control', detail: 'Los kilómetros o la fecha que recomienda el taller.' },
+];
+
 export default function HomePage() {
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
-      {/* Hero Section con Emblema Oficial */}
-      <div className="text-center space-y-3 pt-4 pb-2">
-        <div className="flex justify-center">
-          <div className="relative w-48 sm:w-56 h-28 sm:h-32 drop-shadow-[0_10px_20px_rgba(211,26,36,0.15)]">
-            <Image
-              src="/logo.webp"
-              alt="Neumáticos el 32"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
+    <div className="lg:grid lg:grid-cols-[minmax(0,460px)_minmax(0,1fr)] lg:gap-16 xl:gap-24 lg:pt-6 animate-in">
+      <section aria-labelledby="home-title" className="max-w-[520px]">
+        <h1
+          id="home-title"
+          className="font-display text-[clamp(2rem,9vw,3.5rem)] lg:text-[3rem] leading-[0.95] text-[#f2f2ef]"
+        >
+          <span className="whitespace-nowrap">Historial de</span>{' '}
+          <span className="block text-[#d31a24]">servicios</span>
+        </h1>
+        <p className="mt-4 text-[15px] leading-relaxed text-[#c8cad0] max-w-[34ch]">
+          Ingresá tu patente para ver los trabajos realizados, los costos y el próximo control de tu vehículo.
+        </p>
+
+        <div className="mt-7 pt-6 border-t border-[#2a2b2e]">
+          <PlateSearchForm />
         </div>
 
-        <div className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase font-sans">
-            Historial de Servicios
-          </h1>
-          <p className="text-xs sm:text-sm text-[#c8cdd5] max-w-sm mx-auto leading-relaxed">
-            Ingresá tu patente para ver los trabajos realizados, los costos y el próximo control de tu vehículo.
-          </p>
-        </div>
-      </div>
-
-      {/* Buscador Interactivo de Patente */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-[#14161b] border border-[#262a33] shadow-2xl space-y-3">
-        <div className="space-y-0.5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-[#d31a24]">
-            Búsqueda Rápida
+        <div className="mt-8 pt-5 border-t border-[#2a2b2e] grid grid-cols-[44px_1fr] gap-4">
+          <span className="w-11 h-11 flex items-center justify-center border-2 border-[#f2f2ef] text-[#f2f2ef]" aria-hidden="true">
+            <QrCode className="w-6 h-6" />
           </span>
-          <h2 className="text-base sm:text-lg font-bold text-white">
-            Consultá tu auto o camioneta
-          </h2>
-        </div>
-
-        <PlateSearchForm />
-      </div>
-
-      {/* Acceso al Historial Completo vía Sticker QR */}
-      <div className="p-4 rounded-xl bg-[#14161b]/80 border border-[#262a33] flex items-start gap-3.5">
-        <div className="w-10 h-10 rounded-lg bg-[#880e14]/20 border border-[#d31a24]/30 flex items-center justify-center text-[#d31a24] shrink-0 mt-0.5">
-          <QrCode className="w-5 h-5" />
-        </div>
-        <div className="text-xs text-[#c8cdd5] space-y-1">
-          <p className="font-bold text-white text-sm">
-            ¿Tenés el sticker de tu vehículo?
-          </p>
-          <p className="leading-relaxed">
-            Escaneá el código QR con la cámara de tu celular y entrás directo a tu historial, sin escribir ningún dato.
+          <p className="text-sm leading-relaxed text-[#c8cad0]">
+            <strong className="block text-[15px] font-semibold text-[#f2f2ef] mb-0.5">
+              ¿Tenés el sticker de tu vehículo?
+            </strong>
+            Escaneá el QR con la cámara del celular y entrás directo a tu historial, sin escribir ningún dato.
           </p>
         </div>
-      </div>
+      </section>
+
+      <aside className="hidden lg:flex flex-col border-l border-[#2a2b2e] pl-12 xl:pl-16" aria-label="Qué vas a encontrar">
+        <Image
+          src="/logo.webp"
+          alt="Neumáticos el 32"
+          width={200}
+          height={200}
+          className="w-[176px] h-auto object-contain -ml-2"
+          priority
+        />
+        <dl className="mt-10 border-t border-[#2a2b2e]">
+          {VEHICLE_FACTS.map((fact) => (
+            <div key={fact.term} className="grid grid-cols-[180px_1fr] gap-6 py-4 border-b border-[#2a2b2e]">
+              <dt className="label-caps text-[#9a9da3] pt-0.5">{fact.term}</dt>
+              <dd className="text-sm leading-relaxed text-[#c8cad0]">{fact.detail}</dd>
+            </div>
+          ))}
+        </dl>
+      </aside>
     </div>
   );
 }

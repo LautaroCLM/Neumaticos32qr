@@ -18,7 +18,7 @@ interface RevisionsHistoryProps {
 export function RevisionsHistory({ revisions }: RevisionsHistoryProps) {
   if (!revisions || revisions.length === 0) {
     return (
-      <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800 text-center">
+      <div className="p-4 rounded-sm bg-zinc-900/60 border border-zinc-800 text-center">
         <History className="w-5 h-5 text-zinc-600 mx-auto mb-1.5" />
         <p className="text-xs text-zinc-500 font-medium">Este servicio no registra modificaciones posteriores a su creación.</p>
       </div>
@@ -28,7 +28,7 @@ export function RevisionsHistory({ revisions }: RevisionsHistoryProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
-        <History className="w-4 h-4 text-[#D31A24]" />
+        <History className="w-4 h-4 text-[#f04d55]" />
         <h4 className="text-xs font-black uppercase tracking-wider text-zinc-300">
           Historial de Revisiones ({revisions.length})
         </h4>
@@ -41,11 +41,11 @@ export function RevisionsHistory({ revisions }: RevisionsHistoryProps) {
           return (
             <div
               key={rev.id || index}
-              className="p-4 rounded-2xl bg-[#14161b] border border-[#262a33] space-y-2.5"
+              className="p-4 rounded-sm bg-[#161719] border border-[#2a2b2e] space-y-2.5"
             >
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#D31A24]" />
+                  <span className="w-2 h-2 rounded-full bg-[#d31a24]" />
                   <span className="font-bold text-zinc-200">
                     {isAnulacion ? 'Anulación de servicio' : 'Modificación de datos'}
                   </span>
@@ -57,7 +57,7 @@ export function RevisionsHistory({ revisions }: RevisionsHistoryProps) {
               </div>
 
               {rev.motivo_edicion && (
-                <div className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800/80 text-xs">
+                <div className="p-2.5 rounded-sm bg-zinc-900 border border-zinc-800/80 text-xs">
                   <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Motivo:</span>
                   <p className="text-zinc-300 italic">"{rev.motivo_edicion}"</p>
                 </div>

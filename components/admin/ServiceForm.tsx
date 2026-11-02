@@ -1,5 +1,6 @@
 'use client';
 
+import { Plate } from '@/components/public/Plate';
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { createServiceAction, updateServiceAction, anularServiceAction } from '@/lib/actions/services';
@@ -27,7 +28,6 @@ import {
   Ban,
   Check,
   ChevronDown,
-  Car,
   Calendar,
   Layers,
   Calculator,
@@ -340,12 +340,12 @@ export function ServiceForm({
   };
 
   return (
-    <div className="relative pb-28">
+    <div className="relative pb-32 lg:pb-0">
       {/* Top Warning Banner */}
-      <div className="mb-6 p-4 rounded-2xl bg-[#880e14]/20 border border-[#d31a24]/30 flex items-start gap-3">
-        <AlertTriangle className="w-5 h-5 text-[#d31a24] shrink-0 mt-0.5" />
+      <div className="mb-6 p-4 rounded-xs bg-[#161719] border border-[#3a3b3f] flex items-start gap-3">
+        <AlertTriangle className="w-5 h-5 text-[#f04d55] shrink-0 mt-0.5" />
         <div className="text-xs">
-          <p className="font-bold text-[#d31a24] uppercase tracking-wider">Aviso de Privacidad del Ticket Digital</p>
+          <p className="font-semibold text-sm text-[#f2f2ef]">Aviso de Privacidad del Ticket Digital</p>
           <p className="text-zinc-300 mt-0.5">
             Los datos marcados con toggle de visibilidad activo serán visibles para el cliente al escanear el QR.
             Las <strong className="text-zinc-100">Notas Internas</strong> nunca se comparten públicamente.
@@ -354,7 +354,7 @@ export function ServiceForm({
       </div>
 
       {error && (
-        <div className="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
+        <div className="mb-6 p-4 rounded-sm bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -365,11 +365,8 @@ export function ServiceForm({
         {/* Form Column */}
         <form onSubmit={handleSubmit} className="lg:col-span-7 space-y-6">
           {/* Vehículo Asociado Card */}
-          <div className="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-between">
+          <div className="p-4 rounded-sm bg-zinc-900 border border-zinc-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center text-[#d31a24]">
-                <Car className="w-5 h-5" />
-              </div>
               <div>
                 <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Vehículo</span>
                 <h3 className="text-sm font-black text-zinc-100">
@@ -377,22 +374,20 @@ export function ServiceForm({
                 </h3>
               </div>
             </div>
-            <div className="px-3 py-1 rounded-lg bg-zinc-950 border border-zinc-800 font-mono font-bold text-[#d31a24] text-xs">
-              {formatPatenteDisplay(vehicle.patente)}
-            </div>
+            <Plate patente={vehicle.patente} size="md" />
           </div>
 
           {/* Plantillas rápidas (si hay disponibles) */}
           {templates.length > 0 && !isEditing && (
-            <div className="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-2">
+            <div className="p-4 rounded-sm bg-zinc-900 border border-zinc-800 space-y-2">
               <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#d31a24]" />
+                <Sparkles className="w-4 h-4 text-[#f04d55]" />
                 Cargar desde Plantilla de Servicio
               </label>
               <select
                 onChange={(e) => handleApplyTemplate(e.target.value)}
                 defaultValue=""
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-200 text-xs font-medium focus:outline-none focus:border-[#d31a24] cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-200 text-xs font-medium focus:outline-none focus:border-[#d31a24] cursor-pointer"
               >
                 <option value="" disabled>
                   Seleccioná una plantilla para prellenar conceptos y visibilidad...
@@ -407,20 +402,20 @@ export function ServiceForm({
           )}
 
           {/* Datos Principales del Trabajo */}
-          <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
+          <div className="p-5 rounded-sm bg-zinc-900 border border-zinc-800 space-y-4">
             <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2 border-b border-zinc-800 pb-2">
-              <Wrench className="w-4 h-4 text-[#d31a24]" />
+              <Wrench className="w-4 h-4 text-[#f04d55]" />
               Detalles del Servicio
             </h3>
 
             {/* Tipo de Trabajo y Fecha */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-zinc-400 mb-1">Tipo de Servicio *</label>
+                <label className="block label-caps text-[#9a9da3] mb-1.5">Tipo de Servicio *</label>
                 <select
                   value={tipo}
                   onChange={(e) => setTipo(e.target.value as any)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-bold focus:outline-none focus:border-[#d31a24]"
+                  className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-bold focus:outline-none focus:border-[#d31a24]"
                 >
                   <option value="neumaticos">Neumáticos</option>
                   <option value="alineacion_balanceo">Alineación y Balanceo</option>
@@ -433,13 +428,13 @@ export function ServiceForm({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-zinc-400 mb-1">Fecha y Hora *</label>
+                <label className="block label-caps text-[#9a9da3] mb-1.5">Fecha y Hora *</label>
                 <input
                   type="datetime-local"
                   value={fechaHora}
                   onChange={(e) => setFechaHora(e.target.value)}
                   required
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-medium focus:outline-none focus:border-[#d31a24]"
+                  className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-medium focus:outline-none focus:border-[#d31a24]"
                 />
               </div>
             </div>
@@ -447,31 +442,31 @@ export function ServiceForm({
             {/* Kilometraje y Sucursal */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-zinc-400 mb-1">Kilometraje actual *</label>
+                <label className="block label-caps text-[#9a9da3] mb-1.5">Kilometraje actual *</label>
                 <input
                   type="number"
                   value={kilometraje}
                   onChange={(e) => setKilometraje(e.target.value)}
                   min="0"
                   required
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-mono font-bold focus:outline-none focus:border-[#d31a24]"
+                  className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-mono font-bold focus:outline-none focus:border-[#d31a24]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-zinc-400 mb-1">Sucursal</label>
+                <label className="block label-caps text-[#9a9da3] mb-1.5">Sucursal</label>
                 <input
                   type="text"
                   value={sucursal}
                   onChange={(e) => setSucursal(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
+                  className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
                 />
               </div>
             </div>
 
             {/* Descripción del Trabajo */}
             <div>
-              <label className="block text-xs font-bold text-zinc-400 mb-1">
+              <label className="block label-caps text-[#9a9da3] mb-1.5">
                 Descripción del trabajo realizado *
               </label>
               <textarea
@@ -480,22 +475,22 @@ export function ServiceForm({
                 rows={3}
                 placeholder="Detallá el trabajo realizado (ej. Cambio de dos cubiertas delanteras 205/55R16, válvulas nuevas y balanceo computarizado)..."
                 required
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
+                className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
               />
             </div>
           </div>
 
           {/* Ítems Dinámicos y Cálculo de Precios */}
-          <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
+          <div className="p-5 rounded-sm bg-zinc-900 border border-zinc-800 space-y-4">
             <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
               <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2">
-                <Calculator className="w-4 h-4 text-[#d31a24]" />
+                <Calculator className="w-4 h-4 text-[#f04d55]" />
                 Ítems y Precios
               </h3>
               <button
                 type="button"
                 onClick={handleAddItem}
-                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#880e14]/20 hover:bg-[#880e14]/30 text-[#d31a24] border border-[#d31a24]/30 text-[11px] font-bold transition-colors cursor-pointer"
+                className="flex items-center gap-1 px-2.5 py-1 rounded-sm bg-[#880e14]/20 hover:bg-[#880e14]/30 text-[#f04d55] border border-[#d31a24]/30 text-[11px] font-bold transition-colors cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Agregar Ítem</span>
@@ -507,7 +502,7 @@ export function ServiceForm({
               {items.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-3 rounded-xl bg-zinc-950/80 border border-zinc-800/80 grid grid-cols-12 gap-2 items-center"
+                  className="p-3 rounded-sm bg-zinc-950/80 border border-zinc-800/80 grid grid-cols-12 gap-2 items-center"
                 >
                   <div className="col-span-12 sm:col-span-6">
                     <input
@@ -515,7 +510,7 @@ export function ServiceForm({
                       value={item.concepto}
                       onChange={(e) => handleItemChange(idx, 'concepto', e.target.value)}
                       placeholder="Concepto / Producto / Mano de obra"
-                      className="w-full px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
+                      className="w-full px-3 py-2 rounded-sm bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
                     />
                   </div>
                   <div className="col-span-4 sm:col-span-2">
@@ -527,7 +522,7 @@ export function ServiceForm({
                       step="1"
                       title="Cantidad"
                       placeholder="Cant."
-                      className="w-full px-2 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs text-center font-mono focus:outline-none focus:border-[#d31a24]"
+                      className="w-full px-2 py-2 rounded-sm bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs text-center font-mono focus:outline-none focus:border-[#d31a24]"
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
@@ -539,7 +534,7 @@ export function ServiceForm({
                       step="100"
                       title="Precio Unitario"
                       placeholder="Precio Unit."
-                      className="w-full px-2.5 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs text-right font-mono focus:outline-none focus:border-[#d31a24]"
+                      className="w-full px-2.5 py-2 rounded-sm bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs text-right font-mono focus:outline-none focus:border-[#d31a24]"
                     />
                   </div>
                   <div className="col-span-2 sm:col-span-1 flex justify-center">
@@ -547,7 +542,7 @@ export function ServiceForm({
                       type="button"
                       onClick={() => handleRemoveItem(idx)}
                       disabled={items.length <= 1}
-                      className="p-1.5 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-20 cursor-pointer"
+                      className="p-1.5 rounded-sm text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-20 cursor-pointer"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -557,7 +552,7 @@ export function ServiceForm({
             </div>
 
             {/* Subtotal automático */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-950/60 border border-zinc-800">
+            <div className="flex items-center justify-between p-3 rounded-sm bg-zinc-950/60 border border-zinc-800">
               <span className="text-xs text-zinc-400 font-medium">Suma automática de ítems:</span>
               <span className="text-sm font-mono font-bold text-zinc-100">
                 {formatCurrencyARS(itemsSubtotal)}
@@ -571,7 +566,7 @@ export function ServiceForm({
                   type="checkbox"
                   checked={useTotalManual}
                   onChange={(e) => setUseTotalManual(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#d31a24] bg-zinc-900 border-zinc-700"
+                  className="w-4 h-4 rounded text-[#f04d55] bg-zinc-900 border-zinc-700"
                 />
                 <span className="text-xs font-bold text-zinc-300">
                   Sobrescribir con un Total Manual (reemplaza la suma de ítems)
@@ -587,7 +582,7 @@ export function ServiceForm({
                     placeholder="Monto total convenido ($)"
                     min="0"
                     step="100"
-                    className="w-full sm:w-64 px-3 py-2 rounded-xl bg-zinc-950 border border-[#d31a24]/50 text-[#d31a24] font-mono font-bold text-sm focus:outline-none"
+                    className="w-full sm:w-64 px-3 py-2 rounded-sm bg-zinc-950 border border-[#d31a24]/50 text-[#f04d55] font-mono font-bold text-sm focus:outline-none"
                   />
                   <p className="text-[10px] text-zinc-500 mt-1">
                     Este valor final será el que figure como total del ticket.
@@ -598,48 +593,48 @@ export function ServiceForm({
           </div>
 
           {/* Próximo Servicio Recomendado */}
-          <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
+          <div className="p-5 rounded-sm bg-zinc-900 border border-zinc-800 space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2 border-b border-zinc-800 pb-2">
-              <Calendar className="w-4 h-4 text-[#d31a24]" />
+              <Calendar className="w-4 h-4 text-[#f04d55]" />
               Próximo Service Recomendado
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-zinc-400 mb-1">A los kilómetros</label>
+                <label className="block label-caps text-[#9a9da3] mb-1.5">A los kilómetros</label>
                 <input
                   type="number"
                   value={proximoKm}
                   onChange={(e) => setProximoKm(e.target.value)}
                   placeholder="Ej. 60000"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-mono focus:outline-none focus:border-[#d31a24]"
+                  className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs font-mono focus:outline-none focus:border-[#d31a24]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-zinc-400 mb-1">O en la fecha estimada</label>
+                <label className="block label-caps text-[#9a9da3] mb-1.5">O en la fecha estimada</label>
                 <input
                   type="date"
                   value={proximoFecha}
                   onChange={(e) => setProximoFecha(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
+                  className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
                 />
               </div>
             </div>
           </div>
 
           {/* Campos Extra Personalizados */}
-          <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
+          <div className="p-5 rounded-sm bg-zinc-900 border border-zinc-800 space-y-3">
             <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
               <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2">
-                <Layers className="w-4 h-4 text-[#d31a24]" />
+                <Layers className="w-4 h-4 text-[#f04d55]" />
                 Campos Personalizados ({camposExtra.length}/10)
               </h3>
               <button
                 type="button"
                 onClick={handleAddExtraField}
                 disabled={camposExtra.length >= 10}
-                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[11px] font-bold transition-colors cursor-pointer disabled:opacity-30"
+                className="flex items-center gap-1 px-2.5 py-1 rounded-sm bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[11px] font-bold transition-colors cursor-pointer disabled:opacity-30"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Agregar Campo</span>
@@ -659,14 +654,14 @@ export function ServiceForm({
                       value={field.titulo}
                       onChange={(e) => handleExtraFieldChange(idx, 'titulo', e.target.value)}
                       placeholder="Título (ej. Medida)"
-                      className="w-1/3 px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs"
+                      className="w-1/3 px-3 py-2 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs"
                     />
                     <input
                       type="text"
                       value={field.valor}
                       onChange={(e) => handleExtraFieldChange(idx, 'valor', e.target.value)}
                       placeholder="Valor (ej. 205/55 R16 91V)"
-                      className="flex-1 px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs"
+                      className="flex-1 px-3 py-2 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs"
                     />
                     <button
                       type="button"
@@ -682,9 +677,9 @@ export function ServiceForm({
           </div>
 
           {/* Notas: Internas vs Cliente */}
-          <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
+          <div className="p-5 rounded-sm bg-zinc-900 border border-zinc-800 space-y-4">
             <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2 border-b border-zinc-800 pb-2">
-              <FileText className="w-4 h-4 text-[#d31a24]" />
+              <FileText className="w-4 h-4 text-[#f04d55]" />
               Observaciones y Notas
             </h3>
 
@@ -701,14 +696,14 @@ export function ServiceForm({
                 onChange={(e) => setNotasCliente(e.target.value)}
                 rows={2}
                 placeholder="Recomendaciones o aclaraciones para el cliente (ej. Revisar presión a los 1000 km)..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
+                className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
               />
             </div>
 
             {/* Notas Internas (Confidenciales) */}
             <div className="pt-2 border-t border-zinc-800/80">
-              <label className="text-xs font-bold text-[#d31a24] flex items-center gap-1.5 mb-1">
-                <Lock className="w-3.5 h-3.5 text-[#d31a24]" />
+              <label className="text-xs font-bold text-[#f04d55] flex items-center gap-1.5 mb-1">
+                <Lock className="w-3.5 h-3.5 text-[#f04d55]" />
                 Notas Internas (CONFIDENCIAL TALLER - Nunca viaja al cliente)
               </label>
               <textarea
@@ -716,15 +711,15 @@ export function ServiceForm({
                 onChange={(e) => setNotasInternas(e.target.value)}
                 rows={2}
                 placeholder="Anotaciones de uso exclusivo del personal (ej. Cliente pidió descuento, llanta trasera con pequeño golpe)..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-[#d31a24]/30 text-zinc-200 text-xs focus:outline-none focus:border-[#d31a24] font-mono"
+                className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-[#d31a24]/30 text-zinc-200 text-xs focus:outline-none focus:border-[#d31a24] font-mono"
               />
             </div>
           </div>
 
           {/* Toggles de Visibilidad en el QR */}
-          <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
+          <div className="p-5 rounded-sm bg-zinc-900 border border-zinc-800 space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2 border-b border-zinc-800 pb-2">
-              <Eye className="w-4 h-4 text-[#d31a24]" />
+              <Eye className="w-4 h-4 text-[#f04d55]" />
               Visibilidad de Campos en el Ticket Público (QR)
             </h3>
 
@@ -743,7 +738,7 @@ export function ServiceForm({
                   <label
                     key={key}
                     className={cn(
-                      'flex items-center justify-between p-3 rounded-xl border text-xs font-semibold cursor-pointer transition-colors',
+                      'flex items-center justify-between p-3 rounded-sm border text-xs font-semibold cursor-pointer transition-colors',
                       isChecked
                         ? 'bg-zinc-950/80 border-[#d31a24]/40 text-zinc-200'
                         : 'bg-zinc-950/40 border-zinc-800/60 text-zinc-500'
@@ -759,7 +754,7 @@ export function ServiceForm({
                           [key]: e.target.checked,
                         })
                       }
-                      className="w-4 h-4 rounded text-[#d31a24] bg-zinc-900 border-zinc-700 focus:ring-[#d31a24]"
+                      className="w-4 h-4 rounded text-[#f04d55] bg-zinc-900 border-zinc-700 focus:ring-[#d31a24]"
                     />
                   </label>
                 );
@@ -769,8 +764,8 @@ export function ServiceForm({
 
           {/* Motivo de Edición (Si estamos editando) */}
           {isEditing && (
-            <div className="p-5 rounded-2xl bg-zinc-900 border border-[#d31a24]/30 space-y-2">
-              <label className="block text-xs font-bold text-[#d31a24] uppercase tracking-wider">
+            <div className="p-5 rounded-sm bg-zinc-900 border border-[#d31a24]/30 space-y-2">
+              <label className="block text-xs font-bold text-[#f04d55] uppercase tracking-wider">
                 Motivo de la Edición (Opcional, queda en auditoría inmutable)
               </label>
               <input
@@ -778,7 +773,7 @@ export function ServiceForm({
                 value={motivoEdicion}
                 onChange={(e) => setMotivoEdicion(e.target.value)}
                 placeholder="Ej. Corrección de kilometraje cargado por error..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
+                className="w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-[#d31a24]"
               />
             </div>
           )}
@@ -789,7 +784,7 @@ export function ServiceForm({
               <button
                 type="button"
                 onClick={() => setShowAnularModal(true)}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-sm bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold transition-colors cursor-pointer"
               >
                 <Ban className="w-4 h-4" />
                 <span>Anular Servicio</span>
@@ -802,14 +797,14 @@ export function ServiceForm({
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="px-4 py-2.5 rounded-xl text-xs font-bold text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer"
+                className="px-4 py-2.5 rounded-sm text-xs font-bold text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-[#d31a24] hover:bg-[#e52530] text-white shadow-lg shadow-[#d31a24]/20 transition-all cursor-pointer disabled:opacity-50"
+                className="flex items-center gap-2 px-6 py-2.5 rounded-sm text-xs font-black uppercase tracking-wider bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white transition-all cursor-pointer disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
                 <span>{loading ? 'Guardando...' : isEditing ? 'Guardar Cambios' : 'Registrar Servicio'}</span>
@@ -821,7 +816,7 @@ export function ServiceForm({
         {/* Live Preview Column (Desktop) */}
         <div className="hidden lg:block lg:col-span-5 sticky top-24 space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-zinc-800">
-            <h4 className="text-xs font-black uppercase tracking-wider text-[#d31a24] flex items-center gap-1.5">
+            <h4 className="text-xs font-black uppercase tracking-wider text-[#f04d55] flex items-center gap-1.5">
               <Eye className="w-4 h-4" />
               Vista Previa en Vivo del Ticket
             </h4>
@@ -835,11 +830,11 @@ export function ServiceForm({
             isPreview={true}
           />
 
-          <div className="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800/80 text-[11px] text-zinc-400 space-y-1">
+          <div className="p-3 rounded-sm bg-zinc-950/60 border border-zinc-800/80 text-[11px] text-zinc-400 space-y-1">
             <p className="font-bold text-zinc-300">Resumen para el taller:</p>
             <div className="flex justify-between">
               <span>Total a cobrar:</span>
-              <span className="font-mono font-bold text-[#d31a24]">{formatCurrencyARS(effectiveTotal)}</span>
+              <span className="font-mono font-bold text-[#f04d55]">{formatCurrencyARS(effectiveTotal)}</span>
             </div>
             <div className="flex justify-between">
               <span>Visible al cliente:</span>
@@ -850,10 +845,10 @@ export function ServiceForm({
       </div>
 
       {/* Floating Bottom Action Bar for Mobile */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800 p-3 flex items-center justify-between gap-2 shadow-2xl">
-        <div>
-          <span className="text-[10px] text-zinc-400 uppercase font-bold block">Total Calculado</span>
-          <span className="text-sm font-mono font-black text-[#d31a24]">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0d0d0e] border-t border-[#2a2b2e] px-3 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] flex items-center justify-between gap-2">
+        <div className="shrink-0 whitespace-nowrap">
+          <span className="label-caps text-[#9a9da3] block">Total</span>
+          <span className="figure text-base font-extrabold text-[#f2f2ef]">
             {formatCurrencyARS(effectiveTotal)}
           </span>
         </div>
@@ -863,7 +858,7 @@ export function ServiceForm({
             <button
               type="button"
               onClick={() => setShowAnularModal(true)}
-              className="flex items-center gap-1 px-3 py-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs font-bold text-red-400 cursor-pointer"
+              className="flex items-center gap-1 px-3 py-2.5 rounded-sm bg-red-500/10 border border-red-500/30 text-xs font-bold text-red-400 cursor-pointer"
               title="Anular Servicio"
             >
               <Ban className="w-4 h-4" />
@@ -873,32 +868,32 @@ export function ServiceForm({
           <button
             type="button"
             onClick={() => setShowPreviewModal(true)}
-            className="flex items-center gap-1 px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-bold text-zinc-200 cursor-pointer"
+            className="flex items-center gap-1 px-3 min-h-[44px] rounded-xs border border-[#3a3b3f] text-xs font-bold text-zinc-200 whitespace-nowrap cursor-pointer"
           >
-            <Eye className="w-4 h-4 text-[#d31a24]" />
+            <Eye className="w-4 h-4 text-[#f04d55]" />
             <span>Previsualizar</span>
           </button>
           <button
             type="button"
             onClick={handleSubmit}
             disabled={loading}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#d31a24] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-[#d31a24]/20 cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-1.5 px-4 min-h-[44px] rounded-xs bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white text-xs font-black uppercase tracking-wider whitespace-nowrap cursor-pointer disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
-            <span>{loading ? 'Guardando...' : isEditing ? 'Guardar Cambios' : 'Registrar Servicio'}</span>
+            <span>{loading ? 'Guardando...' : isEditing ? 'Guardar' : 'Registrar'}</span>
           </button>
         </div>
       </div>
 
       {/* Modal Vista Previa Móvil */}
       {showPreviewModal && (
-        <div className="lg:hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-sm animate-fade-in overflow-y-auto">
+        <div className="lg:hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/90 animate-fade-in overflow-y-auto">
           <div className="relative w-full max-w-md my-auto space-y-4">
             <div className="flex items-center justify-between text-zinc-100">
               <span className="text-xs font-bold uppercase tracking-wider">Vista Previa del Ticket</span>
               <button
                 onClick={() => setShowPreviewModal(false)}
-                className="px-3 py-1 rounded-lg bg-zinc-800 text-xs font-bold text-zinc-200"
+                className="px-3 py-1 rounded-sm bg-zinc-800 text-xs font-bold text-zinc-200"
               >
                 Cerrar
               </button>
@@ -915,8 +910,8 @@ export function ServiceForm({
 
       {/* Modal de Anulación (Admin Only) */}
       {showAnularModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-md bg-zinc-900 border border-red-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 animate-fade-in">
+          <div className="w-full max-w-md bg-zinc-900 border border-red-500/30 rounded-sm p-6 space-y-4">
             <div className="flex items-center gap-2 text-red-400">
               <Ban className="w-5 h-5" />
               <h3 className="text-base font-black uppercase tracking-tight">Anular Servicio</h3>
@@ -926,7 +921,7 @@ export function ServiceForm({
               anulado y dejará de mostrarse en el historial público del cliente.
             </p>
             <div>
-              <label className="block text-xs font-bold text-zinc-400 mb-1">
+              <label className="block label-caps text-[#9a9da3] mb-1.5">
                 Motivo de anulación (Obligatorio) *
               </label>
               <textarea
@@ -935,14 +930,14 @@ export function ServiceForm({
                 rows={3}
                 placeholder="Ingresá la razón por la que se anula este servicio..."
                 required
-                className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-red-500"
+                className="w-full px-3 py-2 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-red-500"
               />
             </div>
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setShowAnularModal(false)}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-zinc-100"
+                className="px-4 py-2 rounded-sm text-xs font-bold text-zinc-400 hover:text-zinc-100"
               >
                 Cancelar
               </button>
@@ -950,7 +945,7 @@ export function ServiceForm({
                 type="button"
                 onClick={handleAnular}
                 disabled={loading || !motivoAnulacion.trim()}
-                className="px-5 py-2 rounded-xl bg-red-500 hover:bg-red-400 text-white text-xs font-black uppercase tracking-wider disabled:opacity-50 cursor-pointer"
+                className="px-5 py-2 rounded-sm bg-red-500 hover:bg-red-400 text-white text-xs font-black uppercase tracking-wider disabled:opacity-50 cursor-pointer"
               >
                 {loading ? 'Anulando...' : 'Confirmar Anulación'}
               </button>

@@ -160,31 +160,31 @@ export function QRPrintModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0a0b0d]/80 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-md bg-[#14161b] border border-[#262a33] rounded-3xl shadow-2xl p-6 text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0d0d0e]/80 animate-fade-in">
+      <div className="relative w-full max-w-md bg-[#161719] border border-[#2a2b2e] rounded-sm p-6 text-center">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-zinc-400 hover:text-white p-2 rounded-xl hover:bg-zinc-800 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="absolute top-5 right-5 text-zinc-400 hover:text-white p-2 rounded-sm hover:bg-zinc-800 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Title */}
         <div className="flex items-center justify-center gap-2 mb-1">
-          <div className="w-7 h-7 rounded-lg bg-[#880e14]/20 border border-[#d31a24]/30 flex items-center justify-center text-[#d31a24]">
+          <div className="w-7 h-7 rounded-sm bg-[#880e14]/20 border border-[#d31a24]/30 flex items-center justify-center text-[#f04d55]">
             <QrCode className="w-4 h-4" />
           </div>
           <h3 className="text-base font-black text-white uppercase tracking-tight">
             Código QR del Vehículo
           </h3>
         </div>
-        <p className="text-xs text-[#c8cdd5]">
+        <p className="text-xs text-[#c8cad0]">
           Pegalo en el marco de la puerta del conductor: en el parabrisas, cualquiera podría escanearlo desde afuera y ver los precios
         </p>
 
         {/* Sticker Preview Container */}
-        <div className="mt-5 p-4 rounded-2xl bg-white text-zinc-950 max-w-[280px] mx-auto shadow-xl border border-zinc-200">
+        <div className="mt-5 p-4 rounded-sm bg-white text-zinc-950 max-w-[280px] mx-auto border border-zinc-200">
           <div className="flex justify-center mb-1.5">
             <div className="relative w-32 h-10">
               <Image
@@ -203,7 +203,7 @@ export function QRPrintModal({
               className="w-44 h-44 mx-auto object-contain"
             />
           ) : (
-            <div className="w-44 h-44 mx-auto bg-zinc-100 animate-pulse rounded-lg" />
+            <div className="w-44 h-44 mx-auto bg-zinc-100 animate-pulse rounded-sm" />
           )}
 
           <div className="mt-2.5">
@@ -220,14 +220,14 @@ export function QRPrintModal({
         </div>
 
         {/* Direct Link Info */}
-        <div className="mt-5 p-3 rounded-xl bg-[#0a0b0d] border border-[#262a33] flex items-center justify-between gap-2">
-          <span className="text-[11px] text-[#c8cdd5] font-mono truncate max-w-[220px]">
+        <div className="mt-5 p-3 rounded-sm bg-[#0d0d0e] border border-[#2a2b2e] flex items-center justify-between gap-2">
+          <span className="text-[11px] text-[#c8cad0] font-mono truncate max-w-[220px]">
             {fullUrl}
           </span>
           <div className="flex items-center gap-1.5 shrink-0">
             <button
               onClick={handleCopyLink}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#14161b] hover:bg-[#1c1f26] text-white text-xs font-bold transition-colors cursor-pointer border border-[#262a33] min-h-[44px]"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-sm bg-[#161719] hover:bg-[#1f2023] text-white text-xs font-bold transition-colors cursor-pointer border border-[#2a2b2e] min-h-[44px]"
             >
               {copied ? (
                 <>
@@ -236,7 +236,7 @@ export function QRPrintModal({
                 </>
               ) : (
                 <>
-                  <Copy className="w-3.5 h-3.5 text-[#d31a24]" />
+                  <Copy className="w-3.5 h-3.5 text-[#f04d55]" />
                   <span>Copiar</span>
                 </>
               )}
@@ -245,7 +245,7 @@ export function QRPrintModal({
               href={fullUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-lg bg-[#14161b] hover:bg-[#1c1f26] text-zinc-300 hover:text-white transition-colors border border-[#262a33] min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="p-2.5 rounded-sm bg-[#161719] hover:bg-[#1f2023] text-zinc-300 hover:text-white transition-colors border border-[#2a2b2e] min-h-[44px] min-w-[44px] flex items-center justify-center"
               title="Abrir como cliente"
             >
               <ExternalLink className="w-3.5 h-3.5" />
@@ -258,15 +258,15 @@ export function QRPrintModal({
           <button
             onClick={handleDownloadPng}
             disabled={!qrDataUrl}
-            className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-[#0a0b0d] hover:bg-[#1c1f26] text-white text-xs font-bold transition-all cursor-pointer border border-[#262a33] disabled:opacity-50 min-h-[48px]"
+            className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-sm bg-[#0d0d0e] hover:bg-[#1f2023] text-white text-xs font-bold transition-all cursor-pointer border border-[#2a2b2e] disabled:opacity-50 min-h-[48px]"
           >
-            <Download className="w-4 h-4 text-[#c8cdd5]" />
+            <Download className="w-4 h-4 text-[#c8cad0]" />
             <span>Descargar PNG</span>
           </button>
           <button
             onClick={handlePrintSticker}
             disabled={!qrDataUrl}
-            className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-[#d31a24] hover:bg-[#e52530] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-[#d31a24]/20 transition-all cursor-pointer disabled:opacity-50 min-h-[48px]"
+            className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white text-xs font-black uppercase tracking-wider transition-all cursor-pointer disabled:opacity-50 min-h-[48px]"
           >
             <Printer className="w-4 h-4" />
             <span>Imprimir Sticker</span>

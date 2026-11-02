@@ -24,21 +24,18 @@ export default function AdminLoginPage({
       <div className="w-full max-w-md mb-4">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs text-[#c8cdd5] hover:text-white transition-colors min-h-[44px]"
+          className="inline-flex items-center gap-1.5 text-xs text-[#c8cad0] hover:text-white transition-colors min-h-[44px]"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#d31a24]" />
+          <ArrowLeft className="w-3.5 h-3.5 text-[#f04d55]" />
           <span>Volver al portal público</span>
         </Link>
       </div>
 
-      <div className="w-full max-w-md bg-[#14161b] border border-[#262a33] rounded-3xl p-7 sm:p-8 shadow-2xl relative overflow-hidden">
-        {/* Acento superior en Rojo Furia */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-[#d31a24]" />
-
+      <div className="w-full max-w-md bg-[#161719] border border-[#2a2b2e] p-6 sm:p-8">
         {/* Branding Taller */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-3">
-            <div className="relative w-40 h-24">
+        <div className="mb-7">
+          <div className="mb-5">
+            <div className="relative w-24 h-24 -ml-1">
               <Image
                 src="/logo.webp"
                 alt="Neumáticos el 32"
@@ -48,31 +45,31 @@ export default function AdminLoginPage({
               />
             </div>
           </div>
-          <h1 className="text-xl font-black uppercase tracking-tight text-white font-sans">
+          <h1 className="font-display text-2xl leading-none text-[#f2f2ef]">
             Acceso Personal del Taller
           </h1>
-          <p className="text-xs text-[#d31a24] font-bold uppercase tracking-widest mt-1">
+          <p className="text-sm text-[#9a9da3] mt-2">
             Sistema de Gestión y Órdenes
           </p>
         </div>
 
         {/* Mensaje de Error */}
         {errorMessage && (
-          <div className="mb-6 p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 text-red-200 text-xs flex items-center gap-2.5">
-            <AlertCircle className="w-4 h-4 shrink-0 text-[#d31a24]" />
+          <div className="mb-6 p-3.5 rounded-xs bg-[#d31a24]/10 border border-[#d31a24]/60 text-[#f2f2ef] text-xs flex items-center gap-2.5">
+            <AlertCircle className="w-4 h-4 shrink-0 text-[#f04d55]" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {clave === 'actualizada' && !errorMessage && (
-          <div className="mb-6 p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
+          <div className="mb-6 p-3.5 rounded-sm bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
             Tu contraseña se actualizó. Ya podés iniciar sesión.
           </div>
         )}
 
         <form action={formAction} className="space-y-4">
           <div>
-            <label htmlFor="login-email" className="block text-xs font-bold text-[#c8cdd5] uppercase tracking-wider mb-1.5">
+            <label htmlFor="login-email" className="block label-caps text-[#9a9da3] mb-2">
               Correo Electrónico
             </label>
             <div className="relative">
@@ -83,13 +80,13 @@ export default function AdminLoginPage({
                 name="email"
                 required
                 placeholder="operario@taller32.local"
-                className="w-full pl-10 pr-4 py-3.5 rounded-xl bg-[#0a0b0d] border border-[#262a33] text-white text-sm focus:outline-none focus:border-[#d31a24] transition-colors min-h-[48px]"
+                className="w-full pl-10 pr-4 py-3.5 rounded-xs bg-[#0d0d0e] border border-[#3a3b3f] hover:border-[#5f6166] text-[#f2f2ef] text-sm focus:outline-none focus:border-[#d31a24] transition-colors min-h-[48px]"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="login-password" className="block text-xs font-bold text-[#c8cdd5] uppercase tracking-wider mb-1.5">
+            <label htmlFor="login-password" className="block label-caps text-[#9a9da3] mb-2">
               Contraseña
             </label>
             <div className="relative">
@@ -100,7 +97,7 @@ export default function AdminLoginPage({
                 name="password"
                 required
                 placeholder="••••••••"
-                className="w-full pl-10 pr-11 py-3.5 rounded-xl bg-[#0a0b0d] border border-[#262a33] text-white text-sm focus:outline-none focus:border-[#d31a24] transition-colors min-h-[48px]"
+                className="w-full pl-10 pr-11 py-3.5 rounded-xs bg-[#0d0d0e] border border-[#3a3b3f] hover:border-[#5f6166] text-[#f2f2ef] text-sm focus:outline-none focus:border-[#d31a24] transition-colors min-h-[48px]"
               />
               <button
                 type="button"
@@ -117,7 +114,7 @@ export default function AdminLoginPage({
             <button
               type="submit"
               disabled={isPending}
-              className="w-full py-4 px-4 rounded-xl bg-[#d31a24] hover:bg-[#e52530] text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-[#d31a24]/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 min-h-[50px]"
+              className="w-full py-4 px-4 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 min-h-[50px]"
             >
               {isPending ? (
                 <>
@@ -134,13 +131,13 @@ export default function AdminLoginPage({
         <div className="mt-4 text-center">
           <Link
             href="/admin/recuperar"
-            className="inline-flex items-center text-xs text-[#c8cdd5] hover:text-white underline underline-offset-2 min-h-[44px]"
+            className="inline-flex items-center text-xs text-[#c8cad0] hover:text-white underline underline-offset-2 min-h-[44px]"
           >
             ¿Olvidaste tu contraseña?
           </Link>
         </div>
 
-        <p className="mt-2 text-center text-[11px] text-[#8b929e]">
+        <p className="mt-2 text-center text-[11px] text-[#9a9da3]">
           Uso restringido al personal autorizado de Neumáticos el 32.
         </p>
       </div>

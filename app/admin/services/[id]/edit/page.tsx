@@ -57,12 +57,12 @@ export default async function AdminEditServicePage({
       <div>
         <Link
           href={`/admin/vehicles/${service.vehicles.id}`}
-          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-[#D31A24] transition-colors mb-2"
+          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-[#f04d55] transition-colors mb-2"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Volver a la ficha del vehículo</span>
         </Link>
-        <h1 className="text-xl font-black uppercase tracking-tight text-zinc-100">
+        <h1 className="font-display text-2xl sm:text-[28px] leading-[0.95] text-[#f2f2ef]">
           Modificar Servicio / Auditoría
         </h1>
         <p className="text-xs text-zinc-400 mt-0.5">

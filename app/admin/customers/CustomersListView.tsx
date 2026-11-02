@@ -36,8 +36,8 @@ export function CustomersListView({ customers }: CustomersListViewProps) {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg sm:text-xl font-black uppercase tracking-tight text-zinc-100 flex items-center gap-2">
-            <Users className="w-5 h-5 text-[#D31A24]" />
+          <h1 className="font-display text-2xl sm:text-[28px] leading-[0.95] text-[#f2f2ef] flex items-center gap-2">
+            <Users className="w-5 h-5 text-[#f04d55]" />
             Clientes ({customers.length})
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -47,7 +47,7 @@ export function CustomersListView({ customers }: CustomersListViewProps) {
 
         <button
           onClick={() => openForm(null)}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-red-900/30 transition-all cursor-pointer min-h-[44px]"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white text-xs font-black uppercase tracking-wider transition-all cursor-pointer min-h-[44px]"
         >
           <Plus className="w-4 h-4" />
           <span>Nuevo Cliente</span>
@@ -61,12 +61,12 @@ export function CustomersListView({ customers }: CustomersListViewProps) {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Buscar por nombre, teléfono o email..."
-          className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#0A0B0D] border border-[#262a33] text-zinc-100 text-sm focus:outline-none focus:border-[#D31A24] min-h-[48px]"
+          className="w-full pl-11 pr-4 py-3 rounded-sm bg-[#0d0d0e] border border-[#2a2b2e] text-zinc-100 text-sm focus:outline-none focus:border-[#d31a24] min-h-[48px]"
         />
       </div>
 
       {filtered.length === 0 ? (
-        <div className="p-12 rounded-3xl bg-[#14161b] border border-[#262a33] text-center space-y-3">
+        <div className="p-12 rounded-sm bg-[#161719] border border-[#2a2b2e] text-center space-y-3">
           <Users className="w-8 h-8 text-zinc-600 mx-auto" />
           <h3 className="text-sm font-bold text-zinc-300">No encontramos ningún cliente</h3>
           <p className="text-xs text-zinc-500 max-w-sm mx-auto">
@@ -83,7 +83,7 @@ export function CustomersListView({ customers }: CustomersListViewProps) {
             return (
               <div
                 key={customer.id}
-                className="p-5 rounded-2xl bg-[#14161b] border border-[#262a33] flex flex-col justify-between gap-4"
+                className="p-5 rounded-sm bg-[#161719] border border-[#2a2b2e] flex flex-col justify-between gap-4"
               >
                 <div className="space-y-1.5">
                   <div className="flex items-start justify-between gap-2">
@@ -91,7 +91,7 @@ export function CustomersListView({ customers }: CustomersListViewProps) {
                     <button
                       onClick={() => openForm(customer)}
                       title="Editar cliente"
-                      className="p-2 rounded-xl bg-[#0A0B0D] hover:bg-zinc-800 text-zinc-400 hover:text-[#D31A24] border border-[#262a33] transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center shrink-0"
+                      className="p-2 rounded-sm bg-[#0d0d0e] hover:bg-zinc-800 text-zinc-400 hover:text-[#f04d55] border border-[#2a2b2e] transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center shrink-0"
                     >
                       <Pencil className="w-4 h-4" />
                     </button>
@@ -111,7 +111,7 @@ export function CustomersListView({ customers }: CustomersListViewProps) {
                   )}
                 </div>
 
-                <div className="pt-3 border-t border-[#262a33] space-y-1.5 text-xs">
+                <div className="pt-3 border-t border-[#2a2b2e] space-y-1.5 text-xs">
                   {vehicles.length === 0 ? (
                     <span className="text-zinc-500">Sin vehículos a su nombre</span>
                   ) : (
@@ -119,7 +119,7 @@ export function CustomersListView({ customers }: CustomersListViewProps) {
                       <Link
                         key={vehicle.id}
                         href={`/admin/vehicles/${vehicle.id}`}
-                        className="flex items-center gap-2 text-zinc-300 hover:text-[#D31A24] transition-colors min-h-[32px]"
+                        className="flex items-center gap-2 text-zinc-300 hover:text-[#f04d55] transition-colors min-h-[32px]"
                       >
                         <Car className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
                         <span className="font-mono font-bold">{formatPatenteDisplay(vehicle.patente)}</span>

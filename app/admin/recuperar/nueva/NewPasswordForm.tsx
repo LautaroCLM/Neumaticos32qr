@@ -5,7 +5,7 @@ import { updatePasswordAction } from '@/lib/actions/auth';
 import { AlertCircle, Loader2 } from 'lucide-react';
 
 const INPUT_CLASS =
-  'w-full px-4 py-3.5 rounded-xl bg-[#0a0b0d] border border-[#262a33] text-white text-sm focus:outline-none focus:border-[#d31a24] transition-colors min-h-[48px]';
+  'w-full px-4 py-3.5 rounded-xs bg-[#0d0d0e] border border-[#3a3b3f] hover:border-[#5f6166] text-[#f2f2ef] text-sm focus:outline-none focus:border-[#d31a24] transition-colors min-h-[48px]';
 
 export function NewPasswordForm() {
   const [state, formAction, isPending] = useActionState(updatePasswordAction, null);
@@ -13,14 +13,14 @@ export function NewPasswordForm() {
   return (
     <form action={formAction} className="space-y-4">
       {state?.error && (
-        <div className="p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 text-red-200 text-xs flex items-start gap-2.5">
-          <AlertCircle className="w-4 h-4 shrink-0 text-[#d31a24]" />
+        <div className="p-3.5 rounded-xs bg-[#d31a24]/10 border border-[#d31a24]/60 text-[#f2f2ef] text-xs flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 shrink-0 text-[#f04d55]" />
           <span>{state.error}</span>
         </div>
       )}
 
       <div>
-        <label htmlFor="new-password" className="block text-xs font-bold text-[#c8cdd5] uppercase tracking-wider mb-1.5">
+        <label htmlFor="new-password" className="block label-caps text-[#9a9da3] mb-2">
           Contraseña Nueva
         </label>
         <input
@@ -37,7 +37,7 @@ export function NewPasswordForm() {
       </div>
 
       <div>
-        <label htmlFor="new-password-confirm" className="block text-xs font-bold text-[#c8cdd5] uppercase tracking-wider mb-1.5">
+        <label htmlFor="new-password-confirm" className="block label-caps text-[#9a9da3] mb-2">
           Repetir Contraseña
         </label>
         <input
@@ -53,7 +53,7 @@ export function NewPasswordForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="w-full py-4 px-4 rounded-xl bg-[#d31a24] hover:bg-[#e52530] text-white font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 min-h-[50px]"
+        className="w-full py-4 px-4 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 min-h-[50px]"
       >
         {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
         <span>Guardar Contraseña</span>

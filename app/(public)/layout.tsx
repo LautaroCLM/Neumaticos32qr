@@ -20,50 +20,48 @@ export default async function PublicLayout({
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 w-full max-w-2xl mx-auto px-4 py-6 sm:py-8">
+      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 py-7 sm:py-10">
         {children}
       </main>
 
-      <footer className="mt-auto border-t border-zinc-800/80 bg-zinc-950 py-8 px-4 text-xs text-zinc-400">
-        <div className="max-w-2xl mx-auto space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <footer className="mt-auto border-t border-[#2a2b2e] py-8 px-4 sm:px-6 text-xs text-[#9a9da3]">
+        <div className="max-w-5xl mx-auto space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <p className="font-bold text-zinc-200 text-sm">{shopNombre}</p>
-              <p className="text-zinc-500">Gomería, Tren Delantero y Mecánica Ligera</p>
+              <p className="font-display text-sm text-[#f2f2ef]">{shopNombre}</p>
+              <p className="mt-1 text-[#9a9da3]">Gomería, Tren Delantero y Mecánica Ligera</p>
             </div>
             {whatsappDigits && (
-              <div className="flex items-center gap-3">
-                <a
-                  href={`https://wa.me/${whatsappDigits}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-red-500 hover:text-red-400 flex items-center gap-1 font-semibold"
-                >
-                  <MessageCircle className="w-3.5 h-3.5" />
-                  WhatsApp Oficial
-                </a>
-              </div>
+              <a
+                href={`https://wa.me/${whatsappDigits}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 min-h-[44px] font-semibold text-[#f2f2ef] hover:text-[#d31a24] transition-colors"
+              >
+                <MessageCircle className="w-4 h-4" aria-hidden="true" />
+                WhatsApp Oficial
+              </a>
             )}
           </div>
 
           {(hasDireccion || hasHorarios) && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-zinc-900 text-zinc-400">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-4 border-t border-[#2a2b2e] text-[#c8cad0]">
               {hasDireccion && (
                 <div className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 text-zinc-500 shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 text-[#9a9da3] shrink-0 mt-0.5" aria-hidden="true" />
                   <span>{shop!.direccion}</span>
                 </div>
               )}
               {hasHorarios && (
                 <div className="flex items-start gap-2">
-                  <Clock className="w-4 h-4 text-zinc-500 shrink-0 mt-0.5" />
+                  <Clock className="w-4 h-4 text-[#9a9da3] shrink-0 mt-0.5" aria-hidden="true" />
                   <span>{shop!.horarios}</span>
                 </div>
               )}
             </div>
           )}
 
-          <p className="text-[11px] text-zinc-400 text-center pt-4">
+          <p className="text-[11px] text-[#9a9da3]">
             © {new Date().getFullYear()} {shopNombre}. Todos los derechos reservados.
           </p>
         </div>

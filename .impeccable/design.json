@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-02T00:00:00Z",
+  "title": "Design System: Neumáticos el 32",
+  "extensions": {
+    "colorMeta": {
+      "rubber-black": { "role": "neutral", "displayName": "Rubber Black", "canonical": "#0d0d0e", "tonalRamp": ["#0d0d0e", "#161719", "#26272a", "#3a3b3f", "#5f6166", "#8a8c91", "#c8cad0", "#f2f2ef"] },
+      "carcass": { "role": "neutral", "displayName": "Carcass", "canonical": "#161719", "tonalRamp": ["#0d0d0e", "#161719", "#1f2023", "#26272a", "#3a3b3f", "#5f6166", "#a9abb0", "#f2f2ef"] },
+      "carcass-raised": { "role": "neutral", "displayName": "Carcass Raised", "canonical": "#1f2023", "tonalRamp": ["#0d0d0e", "#161719", "#1f2023", "#26272a", "#3a3b3f", "#5f6166", "#a9abb0", "#f2f2ef"] },
+      "rule": { "role": "neutral", "displayName": "Rule", "canonical": "#2a2b2e", "tonalRamp": ["#0d0d0e", "#161719", "#2a2b2e", "#3a3b3f", "#5f6166", "#8a8c91", "#c8cad0", "#f2f2ef"] },
+      "rule-strong": { "role": "neutral", "displayName": "Rule Strong", "canonical": "#3a3b3f", "tonalRamp": ["#0d0d0e", "#161719", "#26272a", "#3a3b3f", "#5f6166", "#8a8c91", "#c8cad0", "#f2f2ef"] },
+      "sidewall-red": { "role": "primary", "displayName": "Sidewall Red", "canonical": "#d31a24", "tonalRamp": ["#3a0609", "#5c0b10", "#880e14", "#b5161f", "#d31a24", "#e3262f", "#f04d55", "#f9a5a9"] },
+      "sidewall-red-hover": { "role": "primary", "displayName": "Sidewall Red Hover", "canonical": "#e3262f", "tonalRamp": ["#3a0609", "#5c0b10", "#880e14", "#b5161f", "#d31a24", "#e3262f", "#f04d55", "#f9a5a9"] },
+      "sidewall-red-pressed": { "role": "primary", "displayName": "Sidewall Red Pressed", "canonical": "#b5161f", "tonalRamp": ["#3a0609", "#5c0b10", "#880e14", "#b5161f", "#d31a24", "#e3262f", "#f04d55", "#f9a5a9"] },
+      "signal-red-text": { "role": "primary", "displayName": "Signal Red Text", "canonical": "#f04d55", "tonalRamp": ["#3a0609", "#5c0b10", "#880e14", "#b5161f", "#d31a24", "#e3262f", "#f04d55", "#f9a5a9"] },
+      "warm-white": { "role": "neutral", "displayName": "Warm White", "canonical": "#f2f2ef", "tonalRamp": ["#0d0d0e", "#26272a", "#5f6166", "#8a8c91", "#a9abb0", "#dcdcd9", "#f2f2ef", "#f7f7f5"] },
+      "alloy": { "role": "neutral", "displayName": "Alloy", "canonical": "#c8cad0", "tonalRamp": ["#0d0d0e", "#26272a", "#5f6166", "#8a8c91", "#a9abb0", "#c8cad0", "#dcdcd9", "#f2f2ef"] },
+      "tread-grey": { "role": "neutral", "displayName": "Tread Grey", "canonical": "#9a9da3", "tonalRamp": ["#0d0d0e", "#26272a", "#3a3b3f", "#5f6166", "#8a8c91", "#9a9da3", "#c8cad0", "#f2f2ef"] },
+      "placeholder-grey": { "role": "neutral", "displayName": "Placeholder Grey", "canonical": "#7c7e83", "tonalRamp": ["#0d0d0e", "#26272a", "#3a3b3f", "#5f6166", "#7c7e83", "#9a9da3", "#c8cad0", "#f2f2ef"] },
+      "whatsapp-green": { "role": "functional", "displayName": "WhatsApp Green", "canonical": "#1a7a42", "tonalRamp": ["#08261a", "#0e3d24", "#145a32", "#166a39", "#1a7a42", "#2f9a5c", "#6cc28f", "#c4ead2"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Home title only; Archivo 900, 125% width, uppercase, two lines." },
+      "headline": { "displayName": "Headline", "purpose": "Vehicle make and model, admin page titles, error titles." },
+      "title": { "displayName": "Title", "purpose": "Section headings, wordmark, primary button label (16px, 0.1em)." },
+      "plate": { "displayName": "Plate", "purpose": "Mercosur plate characters; 32-38px on ticket, 26-32px in search, 13-17px compact." },
+      "figure": { "displayName": "Figure", "purpose": "Tabular expanded figures: dates, km, totals, ticket numbers, quantities." },
+      "body": { "displayName": "Body", "purpose": "Descriptions and work performed; max 68ch." },
+      "body-sm": { "displayName": "Body Small", "purpose": "Secondary copy in Alloy, button labels, list rows." },
+      "label": { "displayName": "Label", "purpose": "Field labels and definition terms; spaced caps at 115% width." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The single easing for every entrance and state change." },
+      { "name": "fade-in", "value": "fade-in 280ms cubic-bezier(0.16, 1, 0.3, 1) both", "purpose": "Content appearance: opacity 0.6 to 1 with a 4px rise. Also backs the legacy animate-in utility." },
+      { "name": "plate-in", "value": "plate-in 560ms cubic-bezier(0.16, 1, 0.3, 1) both", "purpose": "The plate on the ticket header slides 14px in from the left and settles; once per page." },
+      { "name": "shake", "value": "shake 360ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Rejected input, 4px lateral shake." },
+      { "name": "chevron-rotate", "value": "transform 300ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "History row chevron rotates 180 degrees on expand." },
+      { "name": "focus-ring", "value": "outline: 2px solid #d31a24; outline-offset: 2px", "purpose": "Global focus-visible treatment." }
+    ],
+    "breakpoints": [
+      { "name": "xs-header", "value": "400px" },
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Full-width red action, expanded caps label, trailing arrow nudges on hover.",
+      "html": "<button class=\"ds-btn-primary\"><span>Ver mi historial</span><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-primary { width: 100%; height: 58px; padding: 0 16px; display: flex; align-items: center; justify-content: center; gap: 10px; background: #d31a24; color: #fff; border: none; border-radius: 2px; font-family: var(--font-archivo), system-ui, sans-serif; font-size: 16px; font-weight: 900; font-stretch: 125%; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: background-color 150ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary svg { transition: transform 200ms ease-out; } .ds-btn-primary:hover { background: #e3262f; } .ds-btn-primary:hover svg { transform: translateX(4px); } .ds-btn-primary:active { background: #b5161f; } .ds-btn-primary:focus-visible { outline: 2px solid #d31a24; outline-offset: 2px; } .ds-btn-primary:disabled { background: rgba(211,26,36,0.45); color: rgba(255,255,255,0.75); cursor: not-allowed; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action: share, back, header access link.",
+      "html": "<button class=\"ds-btn-outline\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"18\" cy=\"5\" r=\"3\"/><circle cx=\"6\" cy=\"12\" r=\"3\"/><circle cx=\"18\" cy=\"19\" r=\"3\"/><path d=\"m8.59 13.51 6.83 3.98\"/><path d=\"m15.41 6.51-6.82 3.98\"/></svg><span>Compartir ticket</span></button>",
+      "css": ".ds-btn-outline { min-height: 48px; padding: 0 12px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: #f2f2ef; border: 1px solid #3a3b3f; border-radius: 2px; font-family: var(--font-archivo), system-ui, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: border-color 150ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-outline:hover { border-color: #9a9da3; } .ds-btn-outline:focus-visible { outline: 2px solid #d31a24; outline-offset: 2px; }"
+    },
+    {
+      "name": "WhatsApp Button",
+      "kind": "button",
+      "refersTo": "button-whatsapp",
+      "description": "The only non-brand fill; paired with Share as an equal-width pair.",
+      "html": "<a class=\"ds-btn-whatsapp\" href=\"#\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7.9 20A9 9 0 1 0 4 16.1L2 22Z\"/></svg><span>Consultar al taller</span></a>",
+      "css": ".ds-btn-whatsapp { min-height: 48px; padding: 0 12px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #1a7a42; color: #fff; border-radius: 2px; text-decoration: none; font-family: var(--font-archivo), system-ui, sans-serif; font-size: 14px; font-weight: 600; transition: background-color 150ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-whatsapp:hover { background: #166a39; } .ds-btn-whatsapp:focus-visible { outline: 2px solid #d31a24; outline-offset: 2px; }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Dark field with spaced-caps label above and grey hint below; red border on focus.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-dig\">Últimos 4 dígitos del teléfono</label><input id=\"ds-dig\" class=\"ds-field-input\" placeholder=\"7788\" inputmode=\"numeric\"><p class=\"ds-field-hint\">Del teléfono que dejaste en el taller.</p></div>",
+      "css": ".ds-field { font-family: var(--font-archivo), system-ui, sans-serif; } .ds-field-label { display: block; margin-bottom: 8px; color: #9a9da3; font-size: 11px; font-weight: 700; font-stretch: 115%; letter-spacing: 0.16em; text-transform: uppercase; } .ds-field-input { width: 100%; height: 56px; padding: 0 14px; background: #0d0d0e; color: #f2f2ef; caret-color: #d31a24; border: 1px solid #3a3b3f; border-radius: 2px; font-size: 24px; font-weight: 700; font-stretch: 125%; font-variant-numeric: tabular-nums; letter-spacing: 0.3em; transition: border-color 150ms cubic-bezier(0.16,1,0.3,1); } .ds-field-input::placeholder { color: #7c7e83; } .ds-field-input:hover { border-color: #5f6166; } .ds-field-input:focus { outline: none; border-color: #d31a24; } .ds-field-hint { margin-top: 8px; color: #9a9da3; font-size: 12px; }"
+    },
+    {
+      "name": "Plate Input",
+      "kind": "input",
+      "refersTo": "input-plate",
+      "description": "Mercosur-style plate as the search input: warm-white field, black RA band, red edge on focus.",
+      "html": "<div class=\"ds-plate-input\"><span class=\"ds-plate-band\" aria-hidden=\"true\">RA</span><input placeholder=\"AE 123 CD\" aria-label=\"Patente\"></div>",
+      "css": ".ds-plate-input { display: flex; height: 64px; border-radius: 4px; overflow: hidden; background: #f2f2ef; border: 2px solid #f2f2ef; transition: border-color 150ms cubic-bezier(0.16,1,0.3,1); font-family: var(--font-archivo), system-ui, sans-serif; } .ds-plate-input:focus-within { border-color: #d31a24; } .ds-plate-band { width: 36px; flex-shrink: 0; background: #0d0d0e; color: #f2f2ef; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; } .ds-plate-input input { flex: 1; min-width: 0; background: transparent; border: none; padding: 0 14px; color: #0d0d0e; font-size: 26px; font-weight: 800; font-stretch: 125%; font-variant-numeric: tabular-nums; letter-spacing: 0.08em; text-transform: uppercase; } .ds-plate-input input::placeholder { color: #6f7176; } .ds-plate-input input:focus { outline: none; }"
+    },
+    {
+      "name": "Plate",
+      "kind": "custom",
+      "refersTo": "plate",
+      "description": "Signature object: the vehicle's Mercosur plate on the ticket header, entering with plate-in.",
+      "html": "<div class=\"ds-plate\"><span class=\"ds-plate-band\" aria-hidden=\"true\">RA</span><span class=\"ds-plate-chars\">AE 123 CD</span></div>",
+      "css": "@keyframes ds-plate-in { from { opacity: 0.5; transform: translateX(-14px); } to { opacity: 1; transform: none; } } .ds-plate { display: inline-flex; height: 80px; border-radius: 4px; overflow: hidden; background: #f2f2ef; border: 2px solid #f2f2ef; animation: ds-plate-in 560ms cubic-bezier(0.16,1,0.3,1) both; font-family: var(--font-archivo), system-ui, sans-serif; } .ds-plate-band { width: 40px; flex-shrink: 0; background: #0d0d0e; color: #f2f2ef; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; } .ds-plate-chars { display: flex; align-items: center; padding: 0 20px; color: #0d0d0e; font-size: 38px; font-weight: 800; font-stretch: 125%; font-variant-numeric: tabular-nums; letter-spacing: 0.08em; white-space: nowrap; } @media (prefers-reduced-motion: reduce) { .ds-plate { animation: none; } }"
+    },
+    {
+      "name": "Service Badge",
+      "kind": "chip",
+      "refersTo": "service-badge",
+      "description": "Outlined service-type chip with a category icon and expanded caps label.",
+      "html": "<span class=\"ds-badge\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#d31a24\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/></svg>Neumáticos</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px; border: 1px solid #3a3b3f; border-radius: 2px; color: #f2f2ef; font-family: var(--font-archivo), system-ui, sans-serif; font-size: 11px; font-weight: 700; font-stretch: 112%; letter-spacing: 0.08em; text-transform: uppercase; }"
+    },
+    {
+      "name": "Ticket Card",
+      "kind": "card",
+      "refersTo": "ticket-card",
+      "description": "Work-order card: labelled header with ticket number, fixed date/km/total grid ruled top and bottom.",
+      "html": "<article class=\"ds-ticket\"><header class=\"ds-ticket-head\"><h2>Último servicio realizado</h2><span>N.º 000142</span></header><dl class=\"ds-ticket-facts\"><div><dt>Fecha</dt><dd>12/10/2026 10:40</dd></div><div><dt>Kilometraje</dt><dd>84.320 km</dd></div><div><dt>Total</dt><dd class=\"ds-total\">$ 186.500</dd></div></dl></article>",
+      "css": ".ds-ticket { background: #161719; border: 1px solid #2a2b2e; color: #f2f2ef; font-family: var(--font-archivo), system-ui, sans-serif; } .ds-ticket-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 24px 12px; border-bottom: 1px solid #2a2b2e; } .ds-ticket-head h2 { margin: 0; font-size: 11px; font-weight: 700; font-stretch: 115%; letter-spacing: 0.16em; text-transform: uppercase; } .ds-ticket-head span { color: #9a9da3; font-size: 12px; font-weight: 700; font-stretch: 112%; font-variant-numeric: tabular-nums; } .ds-ticket-facts { display: grid; grid-template-columns: 1.3fr 1fr 1.2fr; margin: 20px 24px; border-top: 1px solid #2a2b2e; border-bottom: 1px solid #2a2b2e; } .ds-ticket-facts div { padding: 12px 12px 12px 16px; } .ds-ticket-facts div:first-child { padding-left: 0; } .ds-ticket-facts div + div { border-left: 1px solid #2a2b2e; } .ds-ticket-facts dt { color: #9a9da3; font-size: 11px; font-weight: 700; font-stretch: 115%; letter-spacing: 0.16em; text-transform: uppercase; } .ds-ticket-facts dd { margin: 4px 0 0; font-size: 17px; font-weight: 700; font-stretch: 112%; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; } .ds-ticket-facts dd.ds-total { font-size: 20px; font-weight: 800; font-stretch: 118%; }"
+    },
+    {
+      "name": "Admin Nav Tabs",
+      "kind": "nav",
+      "refersTo": "nav-tab-active",
+      "description": "Desktop admin tabs; 2px bottom border turns red when active.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" class=\"ds-nav-tab is-active\">Inicio</a><a href=\"#\" class=\"ds-nav-tab\">Nuevo Servicio</a><a href=\"#\" class=\"ds-nav-tab\">Vehículos</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: stretch; gap: 4px; height: 64px; background: #0d0d0e; border-bottom: 1px solid #2a2b2e; font-family: var(--font-archivo), system-ui, sans-serif; } .ds-nav-tab { display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #c8cad0; text-decoration: none; font-size: 13px; font-weight: 600; border-bottom: 2px solid transparent; transition: color 150ms, border-color 150ms; } .ds-nav-tab:hover { color: #f2f2ef; border-bottom-color: #3a3b3f; } .ds-nav-tab.is-active { color: #f2f2ef; border-bottom-color: #d31a24; } .ds-nav-tab:focus-visible { outline: 2px solid #d31a24; outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Flanco de cubierta",
+    "overview": "The system reads like the sidewall of a tyre: rubber black, moulded lettering stretched wide, thin raised rules, and red only where the brand is stamped or an action waits. Everything is flat fill. Depth comes from two near-black surfaces and 1px rules, never from light. The single typeface, Archivo, carries the whole voice through its width axis: expanded, uppercase, full-weight for titles; medium-expanded spaced caps for field labels; slightly expanded tabular figures for plates, kilometres, prices and ticket numbers.\n\nThe licence plate is the dominant object. It is rendered as a Mercosur plate (warm-white field, black country band on the left marked \"RA\") both as the search input and as the vehicle's identity on the ticket, where it slides into place once. Records are read in fixed positions (date, kilometres, total always in the same slots) and history runs in one direction, newest first, as ruled rows.\n\nDensity is moderate on the public side (one column, generous vertical rhythm) and tighter in the admin panel. The visual rejection on record: the centered hero with a floating rounded card typical of generic SaaS.",
+    "keyCharacteristics": [
+      "One family (Archivo variable, wdth axis); width, not a second font, separates display, label and figure.",
+      "Flat rubber surfaces, 1px rules, 2-4px radii, no shadows, no gradients, no glow.",
+      "Red is reserved for action, brand and state of attention.",
+      "Figures are tabular and slightly expanded everywhere numbers are read.",
+      "The plate, Mercosur-style, is the signature object."
+    ],
+    "rules": [
+      { "name": "The Stamped Red Rule", "body": "Sidewall Red marks action, brand and attention only. It is never a decorative band, background wash or category color.", "section": "colors" },
+      { "name": "The Small Red Rule", "body": "Red text or icons under 18px on a dark surface use Signal Red Text; red fills and large red type use Sidewall Red.", "section": "colors" },
+      { "name": "The Width Is the Voice Rule", "body": "Hierarchy is made with Archivo's width axis and weight, not with a second typeface. Any uppercase run is set at 115% width; uppercase at 800-900 weight goes to 125%.", "section": "typography" },
+      { "name": "The Tabular Figure Rule", "body": "Every number a customer compares (plate, km, price, date, ticket number) uses tabular figures at expanded width so columns align across rows.", "section": "typography" },
+      { "name": "The No Light Rule", "body": "No box-shadow, gradient, glow or backdrop blur. If something needs to stand forward, it changes tone or gains a rule.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use Sidewall Red only for the primary action, brand marks, active/focus states and attention icons.",
+      "Do use Signal Red Text for any red text or icon under 18px on a dark surface.",
+      "Do set titles in Archivo 900 at 125% width, uppercase; set labels in the Label style (11px, 700, 0.16em, 115% width).",
+      "Do use tabular figures at expanded width for plates, km, prices, dates and ticket numbers.",
+      "Do separate content with 1px Rule lines; reach for a 2px rule only for a section heading or an error.",
+      "Do keep corners at 2px for controls, 4px for the large plate, 0-3px for containers.",
+      "Do show the plate as a Mercosur plate wherever a vehicle is identified.",
+      "Do keep motion to the existing gestures: fade-in (280ms, 4px rise), plate-in (560ms), shake (360ms), all on cubic-bezier(0.16, 1, 0.3, 1), and respect reduced motion."
+    ],
+    "donts": [
+      "Don't add shadows, gradients, glows or backdrop blur.",
+      "Don't use pill shapes or radii above 4px.",
+      "Don't introduce a second typeface or a monospace face; width and weight carry the hierarchy.",
+      "Don't use red as a background wash, decorative band or category color.",
+      "Don't use the default blue-tinted zinc; the overridden neutral scale is the only grey.",
+      "Don't build a centered hero with a floating rounded card.",
+      "Don't alter the brand logo (`public/logo.webp`); it is used as supplied."
+    ]
+  }
+}

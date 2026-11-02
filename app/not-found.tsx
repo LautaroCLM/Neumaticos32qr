@@ -1,48 +1,28 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, HelpCircle } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-[#0A0B0D] text-zinc-100 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-[#14161B] border border-[#262A33] text-center space-y-5 shadow-2xl animate-in fade-in duration-300">
-        <div className="flex justify-center">
-          <div className="relative w-36 h-20">
-            <Image
-              src="/logo.webp"
-              alt="Neumáticos el 32"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#0d0d0e] text-[#f2f2ef] flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md animate-in">
+        <Image src="/logo.webp" alt="Neumáticos el 32" width={96} height={96} className="w-24 h-24 object-contain -ml-1" priority />
 
-        <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D31A24]/10 border border-[#D31A24]/30 flex items-center justify-center text-[#D31A24]">
-          <HelpCircle className="w-7 h-7" />
-        </div>
+        <h1 className="mt-6 font-display text-[32px] leading-[0.95] text-balance">
+          Página no encontrada
+        </h1>
+        <p className="mt-4 text-[15px] text-[#c8cad0] leading-relaxed">
+          La sección o enlace al que intentás ingresar no existe, fue movido o cambió de dirección.
+        </p>
+        <p className="mt-2 figure text-xs text-[#9a9da3]">Error 404</p>
 
-        <div className="space-y-2">
-          <span className="text-[11px] font-black uppercase tracking-wider text-[#D31A24]">
-            Error 404
-          </span>
-          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
-            Página No Encontrada
-          </h1>
-          <p className="text-xs sm:text-sm text-[#C8CDD5] leading-relaxed">
-            La sección o enlace al que intentás ingresar no existe, fue movido o cambió de dirección.
-          </p>
-        </div>
-
-        <div className="pt-2">
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-red-900/30 transition-all min-h-[48px]"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Volver al Inicio</span>
-          </Link>
-        </div>
+        <Link
+          href="/"
+          className="mt-8 flex items-center justify-center gap-2 w-full px-5 min-h-[52px] rounded-xs bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white font-display text-sm tracking-[0.1em] transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+          <span>Volver al inicio</span>
+        </Link>
       </div>
     </div>
   );

@@ -1,17 +1,7 @@
 import { ServiceRecord, ShopTicketConfig } from '@/lib/types/database';
 import { ServiceBadge } from './ServiceBadge';
 import { formatDateBA, formatKilometers, formatCurrencyARS, formatTicketNumber } from '@/lib/utils/formatters';
-import {
-  Calendar,
-  Gauge,
-  MapPin,
-  PackageCheck,
-  AlertCircle,
-  Clock,
-  FileEdit,
-  Tag,
-  StickyNote,
-} from 'lucide-react';
+import { FileEdit, MapPin, CalendarClock } from 'lucide-react';
 
 interface TicketCardProps {
   service: ServiceRecord;
@@ -27,22 +17,21 @@ export function TicketCard({
   isPreview = false,
 }: TicketCardProps) {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-[#14161b] border-2 border-[#262a33] shadow-2xl">
-      {/* Ribbon superior estilo Orden de Trabajo */}
-      <div className="bg-[#d31a24] px-4 py-2 flex items-center justify-between shadow-md">
-        <span className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5 font-sans">
-          <Clock className="w-3.5 h-3.5" />
+    <article className="relative bg-[#161719] border border-[#2a2b2e]">
+      {/* Cabecera estilo orden de trabajo */}
+      <header className="px-4 sm:px-6 pt-4 pb-3 flex items-center justify-between gap-3 border-b border-[#2a2b2e]">
+        <h2 className="label-caps text-[#f2f2ef]">
           {ticketConfig?.titulo_ticket || 'Último Servicio Realizado'}
-        </span>
+        </h2>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2 shrink-0">
           {service.editado && (
-            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#0a0b0d] text-[#c8cdd5] flex items-center gap-1" title="Este ticket fue editado">
-              <FileEdit className="w-2.5 h-2.5 text-[#d31a24]" />
+            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#c8cad0]" title="Este ticket fue editado">
+              <FileEdit className="w-3 h-3 text-[#9a9da3]" aria-hidden="true" />
               Editado
             </span>
           )}
-          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#0a0b0d]/30 text-white whitespace-nowrap">
+          <span className="figure text-[12px] font-bold text-[#9a9da3] whitespace-nowrap">
             {isPreview
               ? 'VISTA PREVIA'
               : service.numero !== undefined
@@ -50,11 +39,15 @@ export function TicketCard({
               : 'TICKET DIGITAL'}
           </span>
         </div>
-      </div>
+      </header>
 
       <TicketDetails service={service} hidePrices={hidePrices} ticketConfig={ticketConfig} />
-    </div>
+    </article>
   );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return <h3 className="label-caps text-[#9a9da3] mb-2">{children}</h3>;
 }
 
 export function TicketDetails({
@@ -69,167 +62,130 @@ export function TicketDetails({
 
   const hasItems = service.items && service.items.length > 0;
   const hasExtraFields = service.campos_extra && service.campos_extra.length > 0;
+  const hasKm = service.kilometraje !== null && service.kilometraje !== undefined;
+  const showTotal = !hidePrices && effectivePrice !== null && effectivePrice !== undefined;
 
   return (
-    <div className="p-5 sm:p-6 space-y-5">
-      {/* Encabezado: Tipo de trabajo y Fecha */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#262a33] pb-4">
-        <ServiceBadge tipo={service.tipo} />
-        <div className="flex items-center gap-1.5 text-xs text-[#c8cdd5]">
-          <Calendar className="w-3.5 h-3.5 text-[#8b929e]" />
-          <span>{formatDateBA(service.fecha_hora, { includeTime: true })}</span>
-        </div>
-      </div>
+    <div className="px-4 sm:px-6 py-5 space-y-6">
+      <ServiceBadge tipo={service.tipo} />
 
-      {/* Datos técnicos: Kilometraje y Sucursal (si no están purgados/ocultos) */}
-      {(service.kilometraje !== null && service.kilometraje !== undefined || service.sucursal) && (
-        <div className="grid grid-cols-2 gap-3">
-          {service.kilometraje !== null && service.kilometraje !== undefined && (
-            <div className="p-3.5 rounded-xl bg-[#0a0b0d] border border-[#262a33] flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-zinc-800/80 flex items-center justify-center text-[#c8cdd5] shrink-0">
-                <Gauge className="w-4 h-4 text-[#d31a24]" />
-              </div>
-              <div>
-                <p className="text-[10px] text-[#8b929e] font-semibold uppercase tracking-wider">Kilometraje</p>
-                <p className="text-sm font-bold text-white font-mono">
-                  {formatKilometers(service.kilometraje)}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {service.sucursal && (
-            <div className="p-3.5 rounded-xl bg-[#0a0b0d] border border-[#262a33] flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-zinc-800/80 flex items-center justify-center text-[#c8cdd5] shrink-0">
-                <MapPin className="w-4 h-4 text-[#c8cdd5]" />
-              </div>
-              <div>
-                <p className="text-[10px] text-[#8b929e] font-semibold uppercase tracking-wider">Sucursal</p>
-                <p className="text-sm font-bold text-white truncate">
-                  {service.sucursal}
-                </p>
-              </div>
-            </div>
-          )}
+      {/* Posiciones fijas: fecha, kilometraje y total siempre en el mismo lugar */}
+      <dl className="grid grid-cols-2 sm:grid-cols-[1.3fr_1fr_1.2fr] border-y border-[#2a2b2e]">
+        <div className="py-3 pr-3 col-span-2 sm:col-span-1 border-b sm:border-b-0 border-[#2a2b2e]">
+          <dt className="label-caps text-[#9a9da3]">Fecha</dt>
+          <dd className="mt-1 figure text-[15px] font-semibold text-[#f2f2ef]">
+            {formatDateBA(service.fecha_hora, { includeTime: true })}
+          </dd>
         </div>
+        <div className="py-3 pr-3 sm:pl-4 sm:border-l border-[#2a2b2e]">
+          <dt className="label-caps text-[#9a9da3]">Kilometraje</dt>
+          <dd className="mt-1 figure text-[17px] font-bold text-[#f2f2ef]">
+            {hasKm ? formatKilometers(service.kilometraje!) : '—'}
+          </dd>
+        </div>
+        <div className="py-3 pl-4 border-l border-[#2a2b2e] text-right sm:text-left">
+          <dt className="label-caps text-[#9a9da3]">Total</dt>
+          <dd className="mt-1 figure text-[20px] leading-tight font-extrabold text-[#f2f2ef]" style={{ fontStretch: '118%' }}>
+            {showTotal ? formatCurrencyARS(effectivePrice!) : '—'}
+          </dd>
+        </div>
+      </dl>
+
+      {service.sucursal && (
+        <p className="-mt-3 flex items-center gap-1.5 text-xs text-[#c8cad0]">
+          <MapPin className="w-3.5 h-3.5 text-[#9a9da3]" aria-hidden="true" />
+          Sucursal {service.sucursal}
+        </p>
       )}
 
-      {/* Trabajo Realizado (Texto plano seguro) */}
-      <div className="space-y-1.5">
-        <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#8b929e]">
-          Trabajo Realizado
-        </h4>
-        <p className="text-sm text-white leading-relaxed bg-[#0a0b0d] p-3.5 rounded-xl border border-[#262a33] whitespace-pre-wrap">
+      {/* Trabajo realizado (texto plano seguro) */}
+      <section>
+        <SectionLabel>Trabajo Realizado</SectionLabel>
+        <p className="text-[15px] text-[#f2f2ef] leading-relaxed whitespace-pre-wrap max-w-[68ch]">
           {service.descripcion}
         </p>
-      </div>
+      </section>
 
-      {/* Repuestos / Productos o Desglose de Ítems */}
+      {/* Repuestos / productos o desglose de ítems */}
       {hasItems ? (
-        <div className="space-y-2">
-          <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#8b929e] flex items-center gap-1.5">
-            <PackageCheck className="w-3.5 h-3.5 text-[#d31a24]" />
-            Detalle de Ítems y Repuestos
-          </h4>
-          <div className="rounded-xl border border-[#262a33] overflow-hidden divide-y divide-[#262a33] bg-[#0a0b0d]">
+        <section>
+          <SectionLabel>Detalle de Ítems y Repuestos</SectionLabel>
+          <ul className="border-t border-[#2a2b2e]">
             {service.items?.map((item, idx) => (
-              <div key={idx} className="p-2.5 px-3 flex items-center justify-between text-xs gap-3">
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className="px-1.5 py-0.5 rounded bg-zinc-800 text-white font-mono text-[11px] font-bold">
-                    {item.cantidad}x
-                  </span>
-                  <span className="text-zinc-200 truncate">{item.concepto}</span>
-                </div>
+              <li key={idx} className="py-2.5 flex items-baseline justify-between gap-3 text-sm border-b border-[#2a2b2e]">
+                <span className="flex items-baseline gap-2.5 min-w-0">
+                  <span className="figure font-bold text-[#9a9da3] w-7 shrink-0">{item.cantidad}×</span>
+                  <span className="text-[#f2f2ef] break-words min-w-0">{item.concepto}</span>
+                </span>
                 {!hidePrices && item.precio_unitario !== null && item.precio_unitario !== undefined && (
-                  <span className="text-white font-mono shrink-0 font-bold">
+                  <span className="figure font-semibold text-[#f2f2ef] shrink-0">
                     {formatCurrencyARS(item.precio_unitario * item.cantidad)}
                   </span>
                 )}
-              </div>
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </section>
       ) : (
         service.productos && (
-          <div className="space-y-1.5">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#8b929e] flex items-center gap-1.5">
-              <PackageCheck className="w-3.5 h-3.5 text-[#d31a24]" />
-              Repuestos y Materiales
-            </h4>
-            <p className="text-xs text-zinc-300 bg-[#0a0b0d] p-3 rounded-xl border border-[#262a33] leading-normal whitespace-pre-wrap">
+          <section>
+            <SectionLabel>Repuestos y Materiales</SectionLabel>
+            <p className="text-sm text-[#c8cad0] leading-relaxed whitespace-pre-wrap max-w-[68ch]">
               {service.productos}
             </p>
-          </div>
+          </section>
         )
       )}
 
-      {/* Campos Extra Personalizados */}
+      {/* Campos extra personalizados */}
       {hasExtraFields && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 border-t border-[#2a2b2e]">
           {service.campos_extra?.map((f, idx) => (
-            <div key={idx} className="p-2.5 rounded-lg bg-[#0a0b0d] border border-[#262a33] text-xs">
-              <p className="text-[10px] font-semibold text-[#8b929e] uppercase flex items-center gap-1">
-                <Tag className="w-3 h-3 text-[#d31a24]" />
-                {f.titulo}
-              </p>
-              <p className="text-white font-bold mt-0.5">{f.valor}</p>
+            <div key={idx} className="py-2.5 border-b border-[#2a2b2e] flex items-baseline justify-between gap-3 text-sm">
+              <dt className="text-[#9a9da3]">{f.titulo}</dt>
+              <dd className="font-semibold text-[#f2f2ef] text-right">{f.valor}</dd>
             </div>
           ))}
-        </div>
+        </dl>
       )}
 
-      {/* Notas / Observaciones para el Cliente */}
+      {/* Observaciones para el cliente */}
       {service.notas_cliente && (
-        <div className="space-y-1.5">
-          <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#8b929e] flex items-center gap-1.5">
-            <StickyNote className="w-3.5 h-3.5 text-[#c8cdd5]" />
-            Observaciones del Taller
-          </h4>
-          <p className="text-xs text-zinc-300 bg-[#0a0b0d] p-3 rounded-xl border border-[#262a33] leading-relaxed whitespace-pre-wrap">
+        <section>
+          <SectionLabel>Observaciones del Taller</SectionLabel>
+          <p className="text-sm text-[#c8cad0] leading-relaxed whitespace-pre-wrap max-w-[68ch]">
             {service.notas_cliente}
           </p>
-        </div>
+        </section>
       )}
 
-      {/* Precio Total (si no está purgado ni oculto) */}
-      {!hidePrices && effectivePrice !== null && effectivePrice !== undefined && (
-        <div className="pt-2 border-t border-[#262a33] flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#8b929e]">
-            Total Abonado
-          </span>
-          <span className="text-2xl font-black text-white font-mono tracking-tight">
-            {formatCurrencyARS(effectivePrice)}
-          </span>
-        </div>
-      )}
-
-      {/* Próximo Servicio Recomendado */}
+      {/* Próximo servicio recomendado */}
       {(service.proximo_servicio_km || service.proximo_servicio_fecha) && (
-        <div className="p-3.5 rounded-xl bg-[#880e14]/20 border border-[#d31a24]/30 flex items-start gap-3">
-          <AlertCircle className="w-4 h-4 text-[#d31a24] shrink-0 mt-0.5" />
-          <div className="text-xs space-y-0.5">
-            <p className="font-bold text-white">
+        <section className="flex items-start gap-3 p-4 bg-[#0d0d0e] border border-[#3a3b3f] rounded-xs">
+          <CalendarClock className="w-5 h-5 text-[#d31a24] shrink-0 mt-0.5" aria-hidden="true" />
+          <div className="text-sm space-y-1">
+            <p className="font-semibold text-[#f2f2ef]">
               {ticketConfig?.etiqueta_proximo_service || 'Próximo control recomendado:'}
             </p>
-            <p className="text-[#c8cdd5]">
+            <p className="text-[#c8cad0]">
               {service.proximo_servicio_km && (
-                <span>A los <strong className="text-white">{formatKilometers(service.proximo_servicio_km)}</strong></span>
+                <span>A los <strong className="figure text-[#f2f2ef]">{formatKilometers(service.proximo_servicio_km)}</strong></span>
               )}
               {service.proximo_servicio_km && service.proximo_servicio_fecha && <span> ó </span>}
               {service.proximo_servicio_fecha && (
-                <span>el <strong className="text-white">{formatDateBA(service.proximo_servicio_fecha, { short: true })}</strong></span>
+                <span>el <strong className="figure text-[#f2f2ef]">{formatDateBA(service.proximo_servicio_fecha, { short: true })}</strong></span>
               )}
               <span> (lo que ocurra primero).</span>
             </p>
           </div>
-        </div>
+        </section>
       )}
 
-      {/* Texto de Pie configurable */}
+      {/* Texto de pie configurable */}
       {ticketConfig?.texto_pie && (
-        <div className="pt-2 border-t border-[#262a33] text-[11px] text-[#8b929e] text-center leading-normal">
+        <p className="pt-4 border-t border-[#2a2b2e] text-xs text-[#9a9da3] leading-relaxed">
           {ticketConfig.texto_pie}
-        </div>
+        </p>
       )}
     </div>
   );

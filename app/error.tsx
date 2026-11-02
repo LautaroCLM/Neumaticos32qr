@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { AlertTriangle, RefreshCw, ArrowLeft } from 'lucide-react';
+import { RefreshCw, ArrowLeft } from 'lucide-react';
 
 export default function ErrorBoundary({
   error,
@@ -17,57 +17,34 @@ export default function ErrorBoundary({
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-[#0A0B0D] text-zinc-100 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-[#14161B] border border-[#262A33] text-center space-y-5 shadow-2xl animate-in fade-in duration-300">
-        <div className="flex justify-center">
-          <div className="relative w-36 h-20">
-            <Image
-              src="/logo.webp"
-              alt="Neumáticos el 32"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#0d0d0e] text-[#f2f2ef] flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md animate-in">
+        <Image src="/logo.webp" alt="Neumáticos el 32" width={96} height={96} className="w-24 h-24 object-contain -ml-1" priority />
 
-        <div className="w-14 h-14 mx-auto rounded-2xl bg-red-950/40 border border-red-500/40 flex items-center justify-center text-[#D31A24]">
-          <AlertTriangle className="w-7 h-7" />
-        </div>
+        <h1 className="mt-6 font-display text-[32px] leading-[0.95] text-balance">Algo salió mal</h1>
+        <p className="mt-4 text-[15px] text-[#c8cad0] leading-relaxed">
+          Ocurrió un error al procesar la solicitud. Puede tratarse de una interrupción temporal de conexión.
+        </p>
+        {error.digest && (
+          <p className="mt-2 figure text-xs text-[#9a9da3]">Código de referencia: {error.digest}</p>
+        )}
 
-        <div className="space-y-2">
-          <span className="text-[11px] font-black uppercase tracking-wider text-[#D31A24]">
-            Error Inesperado
-          </span>
-          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
-            Algo salió mal
-          </h1>
-          <p className="text-xs sm:text-sm text-[#C8CDD5] leading-relaxed">
-            Ocurrió un error al procesar la solicitud. Puede tratarse de una interrupción temporal de conexión.
-          </p>
-          {error.digest && (
-            <p className="text-[10px] text-zinc-500 font-mono">
-              Código de referencia: {error.digest}
-            </p>
-          )}
-        </div>
-
-        <div className="pt-2 flex flex-col gap-2.5">
+        <div className="mt-8 flex flex-col gap-2.5">
           <button
             type="button"
             onClick={() => reset()}
-            className="flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-red-900/30 transition-all cursor-pointer min-h-[48px]"
+            className="flex items-center justify-center gap-2 w-full px-5 min-h-[52px] rounded-xs bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white font-display text-sm tracking-[0.1em] transition-colors cursor-pointer"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="w-4 h-4" aria-hidden="true" />
             <span>Reintentar</span>
           </button>
 
           <Link
             href="/"
-            className="flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-[#0A0B0D] hover:bg-[#1c1f26] border border-[#262A33] text-zinc-300 hover:text-white text-xs font-bold transition-all min-h-[48px]"
+            className="flex items-center justify-center gap-2 w-full px-5 min-h-[48px] rounded-xs border border-[#3a3b3f] hover:border-[#9a9da3] text-[#f2f2ef] text-sm font-semibold transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Volver al Inicio</span>
+            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+            <span>Volver al inicio</span>
           </Link>
         </div>
       </div>

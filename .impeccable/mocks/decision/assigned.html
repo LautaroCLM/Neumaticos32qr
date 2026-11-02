@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:#0d0d0e;color:#f2f2ef;font-family:Archivo,sans-serif}
+header{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #26272a}
+.logo{font-stretch:125%;font-weight:900;font-size:15px;letter-spacing:.02em;text-transform:uppercase}
+.logo b{color:#d31a24}
+.acc{font-size:13px;font-weight:600;color:#c8cad0;border:1px solid #3a3b3f;padding:10px 12px;border-radius:2px}
+.code{font-stretch:125%;font-weight:700;font-size:11px;letter-spacing:.18em;color:#9a9da3;text-transform:uppercase}
+main{padding:28px 16px 0}
+h1{font-stretch:125%;font-weight:900;font-size:40px;line-height:.95;letter-spacing:-.01em;text-transform:uppercase;margin:14px 0 14px}
+h1 span{color:#d31a24}
+.lead{font-size:15px;line-height:1.5;color:#c8cad0;max-width:330px}
+form{margin-top:28px;border-top:1px solid #26272a;padding-top:22px}
+label{display:block;font-stretch:115%;font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9a9da3;margin-bottom:8px}
+.plate{display:flex;height:64px;background:#f2f2ef;color:#0d0d0e;border-radius:4px;overflow:hidden;border:2px solid #f2f2ef}
+.band{width:34px;background:#0d0d0e;color:#f2f2ef;font-size:10px;font-weight:800;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;letter-spacing:.08em}
+.plate span{flex:1;display:flex;align-items:center;padding-left:14px;font-stretch:125%;font-weight:800;font-size:28px;letter-spacing:.08em;color:#8b8d92}
+.digits{margin-top:16px;height:56px;border:1px solid #3a3b3f;border-radius:2px;display:flex;align-items:center;padding-left:14px;font-stretch:125%;font-weight:700;font-size:24px;letter-spacing:.3em;color:#5f6166}
+button{margin-top:16px;width:100%;height:58px;border:0;border-radius:2px;background:#d31a24;color:#fff;font-family:inherit;font-stretch:125%;font-weight:900;font-size:16px;letter-spacing:.1em;text-transform:uppercase}
+.qr{margin-top:30px;display:grid;grid-template-columns:44px 1fr;gap:14px;border-top:1px solid #26272a;padding-top:20px}
+.qr i{width:44px;height:44px;border:2px solid #f2f2ef}
+.qr p{font-size:14px;line-height:1.45;color:#c8cad0}
+.qr strong{display:block;color:#f2f2ef;font-size:15px;margin-bottom:2px}
+</style></head><body>
+<header><div class="logo">Neumáticos <b>el 32</b></div><div class="acc">Acceso taller</div></header>
+<main>
+<div class="code">Historial · Servicio · Próximo control</div>
+<h1>Historial de<br><span>servicios</span></h1>
+<p class="lead">Ingresá tu patente para ver los trabajos realizados, los costos y el próximo control de tu vehículo.</p>
+<form>
+<label>Patente</label>
+<div class="plate"><div class="band">RA</div><span>AE 123 CD</span></div>
+<label style="margin-top:18px">Últimos 4 dígitos del teléfono</label>
+<div class="digits">7788</div>
+<button>Ver mi historial</button>
+</form>
+<div class="qr"><i></i><p><strong>¿Tenés el sticker de tu vehículo?</strong>Escaneá el QR con la cámara y entrás directo a tu historial.</p></div>
+</main>
+</body></html>

@@ -49,7 +49,7 @@ export default async function AdminNewServicePage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-black uppercase tracking-tight text-zinc-100">
+        <h1 className="font-display text-2xl sm:text-[28px] leading-[0.95] text-[#f2f2ef]">
           Registrar Nuevo Servicio
         </h1>
         <p className="text-xs text-zinc-400 mt-0.5">

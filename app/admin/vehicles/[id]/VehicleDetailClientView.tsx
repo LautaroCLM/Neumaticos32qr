@@ -1,5 +1,6 @@
 'use client';
 
+import { Plate } from '@/components/public/Plate';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -178,7 +179,7 @@ export function VehicleDetailClientView({
       <div>
         <Link
           href="/admin/vehicles"
-          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-[#D31A24] transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-[#f04d55] transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Volver a Vehículos</span>
@@ -186,35 +187,33 @@ export function VehicleDetailClientView({
       </div>
 
       {actionError && (
-        <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
+        <div className="p-4 rounded-sm bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 shrink-0" />
           <span>{actionError}</span>
         </div>
       )}
 
       {/* Header del Vehículo */}
-      <div className="bg-[#14161b] border border-[#262a33] rounded-3xl p-6 sm:p-7 shadow-xl">
+      <div className="bg-[#161719] border border-[#2a2b2e] rounded-sm p-6 sm:p-7">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="px-3.5 py-1.5 rounded-xl bg-[#0A0B0D] border border-[#262a33] font-mono font-bold text-base text-white tracking-wider">
-                {formatPatenteDisplay(vehicle.patente)}
-              </span>
+              <Plate patente={vehicle.patente} size="md" />
 
               {isTokenRevoked ? (
-                <span className="px-2.5 py-1 rounded-lg bg-red-500/20 text-red-400 text-xs font-bold border border-red-500/30 flex items-center gap-1">
+                <span className="px-2.5 py-1 rounded-sm bg-red-500/20 text-red-400 text-xs font-bold border border-red-500/30 flex items-center gap-1">
                   <Ban className="w-3.5 h-3.5" />
                   QR Revocado
                 </span>
               ) : (
-                <span className="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30 flex items-center gap-1">
+                <span className="px-2.5 py-1 rounded-sm bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30 flex items-center gap-1">
                   <QrCode className="w-3.5 h-3.5" />
                   QR Activo
                 </span>
               )}
 
               {vehicle.ocultar_precios && (
-                <span className="px-2.5 py-1 rounded-lg bg-zinc-800 text-zinc-400 text-xs font-semibold">
+                <span className="px-2.5 py-1 rounded-sm bg-zinc-800 text-zinc-400 text-xs font-semibold">
                   Precios Ocultos al Cliente
                 </span>
               )}
@@ -246,16 +245,16 @@ export function VehicleDetailClientView({
             <div className="flex flex-wrap items-center gap-2 pt-2">
               <button
                 onClick={() => setIsEditModalOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors cursor-pointer min-h-[40px]"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-sm bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors cursor-pointer min-h-[40px]"
               >
-                <Pencil className="w-3.5 h-3.5 text-[#D31A24]" />
+                <Pencil className="w-3.5 h-3.5 text-[#f04d55]" />
                 <span>Editar Vehículo</span>
               </button>
               <button
                 onClick={() => setIsOwnerModalOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors cursor-pointer min-h-[40px]"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-sm bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors cursor-pointer min-h-[40px]"
               >
-                <UserCog className="w-3.5 h-3.5 text-[#D31A24]" />
+                <UserCog className="w-3.5 h-3.5 text-[#f04d55]" />
                 <span>{vehicle.cliente_id ? 'Cambiar Propietario' : 'Asignar Propietario'}</span>
               </button>
             </div>
@@ -265,7 +264,7 @@ export function VehicleDetailClientView({
           <div className="shrink-0">
             <Link
               href={`/admin/services/new?vehicle_id=${vehicle.id}`}
-              className="flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-red-900/30 transition-all min-h-[44px]"
+              className="flex items-center justify-center gap-2 px-5 py-3 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white text-xs font-black uppercase tracking-wider transition-all min-h-[44px]"
             >
               <Plus className="w-4 h-4" />
               <span>+ Nuevo Servicio</span>
@@ -275,10 +274,10 @@ export function VehicleDetailClientView({
       </div>
 
       {/* Tarjeta de Gestión del Código QR y Acceso Digital */}
-      <div className="bg-[#14161b] border border-[#262a33] rounded-3xl p-6 shadow-xl space-y-6">
-        <div className="flex items-center justify-between border-b border-[#262a33] pb-4">
+      <div className="bg-[#161719] border border-[#2a2b2e] rounded-sm p-6 space-y-6">
+        <div className="flex items-center justify-between border-b border-[#2a2b2e] pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-[#D31A24]">
+            <div className="w-8 h-8 rounded-sm bg-red-500/10 border border-red-500/30 flex items-center justify-center text-[#f04d55]">
               <QrCode className="w-4 h-4" />
             </div>
             <div>
@@ -294,15 +293,15 @@ export function VehicleDetailClientView({
           <button
             onClick={() => setIsPrintModalOpen(true)}
             disabled={isTokenRevoked}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors disabled:opacity-40 cursor-pointer min-h-[40px]"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold border border-zinc-700 transition-colors disabled:opacity-40 cursor-pointer min-h-[40px]"
           >
-            <Printer className="w-3.5 h-3.5 text-[#D31A24]" />
+            <Printer className="w-3.5 h-3.5 text-[#f04d55]" />
             <span>Imprimir Sticker</span>
           </button>
         </div>
 
         {isTokenRevoked ? (
-          <div className="p-6 rounded-2xl bg-red-500/10 border border-red-500/30 text-center space-y-3">
+          <div className="p-6 rounded-sm bg-red-500/10 border border-red-500/30 text-center space-y-3">
             <ShieldAlert className="w-8 h-8 text-red-400 mx-auto" />
             <h3 className="text-sm font-bold text-red-300">El acceso público por QR fue revocado</h3>
             <p className="text-xs text-zinc-400 max-w-md mx-auto">
@@ -310,7 +309,7 @@ export function VehicleDetailClientView({
             </p>
             <button
               onClick={() => setShowRegenerateModal(true)}
-              className="px-4 py-2 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white font-black text-xs uppercase tracking-wider transition-colors cursor-pointer min-h-[44px]"
+              className="px-4 py-2 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white font-black text-xs uppercase tracking-wider transition-colors cursor-pointer min-h-[44px]"
             >
               Generar Nuevo Código QR
             </button>
@@ -318,11 +317,11 @@ export function VehicleDetailClientView({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
             {/* Visualización del QR */}
-            <div className="md:col-span-4 flex flex-col items-center justify-center p-4 rounded-2xl bg-white max-w-[220px] mx-auto shadow-md">
+            <div className="md:col-span-4 flex flex-col items-center justify-center p-4 rounded-sm bg-white max-w-[220px] mx-auto">
               {qrDataUrl ? (
                 <img src={qrDataUrl} alt="Código QR" className="w-44 h-44 object-contain" />
               ) : (
-                <div className="w-44 h-44 bg-zinc-100 animate-pulse rounded-lg" />
+                <div className="w-44 h-44 bg-zinc-100 animate-pulse rounded-sm" />
               )}
               <span className="text-[11px] font-mono font-bold text-zinc-900 mt-2">
                 {formatPatenteDisplay(vehicle.patente)}
@@ -340,11 +339,11 @@ export function VehicleDetailClientView({
                     type="text"
                     readOnly
                     value={publicUrl}
-                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-zinc-300 font-mono focus:outline-none"
+                    className="flex-1 px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-xs text-zinc-300 font-mono focus:outline-none"
                   />
                   <button
                     onClick={handleCopy}
-                    className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold transition-colors cursor-pointer shrink-0"
+                    className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-sm bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold transition-colors cursor-pointer shrink-0"
                   >
                     {copied ? (
                       <>
@@ -362,7 +361,7 @@ export function VehicleDetailClientView({
                     href={publicUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors shrink-0"
+                    className="p-2.5 rounded-sm bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors shrink-0"
                     title="Abrir como cliente"
                   >
                     <ExternalLink className="w-4 h-4" />
@@ -375,7 +374,7 @@ export function VehicleDetailClientView({
                   href={`https://wa.me/${vehicle.cliente_telefono}?text=${whatsappMessage}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors min-h-[44px]"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors min-h-[44px]"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span>Enviar Historial por WhatsApp</span>
@@ -383,19 +382,19 @@ export function VehicleDetailClientView({
               )}
 
               {/* Acciones de Seguridad del Token */}
-              <div className="pt-3 border-t border-[#262a33] flex flex-wrap items-center gap-3">
+              <div className="pt-3 border-t border-[#2a2b2e] flex flex-wrap items-center gap-3">
                 <button
                   onClick={() => setShowRegenerateModal(true)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-300 hover:text-red-400 border border-zinc-700 hover:border-red-500/40 text-xs font-bold transition-colors cursor-pointer min-h-[40px]"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-sm bg-zinc-800 hover:bg-red-500/20 text-zinc-300 hover:text-red-400 border border-zinc-700 hover:border-red-500/40 text-xs font-bold transition-colors cursor-pointer min-h-[40px]"
                 >
-                  <RefreshCw className="w-3.5 h-3.5 text-[#D31A24]" />
+                  <RefreshCw className="w-3.5 h-3.5 text-[#f04d55]" />
                   <span>Regenerar QR</span>
                 </button>
 
                 {staffUser.rol === 'admin' && (
                   <button
                     onClick={() => setShowRevokeModal(true)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 border border-zinc-700 hover:border-red-500/40 text-xs font-bold transition-colors cursor-pointer min-h-[40px]"
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-sm bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 border border-zinc-700 hover:border-red-500/40 text-xs font-bold transition-colors cursor-pointer min-h-[40px]"
                   >
                     <Ban className="w-3.5 h-3.5" />
                     <span>Revocar Acceso</span>
@@ -412,14 +411,14 @@ export function VehicleDetailClientView({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-black uppercase tracking-tight text-zinc-200 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#D31A24]" />
+              <Clock className="w-4 h-4 text-[#f04d55]" />
               Historial de Servicios ({services.length})
             </h2>
           </div>
 
           <Link
             href={`/admin/services/new?vehicle_id=${vehicle.id}`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-bold shadow-md shadow-red-900/30 transition-all min-h-[36px]"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white text-xs font-bold transition-all min-h-[36px]"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Cargar Servicio</span>
@@ -427,7 +426,7 @@ export function VehicleDetailClientView({
         </div>
 
         {services.length === 0 ? (
-          <div className="p-12 rounded-3xl bg-[#14161b] border border-[#262a33] text-center space-y-3">
+          <div className="p-12 rounded-sm bg-[#161719] border border-[#2a2b2e] text-center space-y-3">
             <Calendar className="w-8 h-8 text-zinc-600 mx-auto" />
             <h3 className="text-sm font-bold text-zinc-300">Sin servicios registrados</h3>
             <p className="text-xs text-zinc-500 max-w-sm mx-auto">
@@ -435,7 +434,7 @@ export function VehicleDetailClientView({
             </p>
             <Link
               href={`/admin/services/new?vehicle_id=${vehicle.id}`}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#D31A24] text-white text-xs font-black uppercase tracking-wider min-h-[44px]"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-sm bg-[#d31a24] text-white text-xs font-black uppercase tracking-wider min-h-[44px]"
             >
               <Plus className="w-4 h-4" />
               <span>Cargar Primer Servicio</span>
@@ -453,10 +452,10 @@ export function VehicleDetailClientView({
                 <div
                   key={srv.id}
                   className={cn(
-                    'p-5 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4',
+                    'p-5 rounded-sm border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4',
                     srv.anulado
                       ? 'bg-zinc-950/60 border-red-500/20 opacity-70'
-                      : 'bg-[#14161b] border-[#262a33]'
+                      : 'bg-[#161719] border-[#2a2b2e]'
                   )}
                 >
                   <div className="space-y-2 flex-1">
@@ -490,7 +489,7 @@ export function VehicleDetailClientView({
                     )}
                   </div>
 
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-[#262a33] shrink-0">
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-[#2a2b2e] shrink-0">
                     <span className="text-sm font-mono font-bold text-zinc-100">
                       {formatCurrencyARS(effectivePrice)}
                     </span>
@@ -498,7 +497,7 @@ export function VehicleDetailClientView({
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/admin/services/${srv.id}/edit`}
-                        className="p-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors"
+                        className="p-2 rounded-sm bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors"
                         title="Editar"
                       >
                         <FileEdit className="w-3.5 h-3.5" />
@@ -507,7 +506,7 @@ export function VehicleDetailClientView({
                       {staffUser.rol === 'admin' && !srv.anulado && (
                         <button
                           onClick={() => setAnulandoServiceId(srv.id)}
-                          className="p-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 transition-colors cursor-pointer"
+                          className="p-2 rounded-sm bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 transition-colors cursor-pointer"
                           title="Anular Servicio"
                         >
                           <Ban className="w-3.5 h-3.5" />
@@ -551,9 +550,9 @@ export function VehicleDetailClientView({
 
       {/* Modal Confirmación Regenerar Token */}
       {showRegenerateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-md bg-[#14161b] border border-[#262a33] rounded-2xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center gap-2 text-[#D31A24]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 animate-fade-in">
+          <div className="w-full max-w-md bg-[#161719] border border-[#2a2b2e] rounded-sm p-6 space-y-4">
+            <div className="flex items-center gap-2 text-[#f04d55]">
               <RefreshCw className="w-5 h-5" />
               <h3 className="text-base font-black uppercase tracking-tight text-white">¿Regenerar Código QR?</h3>
             </div>
@@ -566,7 +565,7 @@ export function VehicleDetailClientView({
                 type="button"
                 onClick={() => setShowRegenerateModal(false)}
                 disabled={actionLoading}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-zinc-100 cursor-pointer min-h-[44px]"
+                className="px-4 py-2 rounded-sm text-xs font-bold text-zinc-400 hover:text-zinc-100 cursor-pointer min-h-[44px]"
               >
                 Cancelar
               </button>
@@ -574,7 +573,7 @@ export function VehicleDetailClientView({
                 type="button"
                 onClick={handleRegenerateToken}
                 disabled={actionLoading}
-                className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-black uppercase tracking-wider cursor-pointer disabled:opacity-50 min-h-[44px]"
+                className="flex items-center gap-1.5 px-5 py-2.5 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white text-xs font-black uppercase tracking-wider cursor-pointer disabled:opacity-50 min-h-[44px]"
               >
                 {actionLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 <span>Confirmar y Regenerar</span>
@@ -586,8 +585,8 @@ export function VehicleDetailClientView({
 
       {/* Modal Confirmación Revocar Token */}
       {showRevokeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-md bg-zinc-900 border border-red-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 animate-fade-in">
+          <div className="w-full max-w-md bg-zinc-900 border border-red-500/30 rounded-sm p-6 space-y-4">
             <div className="flex items-center gap-2 text-red-400">
               <Ban className="w-5 h-5" />
               <h3 className="text-base font-black uppercase tracking-tight">¿Revocar Acceso al QR?</h3>
@@ -600,7 +599,7 @@ export function VehicleDetailClientView({
                 type="button"
                 onClick={() => setShowRevokeModal(false)}
                 disabled={actionLoading}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-zinc-100 cursor-pointer"
+                className="px-4 py-2 rounded-sm text-xs font-bold text-zinc-400 hover:text-zinc-100 cursor-pointer"
               >
                 Cancelar
               </button>
@@ -608,7 +607,7 @@ export function VehicleDetailClientView({
                 type="button"
                 onClick={handleRevokeToken}
                 disabled={actionLoading}
-                className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-red-500 hover:bg-red-400 text-white text-xs font-black uppercase tracking-wider cursor-pointer disabled:opacity-50"
+                className="flex items-center gap-1.5 px-5 py-2 rounded-sm bg-red-500 hover:bg-red-400 text-white text-xs font-black uppercase tracking-wider cursor-pointer disabled:opacity-50"
               >
                 {actionLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 <span>Confirmar Revocación</span>
@@ -620,8 +619,8 @@ export function VehicleDetailClientView({
 
       {/* Modal Anular Servicio */}
       {anulandoServiceId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-md bg-zinc-900 border border-red-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 animate-fade-in">
+          <div className="w-full max-w-md bg-zinc-900 border border-red-500/30 rounded-sm p-6 space-y-4">
             <div className="flex items-center gap-2 text-red-400">
               <Ban className="w-5 h-5" />
               <h3 className="text-base font-black uppercase tracking-tight">Anular Servicio</h3>
@@ -634,13 +633,13 @@ export function VehicleDetailClientView({
               onChange={(e) => setMotivoAnulacion(e.target.value)}
               rows={3}
               placeholder="Motivo de anulación..."
-              className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-red-500"
+              className="w-full px-3 py-2 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-red-500"
             />
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setAnulandoServiceId(null)}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-zinc-100 cursor-pointer"
+                className="px-4 py-2 rounded-sm text-xs font-bold text-zinc-400 hover:text-zinc-100 cursor-pointer"
               >
                 Cancelar
               </button>
@@ -648,7 +647,7 @@ export function VehicleDetailClientView({
                 type="button"
                 onClick={handleAnularService}
                 disabled={actionLoading || !motivoAnulacion.trim()}
-                className="px-5 py-2 rounded-xl bg-red-500 hover:bg-red-400 text-white text-xs font-black uppercase tracking-wider disabled:opacity-50 cursor-pointer"
+                className="px-5 py-2 rounded-sm bg-red-500 hover:bg-red-400 text-white text-xs font-black uppercase tracking-wider disabled:opacity-50 cursor-pointer"
               >
                 Confirmar Anulación
               </button>

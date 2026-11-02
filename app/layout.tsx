@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Archivo } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({
+// Archivo variable: el eje de ancho da los títulos expandidos de la marca.
+const archivo = Archivo({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-sans',
+  axes: ['wdth'],
+  variable: '--font-archivo',
 });
 
 export const metadata: Metadata = {
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0a0b0d',
+  themeColor: '#0d0d0e',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -30,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`dark ${inter.variable}`}>
-      <body className="bg-[#0a0b0d] text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-[#d31a24] selection:text-white font-sans">
+    <html lang="es" className={`dark ${archivo.variable}`}>
+      <body className="bg-[#0d0d0e] text-[#f2f2ef] min-h-screen flex flex-col antialiased font-sans">
         {children}
       </body>
     </html>

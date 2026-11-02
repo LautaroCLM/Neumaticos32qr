@@ -37,29 +37,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+function TicketErrorView({ title, description }: { title: string; description: string }) {
+  return (
+    <div className="max-w-md mx-auto py-10 animate-in">
+      <span className="w-12 h-12 flex items-center justify-center border-2 border-[#d31a24] text-[#d31a24]" aria-hidden="true">
+        <AlertTriangle className="w-6 h-6" />
+      </span>
+      <h1 className="mt-6 font-display text-[28px] leading-none text-balance text-[#f2f2ef]">{title}</h1>
+      <p className="mt-4 text-[15px] text-[#c8cad0] leading-relaxed">{description}</p>
+      <Link
+        href="/"
+        className="mt-8 inline-flex items-center gap-2 px-4 min-h-[48px] rounded-xs border border-[#3a3b3f] hover:border-[#9a9da3] text-[#f2f2ef] text-sm font-semibold transition-colors"
+      >
+        <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+        <span>Volver a buscar por patente</span>
+      </Link>
+    </div>
+  );
+}
+
 export default async function VehicleTicketPage({ params }: PageProps) {
   const { token } = await params;
 
   if (!token || token.length < 16) {
     return (
-      <div className="py-12 px-4 text-center space-y-4 max-w-md mx-auto animate-in fade-in">
-        <div className="w-14 h-14 mx-auto rounded-2xl bg-red-950/40 border border-red-500/40 flex items-center justify-center text-[#d31a24]">
-          <AlertTriangle className="w-7 h-7" />
-        </div>
-        <h1 className="text-xl font-bold text-white">Formato de Enlace Inválido</h1>
-        <p className="text-sm text-[#8b929e] leading-relaxed">
-          El identificador del enlace no tiene el largo requerido. Asegurate de escanear el código QR completo provisto por el taller.
-        </p>
-        <div className="pt-2">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#14161b] hover:bg-[#1c1f26] border border-[#262a33] text-white text-sm font-semibold transition-colors min-h-[44px]"
-          >
-            <ArrowLeft className="w-4 h-4 text-[#d31a24]" />
-            <span>Volver a buscar por patente</span>
-          </Link>
-        </div>
-      </div>
+      <TicketErrorView
+        title="Formato de Enlace Inválido"
+        description="El identificador del enlace no tiene el largo requerido. Asegurate de escanear el código QR completo provisto por el taller."
+      />
     );
   }
 
@@ -90,76 +95,63 @@ export default async function VehicleTicketPage({ params }: PageProps) {
         'El código QR o enlace ingresado fue revocado por el personal tras la emisión de un nuevo código para el vehículo. Solicitá el sticker actualizado en el taller.';
     }
 
-    return (
-      <div className="py-12 px-4 text-center space-y-4 max-w-md mx-auto animate-in fade-in">
-        <div className="w-14 h-14 mx-auto rounded-2xl bg-red-950/40 border border-red-500/40 flex items-center justify-center text-[#d31a24]">
-          <AlertTriangle className="w-7 h-7" />
-        </div>
-        <h1 className="text-xl font-bold text-white">{title}</h1>
-        <p className="text-sm text-[#8b929e] leading-relaxed">{description}</p>
-        <div className="pt-2">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#14161b] hover:bg-[#1c1f26] border border-[#262a33] text-white text-sm font-semibold transition-colors min-h-[44px]"
-          >
-            <ArrowLeft className="w-4 h-4 text-[#d31a24]" />
-            <span>Volver a buscar por patente</span>
-          </Link>
-        </div>
-      </div>
-    );
+    return <TicketErrorView title={title} description={description} />;
   }
 
   const { vehicle, shop, services = [], hide_prices = false } = ticketData;
   const latestService = services[0] as ServiceRecord | undefined;
   const pastServices = services.slice(1) as ServiceRecord[];
 
+  const hasDireccion = !isConfigPlaceholder(shop?.direccion);
+  const hasHorarios = !isConfigPlaceholder(shop?.horarios);
+  const shopNombre = !isConfigPlaceholder(shop?.nombre) ? shop!.nombre : 'Neumáticos el 32';
+
   return (
-    <div className="space-y-6">
-      {/* Cabecera del Vehículo */}
-      <div className="p-5 rounded-2xl bg-[#14161b] border border-[#262a33] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#d31a24] bg-[#880e14]/20 px-2 py-0.5 rounded border border-[#d31a24]/30">
-              Vehículo en Sistema
-            </span>
-          </div>
-          <h1 className="text-2xl font-black text-white tracking-tight">
+    <div className="max-w-2xl mx-auto space-y-8">
+      {/* Cabecera del vehículo: la patente es la pieza dominante */}
+      <header className="space-y-5">
+        <div className="inline-flex h-[72px] sm:h-20 rounded-md overflow-hidden bg-[#f2f2ef] border-2 border-[#f2f2ef] animate-plate-in">
+          <span
+            aria-hidden="true"
+            className="w-10 shrink-0 bg-[#0d0d0e] text-[#f2f2ef] flex items-end justify-center pb-2 text-[11px] font-extrabold tracking-[0.08em]"
+          >
+            RA
+          </span>
+          <span
+            className="flex items-center px-4 sm:px-5 text-[#0d0d0e] text-[32px] sm:text-[38px] figure font-extrabold tracking-[0.08em] whitespace-nowrap"
+            style={{ fontStretch: '125%' }}
+          >
+            <span className="sr-only">Patente </span>
+            {formatPatenteDisplay(vehicle.patente)}
+          </span>
+        </div>
+
+        <div>
+          <h1 className="font-display text-[clamp(1.75rem,7vw,2.5rem)] leading-[0.95] text-balance text-[#f2f2ef]">
             {vehicle.marca} {vehicle.modelo}
           </h1>
           {vehicle.anio && (
-            <p className="text-xs text-[#c8cdd5]">Año de fabricación: {vehicle.anio}</p>
+            <p className="mt-2 text-sm text-[#c8cad0]">
+              Año <span className="figure font-semibold text-[#f2f2ef]">{vehicle.anio}</span>
+            </p>
           )}
         </div>
 
-        {/* Patente Estilo Placa Argentina Mercosur */}
-        <div className="self-start sm:self-auto inline-flex flex-col items-center bg-[#0a0b0d] border-2 border-[#262a33] rounded-xl overflow-hidden shadow-inner min-w-[150px]">
-          <div className="w-full bg-[#0047ab] px-3 py-0.5 text-center flex items-center justify-between gap-3 text-[9px] font-bold text-white tracking-widest uppercase">
-            <span>RA</span>
-            <span className="text-[7px] font-normal tracking-normal text-blue-100">REPÚBLICA ARGENTINA</span>
-          </div>
-          <div className="px-4 py-1.5 text-center">
-            <span className="text-xl font-black font-mono tracking-widest text-white">
-              {formatPatenteDisplay(vehicle.patente)}
-            </span>
-          </div>
+        {/* Acciones rápidas (compartir / WhatsApp) */}
+        <div className="flex items-stretch gap-2.5">
+          <ShareButton
+            title={`Ticket ${vehicle.patente}`}
+            patente={vehicle.patente}
+          />
+          <WhatsAppButton
+            whatsappNumber={shop?.whatsapp}
+            patente={vehicle.patente}
+            vehiculoInfo={`${vehicle.marca} ${vehicle.modelo}`}
+          />
         </div>
-      </div>
+      </header>
 
-      {/* Acciones Rápidas (Compartir / WhatsApp) */}
-      <div className="flex items-center gap-2.5">
-        <ShareButton
-          title={`Ticket ${vehicle.patente}`}
-          patente={vehicle.patente}
-        />
-        <WhatsAppButton
-          whatsappNumber={shop?.whatsapp}
-          patente={vehicle.patente}
-          vehiculoInfo={`${vehicle.marca} ${vehicle.modelo}`}
-        />
-      </div>
-
-      {/* Ticket del Último Servicio Destacado */}
+      {/* Ticket del último servicio */}
       {latestService ? (
         <TicketCard
           service={latestService}
@@ -167,12 +159,12 @@ export default async function VehicleTicketPage({ params }: PageProps) {
           ticketConfig={shop?.ticket_config}
         />
       ) : (
-        <div className="p-8 text-center rounded-2xl bg-[#14161b] border border-[#262a33] text-[#8b929e] text-sm">
+        <p className="py-8 text-center border-y border-[#2a2b2e] text-[#9a9da3] text-sm">
           Aún no hay servicios registrados para este vehículo.
-        </div>
+        </p>
       )}
 
-      {/* Historial Cronológico de Mantenimientos Anteriores */}
+      {/* Historial cronológico de mantenimientos anteriores */}
       {pastServices.length > 0 && (
         <HistoryList
           services={pastServices}
@@ -181,40 +173,25 @@ export default async function VehicleTicketPage({ params }: PageProps) {
         />
       )}
 
-      {/* Ficha Informativa del Taller */}
-      {(() => {
-        const hasDireccion = !isConfigPlaceholder(shop?.direccion);
-        const hasHorarios = !isConfigPlaceholder(shop?.horarios);
-        const shopNombre = !isConfigPlaceholder(shop?.nombre)
-          ? shop!.nombre
-          : 'Neumáticos el 32';
-
-        return (
-          <div className="p-5 rounded-2xl bg-[#14161b]/80 border border-[#262a33] space-y-3 text-xs text-[#c8cdd5]">
-            <div className="flex items-center gap-2 text-white font-bold text-sm">
-              <ShieldCheck className="w-4 h-4 text-[#d31a24]" />
-              <span>Atendido en {shopNombre}</span>
-            </div>
-
-            {(hasDireccion || hasHorarios) && (
-              <div className="space-y-1.5 pt-1">
-                {hasDireccion && (
-                  <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-[#8b929e] shrink-0 mt-0.5" />
-                    <span>{shop?.direccion}</span>
-                  </div>
-                )}
-                {hasHorarios && (
-                  <div className="flex items-start gap-2">
-                    <Clock className="w-4 h-4 text-[#8b929e] shrink-0 mt-0.5" />
-                    <span>{shop?.horarios}</span>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        );
-      })()}
+      {/* Ficha del taller */}
+      <footer className="pt-5 border-t border-[#2a2b2e] space-y-2.5 text-sm text-[#c8cad0]">
+        <p className="flex items-center gap-2 font-semibold text-[#f2f2ef]">
+          <ShieldCheck className="w-4 h-4 text-[#d31a24]" aria-hidden="true" />
+          <span>Atendido en {shopNombre}</span>
+        </p>
+        {hasDireccion && (
+          <p className="flex items-start gap-2">
+            <MapPin className="w-4 h-4 text-[#9a9da3] shrink-0 mt-0.5" aria-hidden="true" />
+            <span>{shop?.direccion}</span>
+          </p>
+        )}
+        {hasHorarios && (
+          <p className="flex items-start gap-2">
+            <Clock className="w-4 h-4 text-[#9a9da3] shrink-0 mt-0.5" aria-hidden="true" />
+            <span>{shop?.horarios}</span>
+          </p>
+        )}
+      </footer>
     </div>
   );
 }

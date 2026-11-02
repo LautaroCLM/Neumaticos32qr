@@ -5,7 +5,7 @@ import { ServiceRecord, ShopTicketConfig } from '@/lib/types/database';
 import { ServiceBadge } from './ServiceBadge';
 import { TicketDetails } from './TicketCard';
 import { formatDateBA, formatKilometers, formatCurrencyARS, formatTicketNumber } from '@/lib/utils/formatters';
-import { ChevronDown, FileEdit, History } from 'lucide-react';
+import { ChevronDown, FileEdit } from 'lucide-react';
 
 interface HistoryListProps {
   services: ServiceRecord[];
@@ -18,9 +18,9 @@ export function HistoryList({ services, hidePrices = false, ticketConfig }: Hist
 
   if (services.length === 0) {
     return (
-      <div className="p-8 text-center rounded-2xl bg-zinc-900/50 border border-zinc-800 text-zinc-500 text-sm">
+      <p className="py-8 text-center border-y border-[#2a2b2e] text-[#9a9da3] text-sm">
         No hay registros de mantenimientos anteriores.
-      </div>
+      </p>
     );
   }
 
@@ -29,80 +29,82 @@ export function HistoryList({ services, hidePrices = false, ticketConfig }: Hist
   };
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2 text-zinc-300 font-bold text-sm px-1">
-        <History className="w-4 h-4 text-[#d31a24]" />
-        <span>Historial de Mantenimientos Anteriores ({services.length})</span>
+    <section aria-labelledby="history-title">
+      <div className="flex items-baseline justify-between gap-3 pb-3 border-b-2 border-[#f2f2ef]">
+        <h2 id="history-title" className="font-display text-lg sm:text-xl text-[#f2f2ef]">
+          Servicios anteriores
+        </h2>
+        <span className="figure text-sm font-bold text-[#9a9da3]">{services.length}</span>
       </div>
 
-      <div className="space-y-2.5">
+      <ol>
         {services.map((item) => {
           const isExpanded = expandedId === item.id;
+          const panelId = `history-panel-${item.id}`;
 
           return (
-            <div
-              key={item.id}
-              className="rounded-xl bg-[#14161b] border border-[#262a33] hover:border-zinc-700 transition-colors overflow-hidden"
-            >
-              {/* Encabezado colapsable con target tactil de 48px */}
+            <li key={item.id} className="border-b border-[#2a2b2e]">
               <button
                 type="button"
                 onClick={() => toggleExpand(item.id)}
                 aria-expanded={isExpanded}
-                className="w-full p-3.5 sm:p-4 flex items-center justify-between gap-3 text-left hover:bg-zinc-800/40 transition-colors min-h-[48px]"
+                aria-controls={panelId}
+                className={`group py-4 grid grid-cols-[1fr_auto] sm:grid-cols-[104px_1fr_auto] items-start gap-x-4 gap-y-2 text-left transition-colors hover:bg-[#161719] min-h-[56px] -mx-2 px-2 w-[calc(100%+1rem)] ${
+                  isExpanded ? 'bg-[#161719]' : ''
+                }`}
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <ServiceBadge tipo={item.tipo} />
-                      {item.kilometraje !== null && item.kilometraje !== undefined && (
-                        <span className="text-xs font-bold font-mono text-zinc-300">
-                          {formatKilometers(item.kilometraje)}
-                        </span>
-                      )}
-                      {item.editado && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#0a0b0d] text-[#c8cdd5] flex items-center gap-1">
-                          <FileEdit className="w-2.5 h-2.5 text-[#d31a24]" />
-                          Editado
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-xs font-semibold text-[#c8cdd5] mt-1">
-                      {formatDateBA(item.fecha_hora, { short: true })}
-                      {item.numero !== undefined && (
-                        <span className="font-mono font-normal text-[#8b929e]"> · {formatTicketNumber(item.numero)}</span>
-                      )}
-                    </p>
-                    <p className="text-xs text-[#8b929e] mt-0.5 truncate">
-                      {item.descripcion}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 shrink-0">
-                  {!hidePrices && item.precio !== null && item.precio !== undefined && (
-                    <span className="text-sm font-bold font-mono text-white">
-                      {formatCurrencyARS(item.precio)}
-                    </span>
+                <span className="col-span-2 sm:col-span-1 flex sm:flex-col items-baseline sm:items-start gap-x-2 gap-y-0.5 figure text-sm font-semibold text-[#f2f2ef] sm:pt-1">
+                  {formatDateBA(item.fecha_hora, { short: true })}
+                  {item.numero !== undefined && (
+                    <span className="text-xs font-normal text-[#9a9da3]">{formatTicketNumber(item.numero)}</span>
                   )}
+                </span>
+
+                <span className="min-w-0 space-y-1.5">
+                  <span className="flex items-center gap-2 flex-wrap">
+                    <ServiceBadge tipo={item.tipo} />
+                    {item.editado && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#c8cad0]">
+                        <FileEdit className="w-3 h-3 text-[#9a9da3]" aria-hidden="true" />
+                        Editado
+                      </span>
+                    )}
+                  </span>
+                  <span className="block text-sm text-[#c8cad0] truncate">{item.descripcion}</span>
+                </span>
+
+                <span className="flex items-start gap-3 shrink-0">
+                  <span className="text-right space-y-0.5">
+                    {!hidePrices && item.precio !== null && item.precio !== undefined && (
+                      <span className="block figure text-[15px] font-bold text-[#f2f2ef]">
+                        {formatCurrencyARS(item.precio)}
+                      </span>
+                    )}
+                    {item.kilometraje !== null && item.kilometraje !== undefined && (
+                      <span className="block figure text-xs text-[#9a9da3]">
+                        {formatKilometers(item.kilometraje)}
+                      </span>
+                    )}
+                  </span>
                   <ChevronDown
-                    className={`w-4 h-4 text-zinc-400 transition-transform duration-200 ${
+                    aria-hidden="true"
+                    className={`w-5 h-5 mt-0.5 text-[#9a9da3] group-hover:text-[#f2f2ef] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                       isExpanded ? 'rotate-180 text-[#d31a24]' : ''
                     }`}
                   />
-                </div>
+                </span>
               </button>
 
               {/* Ticket completo desplegable */}
               {isExpanded && (
-                <div className="border-t border-[#262a33]">
+                <div id={panelId} className="border-t border-[#2a2b2e] bg-[#161719] -mx-2 px-0 sm:px-2 mb-4 animate-in">
                   <TicketDetails service={item} hidePrices={hidePrices} ticketConfig={ticketConfig} />
                 </div>
               )}
-            </div>
+            </li>
           );
         })}
-      </div>
-    </div>
+      </ol>
+    </section>
   );
 }

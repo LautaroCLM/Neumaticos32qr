@@ -1,5 +1,6 @@
 'use client';
 
+import { Plate } from '@/components/public/Plate';
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -138,14 +139,13 @@ export function DashboardClientView({
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Barra superior con Buscador Rápido de Patente y Acciones */}
-      <div className="bg-[#14161b] border border-[#262a33] rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
+      <div className="pb-6 border-b border-[#2a2b2e] space-y-5">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-lg sm:text-xl font-black uppercase tracking-tight text-zinc-100 flex items-center gap-2">
-              <Wrench className="w-5 h-5 text-[#D31A24]" />
+            <h1 className="font-display text-2xl sm:text-[32px] leading-[0.95] text-balance text-[#f2f2ef]">
               Gestión de Servicios y Vehículos
             </h1>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-sm text-zinc-400 mt-2">
               Buscá por patente para ver historial o registrá un vehículo nuevo
             </p>
           </div>
@@ -153,17 +153,17 @@ export function DashboardClientView({
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => setIsQuickCreateOpen(true)}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-850 hover:bg-zinc-800 text-zinc-200 text-xs font-bold border border-[#262a33] transition-all cursor-pointer min-h-[44px]"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-transparent hover:border-[#9a9da3] text-zinc-200 text-xs font-bold border border-[#3a3b3f] transition-all cursor-pointer min-h-[44px]"
             >
-              <Car className="w-4 h-4 text-[#D31A24]" />
-              <span>+ Alta de Vehículo</span>
+              <Car className="w-4 h-4 text-[#f04d55]" />
+              <span>Alta de Vehículo</span>
             </button>
             <Link
               href="/admin/services/new"
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D31A24] hover:bg-[#b0141c] text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-red-900/30 transition-all cursor-pointer min-h-[44px]"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white text-xs font-black uppercase tracking-wider transition-colors cursor-pointer min-h-[44px]"
             >
               <Plus className="w-4 h-4" />
-              <span>+ Nuevo Servicio</span>
+              <span>Nuevo Servicio</span>
             </Link>
           </div>
         </div>
@@ -176,13 +176,13 @@ export function DashboardClientView({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Escribí una patente (ej. AA123BB), cliente o marca..."
-            className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#0A0B0D] border border-[#262a33] text-zinc-100 text-sm focus:outline-none focus:border-[#D31A24] font-medium min-h-[48px]"
+            className="w-full pl-11 pr-4 py-3 rounded-sm bg-[#0d0d0e] border border-[#2a2b2e] text-zinc-100 text-sm focus:outline-none focus:border-[#d31a24] font-medium min-h-[48px]"
           />
         </div>
 
         {/* Coincidencias de vehículos rápidos si el usuario está buscando */}
         {searchTerm.trim().length >= 2 && (
-          <div className="p-3 rounded-2xl bg-[#0A0B0D] border border-[#262a33] space-y-2">
+          <div className="p-3 rounded-sm bg-[#0d0d0e] border border-[#2a2b2e] space-y-2">
             <div className="flex items-center justify-between text-[11px] text-zinc-400 font-bold uppercase tracking-wider px-2">
               <span>Vehículos Encontrados ({matchedVehicles.length})</span>
               <button
@@ -210,10 +210,10 @@ export function DashboardClientView({
                   <Link
                     key={veh.id}
                     href={`/admin/vehicles/${veh.id}`}
-                    className="p-3 rounded-xl bg-[#14161b] hover:bg-[#1a1d24] border border-[#262a33] hover:border-red-500/40 flex items-center justify-between gap-2 transition-all group"
+                    className="p-3 rounded-sm bg-[#161719] hover:bg-[#1f2023] border border-[#2a2b2e] hover:border-red-500/40 flex items-center justify-between gap-2 transition-all group"
                   >
                     <div>
-                      <span className="font-mono font-bold text-[#D31A24] text-xs block">
+                      <span className="font-mono font-bold text-[#f04d55] text-xs block">
                         {formatPatenteDisplay(veh.patente)}
                       </span>
                       <p className="text-xs text-zinc-200 font-semibold truncate">
@@ -237,7 +237,7 @@ export function DashboardClientView({
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-black uppercase tracking-tight text-zinc-200 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#D31A24]" />
+              <Clock className="w-4 h-4 text-[#f04d55]" />
               Servicios Recientes
             </h2>
             <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-800 font-bold text-zinc-400">
@@ -248,7 +248,7 @@ export function DashboardClientView({
           {/* Filtros de Fecha y Tipo */}
           <div className="flex flex-wrap items-center gap-2">
             {/* Filtro Fecha */}
-            <div className="flex items-center bg-[#14161b] border border-[#262a33] rounded-xl p-1 text-[11px] font-bold">
+            <div className="flex items-center bg-[#161719] border border-[#2a2b2e] rounded-sm p-1 text-[11px] font-bold">
               {[
                 { id: 'todos', label: 'Todos' },
                 { id: 'hoy', label: 'Hoy' },
@@ -259,8 +259,8 @@ export function DashboardClientView({
                   key={f.id}
                   onClick={() => setDateFilter(f.id as any)}
                   className={cn(
-                    'px-2.5 py-1 rounded-lg transition-colors cursor-pointer min-h-[36px]',
-                    dateFilter === f.id ? 'bg-[#D31A24] text-white font-black' : 'text-zinc-400 hover:text-zinc-200'
+                    'px-2.5 py-1 rounded-sm transition-colors cursor-pointer min-h-[36px]',
+                    dateFilter === f.id ? 'bg-[#d31a24] text-white font-black' : 'text-zinc-400 hover:text-zinc-200'
                   )}
                 >
                   {f.label}
@@ -272,7 +272,7 @@ export function DashboardClientView({
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="px-3 py-1.5 rounded-xl bg-[#14161b] border border-[#262a33] text-zinc-300 text-xs font-semibold focus:outline-none focus:border-[#D31A24] cursor-pointer min-h-[36px]"
+              className="px-3 py-1.5 rounded-sm bg-[#161719] border border-[#2a2b2e] text-zinc-300 text-xs font-semibold focus:outline-none focus:border-[#d31a24] cursor-pointer min-h-[36px]"
             >
               <option value="todos">Todos los tipos</option>
               <option value="neumaticos">Neumáticos</option>
@@ -288,7 +288,7 @@ export function DashboardClientView({
 
         {/* Lista de Servicios */}
         {filteredServices.length === 0 ? (
-          <div className="p-12 rounded-3xl bg-zinc-900/60 border border-zinc-800 text-center space-y-3">
+          <div className="py-12 border-y border-[#2a2b2e] text-center space-y-3">
             <Wrench className="w-8 h-8 text-zinc-600 mx-auto" />
             <h3 className="text-sm font-bold text-zinc-300">No hay servicios que coincidan</h3>
             <p className="text-xs text-zinc-500 max-w-sm mx-auto">
@@ -296,7 +296,7 @@ export function DashboardClientView({
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-3">
+          <div className="border-t border-[#2a2b2e]">
             {filteredServices.map((srv) => {
               const effectivePrice =
                 srv.total_manual !== null && srv.total_manual !== undefined
@@ -307,10 +307,10 @@ export function DashboardClientView({
                 <div
                   key={srv.id}
                   className={cn(
-                    'p-4 sm:p-5 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4',
+                    'py-4 sm:py-5 px-1 sm:px-3 border-b border-[#2a2b2e] transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4',
                     srv.anulado
-                      ? 'bg-zinc-950/60 border-red-500/20 opacity-75'
-                      : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700'
+                      ? 'bg-[#d31a24]/[0.04] opacity-75'
+                      : 'hover:bg-[#161719]'
                   )}
                 >
                   {/* Info principal: Patente, Vehículo, Tipo, Descripción */}
@@ -319,9 +319,9 @@ export function DashboardClientView({
                       {srv.vehicles ? (
                         <Link
                           href={`/admin/vehicles/${srv.vehicles.id}`}
-                          className="px-2.5 py-0.5 rounded-lg bg-[#0A0B0D] border border-[#262a33] font-mono font-bold text-xs text-white hover:border-[#D31A24] transition-colors"
+                          className="inline-flex outline-offset-2 hover:outline hover:outline-1 hover:outline-[#9a9da3]"
                         >
-                          {formatPatenteDisplay(srv.vehicles.patente)}
+                          <Plate patente={srv.vehicles.patente} />
                         </Link>
                       ) : (
                         <span className="font-mono text-zinc-500 text-xs">Sin vehículo</span>
@@ -366,7 +366,7 @@ export function DashboardClientView({
                   </div>
 
                   {/* Precio y Acciones */}
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-[#262a33] shrink-0">
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-[#2a2b2e] shrink-0">
                     <div className="text-right">
                       <span className="text-sm font-mono font-black text-zinc-100">
                         {formatCurrencyARS(effectivePrice)}
@@ -378,16 +378,16 @@ export function DashboardClientView({
                         <button
                           onClick={() => setSelectedQRVehicle(srv.vehicles)}
                           title="Ver QR del Vehículo"
-                          className="p-2 rounded-xl bg-zinc-800 hover:bg-zinc-750 text-zinc-300 transition-colors cursor-pointer min-h-[36px]"
+                          className="p-2 rounded-sm bg-zinc-800 hover:bg-zinc-750 text-zinc-300 transition-colors cursor-pointer min-h-[36px]"
                         >
-                          <QrCode className="w-3.5 h-3.5 text-[#D31A24]" />
+                          <QrCode className="w-3.5 h-3.5 text-[#f04d55]" />
                         </button>
                       )}
 
                       <Link
                         href={`/admin/services/${srv.id}/edit`}
                         title="Editar Servicio"
-                        className="p-2 rounded-xl bg-zinc-800 hover:bg-zinc-750 text-zinc-300 transition-colors min-h-[36px] flex items-center"
+                        className="p-2 rounded-sm bg-zinc-800 hover:bg-zinc-750 text-zinc-300 transition-colors min-h-[36px] flex items-center"
                       >
                         <FileEdit className="w-3.5 h-3.5" />
                       </Link>
@@ -396,7 +396,7 @@ export function DashboardClientView({
                         <button
                           onClick={() => setAnulandoServiceId(srv.id)}
                           title="Anular Servicio"
-                          className="p-2 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 transition-colors cursor-pointer min-h-[36px]"
+                          className="p-2 rounded-sm bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 transition-colors cursor-pointer min-h-[36px]"
                         >
                           <Ban className="w-3.5 h-3.5" />
                         </button>
@@ -405,7 +405,7 @@ export function DashboardClientView({
                       {srv.vehicles && (
                         <Link
                           href={`/admin/vehicles/${srv.vehicles.id}`}
-                          className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-[#D31A24] hover:text-white text-zinc-200 text-xs font-bold transition-all min-h-[36px]"
+                          className="flex items-center gap-1 px-3 py-1.5 rounded-sm bg-zinc-800 hover:bg-[#d31a24] hover:text-white text-zinc-200 text-xs font-bold transition-all min-h-[36px]"
                         >
                           <span>Historial</span>
                           <ArrowRight className="w-3.5 h-3.5" />
@@ -442,14 +442,14 @@ export function DashboardClientView({
 
       {/* Modal de Anulación de Servicio */}
       {anulandoServiceId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-md bg-zinc-900 border border-red-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 animate-fade-in">
+          <div className="w-full max-w-md bg-zinc-900 border border-red-500/30 rounded-sm p-6 space-y-4">
             <div className="flex items-center gap-2 text-red-400">
               <Ban className="w-5 h-5" />
               <h3 className="text-base font-black uppercase tracking-tight">Anular Servicio</h3>
             </div>
             {anularError && (
-              <div className="p-3 rounded-xl bg-red-500/10 text-red-400 text-xs">{anularError}</div>
+              <div className="p-3 rounded-sm bg-red-500/10 text-red-400 text-xs">{anularError}</div>
             )}
             <p className="text-xs text-zinc-300">
               Solo un Administrador puede anular servicios. El registro quedará archivado con auditoría.
@@ -463,14 +463,14 @@ export function DashboardClientView({
                 onChange={(e) => setMotivoAnulacion(e.target.value)}
                 rows={3}
                 placeholder="Ingresá el motivo claro de la anulación..."
-                className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-red-500"
+                className="w-full px-3 py-2 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-red-500"
               />
             </div>
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setAnulandoServiceId(null)}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-zinc-100 cursor-pointer"
+                className="px-4 py-2 rounded-sm text-xs font-bold text-zinc-400 hover:text-zinc-100 cursor-pointer"
               >
                 Cancelar
               </button>
@@ -478,7 +478,7 @@ export function DashboardClientView({
                 type="button"
                 onClick={handleAnularSubmit}
                 disabled={anulandoLoading || !motivoAnulacion.trim()}
-                className="px-5 py-2 rounded-xl bg-red-500 hover:bg-red-400 text-white text-xs font-black uppercase tracking-wider disabled:opacity-50 cursor-pointer"
+                className="px-5 py-2 rounded-sm bg-red-500 hover:bg-red-400 text-white text-xs font-black uppercase tracking-wider disabled:opacity-50 cursor-pointer"
               >
                 {anulandoLoading ? 'Anulando...' : 'Confirmar Anulación'}
               </button>
