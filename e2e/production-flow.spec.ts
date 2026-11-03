@@ -191,7 +191,7 @@ test.describe.serial('Suite End-to-End: Neumáticos el 32 (Playwright)', () => {
     await page.locator('input[placeholder="Precio Unit."]').nth(1).fill('7500');
 
     // Guardar el servicio
-    await page.locator('button:visible', { hasText: 'Registrar Servicio' }).click();
+    await page.locator('button:visible', { hasText: /^Registrar( Servicio)?$/ }).click();
     await page.waitForTimeout(2500);
 
     // Volver a la ficha y verificar el servicio creado
@@ -204,7 +204,7 @@ test.describe.serial('Suite End-to-End: Neumáticos el 32 (Playwright)', () => {
 
     // Modificar y poner motivo de edición
     await page.locator('input[placeholder*="Corrección de kilometraje"]').fill('Corrección y agregado de notas técnicas.');
-    await page.locator('button:visible', { hasText: 'Guardar Cambios' }).click();
+    await page.locator('button:visible', { hasText: /^Guardar( Cambios)?$/ }).click();
     await expect(page).toHaveURL(/\/admin\/vehicles\/[0-9a-f-]+/, { timeout: 10000 });
 
     // Verificar marca visual "Editado"

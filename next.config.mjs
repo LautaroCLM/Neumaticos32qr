@@ -78,7 +78,10 @@ const nextConfig = {
         headers: [
           { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate, max-age=0' },
           { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
-          { key: 'Referrer-Policy', value: 'no-referrer' },
+          // same-origin y no no-referrer: con no-referrer el navegador manda "Origin: null" en los
+          // formularios enviados antes de que React hidrate y las server actions responden 500.
+          // Igual no se filtra la URL del panel a otros sitios.
+          { key: 'Referrer-Policy', value: 'same-origin' },
         ],
       },
       {

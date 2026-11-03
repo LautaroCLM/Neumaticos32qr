@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useActionState, useState } from 'react';
+import { use, useActionState, useEffect, useState } from 'react';
 import { loginAction } from '@/lib/actions/auth';
 import { Lock, Mail, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -14,6 +14,16 @@ export default function AdminLoginPage({
   const { acceso, clave } = use(searchParams);
   const [state, formAction, isPending] = useActionState(loginAction, null);
   const [showPassword, setShowPassword] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+  const isSigningIn = isPending || Boolean(state?.success);
+
+  useEffect(() => setHydrated(true), []);
+
+  // Carga completa del panel en lugar de la navegación del router (ver loginAction)
+  useEffect(() => {
+    if (state?.success) window.location.replace('/admin/dashboard');
+  }, [state]);
+
   const errorMessage =
     state?.error ||
     (acceso === 'denegado' ? 'Acceso denegado: tu usuario no está habilitado en el personal del taller.' : null);
@@ -68,6 +78,7 @@ export default function AdminLoginPage({
         )}
 
         <form action={formAction} className="space-y-4">
+          {hydrated && <input type="hidden" name="via" value="js" />}
           <div>
             <label htmlFor="login-email" className="block label-caps text-[#9a9da3] mb-2">
               Correo Electrónico
@@ -113,10 +124,10 @@ export default function AdminLoginPage({
           <div className="pt-2">
             <button
               type="submit"
-              disabled={isPending}
+              disabled={isSigningIn}
               className="w-full py-4 px-4 rounded-sm bg-[#d31a24] hover:bg-[#e3262f] active:bg-[#b5161f] text-white font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 min-h-[50px]"
             >
-              {isPending ? (
+              {isSigningIn ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
                   <span>Ingresando...</span>

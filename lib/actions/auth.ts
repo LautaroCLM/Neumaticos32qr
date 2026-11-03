@@ -28,7 +28,10 @@ const newPasswordSchema = z
     message: 'Las contraseñas no coinciden.',
   });
 
-export async function loginAction(prevState: any, formData: FormData) {
+export async function loginAction(
+  prevState: any,
+  formData: FormData
+): Promise<{ error?: string; success?: boolean }> {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
@@ -73,6 +76,13 @@ export async function loginAction(prevState: any, formData: FormData) {
     return {
       error: 'Acceso denegado: tu usuario no está habilitado en el personal del taller.',
     };
+  }
+
+  // Con la página hidratada el navegador entra al panel con una carga completa: la redirección
+  // del router de Next tras iniciar sesión a veces queda colgada en "Ingresando...".
+  // Sin JavaScript (envío nativo del formulario) se mantiene la redirección del servidor.
+  if (formData.get('via') === 'js') {
+    return { success: true };
   }
 
   redirect('/admin/dashboard');
